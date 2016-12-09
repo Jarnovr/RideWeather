@@ -20,13 +20,13 @@ class Club_t;
 
 class Bike_t;
 class Shoe_t;
+enum class MeasurementType_t { feet, meters };
 
 class Athlete_t {
 public:
 	enum class Connection_t {null, pending, accepted, blocked};
 	enum class AthleteType_t : int {cyclist=0, runner=1};
-	enum class MeasurementType_t {feet, meters};
-
+	
 	ptrdiff_t id;//summary
 	ptrdiff_t resource_state;//summary
 	char* firstname;//summary
@@ -101,13 +101,15 @@ class SegmentEffort_t;
 class Splits_t;
 class Efforts_t;
 
+enum class ActivityType_t {
+	Ride, Run, Swim, Hike, Walk, AlpineSki,
+	BackcountrySki, Canoeing, Crossfit, EBikeRide, Elliptical, IceSkate,
+	InlineSkate, Kayaking, Kitesurf, NordicSki, RockClimbing, RollerSki,
+	Rowing, Snowboard, Snowshoe, StairStepper, StandUpPaddling, Surfing,
+	VirtualRide, WeightTraining, Windsurf, Workout, Yoga, other
+};
 
 class Activity_t {
-	enum class ActivityType_t {Ride, Run, Swim, Hike, Walk, AlpineSki,
-		BackcountrySki, Canoeing, Crossfit, EBikeRide, Elliptical, IceSkate,
-		InlineSkate, Kayaking, Kitesurf, NordicSki, RockClimbing, RollerSki,
-		Rowing, Snowboard, Snowshoe, StairStepper, StandUpPaddling, Surfing,
-		VirtualRide, WeightTraining, Windsurf, Workout, Yoga, other};
 	enum class Workout_t {default=0, race=1, longrun=2, workout=3, default_ride=10, race_ride=11, workout_ride=12};
 
 	ptrdiff_t id;
@@ -176,4 +178,166 @@ class Achievement_t {
 	AchievementType_t type_id;
 	char * type;
 	ptrdiff_t rank;
+};
+
+class Club_t {
+	enum ClubType_t {casual_club, racing_team, shop, company, club_other};
+	enum Sport_t {cycling, runing, triathlon, sport_other};
+	enum Membership_t {null, member, pending};
+	ptrdiff_t id;
+	ptrdiff_t resource_state;
+	char *name;
+	URL_t profile_medium;
+	URL_t profile;
+	URL_t cover_photo;
+	URL_t cover_photo_small;
+	char *description;
+	ClubType_t club_type;
+	Sport_t sport_type;
+	char* city;//summary
+	char* state;//summary
+	char* country;//summary
+	bool private_club;
+	ptrdiff_t member_count;
+	bool featured;
+	bool verified;
+	Membership_t membership;
+	bool admin;
+	bool owner;
+	ptrdiff_t following_count;
+	URL_t url;
+};
+
+class Gear_t {
+	char *id;
+	bool primary;
+	char *name;
+	double distance;
+	char *description;
+	ptrdiff_t resource_state;
+};
+
+class Bike_t : public Gear_t {
+	char *brand_name;
+	char *model_name;
+	enum FrameType_t {mtb=1, cross=2, road3, timetrial=4};
+	FrameType_t frame_type;
+};
+
+class Shoe_t : public Gear_t {
+	
+
+};
+
+class Segment_t;
+class Polyline_t {
+	char *PolyString;
+};
+
+class Map_t {
+	ptrdiff_t id;
+	Polyline_t summary_polyline;
+	ptrdiff_t resource_state;
+	Polyline_t polyline;
+};
+
+class Route_t {
+	ptrdiff_t id;
+	ptrdiff_t resource_state;
+	char *name;
+	char *description;
+	Athlete_t athlete;
+	double distance;//meters
+	double elevation_gain;//meters
+	Map_t map;
+	enum Type_t {ride=1, run=2};
+	Type_t type;
+	enum SubType_t { road=1, mtb=2, cx=3, trail=4,mixed=5};
+	SubType_t sub_type;
+	bool private_route;
+	bool starred;
+	ptrdiff_t timestap;//unix timestap
+	list<Segment_t> segments;
+};
+
+
+class Race_t {
+	ptrdiff_t id;
+	ptrdiff_t resource_state;
+	char *name;
+	enum RunningRace_t {road=0,trail=1,track=2,xc=3};
+	RunningRace_t running_race_type;
+	double distance;
+	TimeS_t start_date_local;
+	char *city;
+	char *state;
+	char *country;
+	list<ptrdiff_t> route_ids;
+	MeasurementType_t measurement_preference;
+	URL_t url;
+	URL_t website_url;
+};
+
+class Segments_t {
+	ptrdiff_t id;
+	ptrdiff_t resource_state;
+	char *name;
+	ActivityType_t activity_type;
+	double distance;
+	double average_grade;
+	double maximum_grade;
+	double elevation_high;
+	double elevation_low;
+	Point_t start_latlng;
+	Point_t end_lating;
+	ptrdiff_t climb_category;
+	char* city;//summary
+	char* state;//summary
+	char* country;//summary
+	bool private_segment;
+	bool starred;
+	TimeS_t created_at;
+	TimeS_t updated_at;
+	double total_elevation_gain;
+	Map_t map;
+	ptrdiff_t effort_count;
+	ptrdiff_t athlete_count;
+	bool hazardous;
+	ptrdiff_t star_count;
+};
+
+class SegmentEffort_t {
+	ptrdiff_t id;
+	ptrdiff_t resource_state;
+	char *name;
+	Activity_t *activity;
+	Athlete_t *athlete;
+	ptrdiff_t elapsed_time;
+	ptrdiff_t moving_timé;
+	TimeS_t start_date;
+	TimeS_t start_date_local;
+	double distance;
+	ptrdiff_t start_index;
+	ptrdiff_t end_index;
+	double average_cadence;
+	bool device_watts;
+	double average_heartrate;
+	ptrdiff_t max_heartrate;
+	Segment_t *segment;
+	ptrdiff_t kom_rank;
+	ptrdiff_t pr_rank;
+	bool hidden;
+};
+
+template <typename T>
+class Stream_t {
+	enum Resolution_t {low, medium, high};
+	enum StreamType_t {time, latlng, distance, altitude, velocity_smooth,
+		heartrate, cadence, watts, temp, moving, grade_smooth};
+	char *type;
+	list<T> data;
+	char * series_type;
+	ptrdiff_t original_size;
+	Resolution_t resolution;
+	StreamType_t stream_type;
 };
