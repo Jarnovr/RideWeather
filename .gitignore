@@ -199,3 +199,4 @@ CTestTestfile.cmake
 *.exe
 *.out
 *.app
+/bin

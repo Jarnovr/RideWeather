@@ -38,7 +38,7 @@ public:
     char* state;//summary
     char* country;//summary
     char sex;//summary
-    Connection_t friend;//summary
+    Connection_t friend_;//summary
     Connection_t follower;//summary
     bool premium;//summary
     TimeS_t created_at;//summary
@@ -55,6 +55,13 @@ public:
     list<Club_t> clubs;//detailed only
     list<Bike_t> bikes;//detailed only
     list<Shoe_t> shoes;//detailed only
+    Athlete_t() :id(0), resource_state(0), firstname(NULL), lastname(NULL), profile(NULL),
+        profile_medium(NULL),city(NULL),state(NULL),country(NULL),sex('\0'),
+        friend_(Connection_t::null),follower(Connection_t::null),premium(false),
+        created_at(NULL),updated_at(NULL),follower_count(0), friend_count(0),
+        mutual_friend_count(0), athlete_type(AthleteType_t(0)),date_preference(NULL),
+        measurement_preference(MeasurementType_t::meters),email(NULL),ftp(0),weight(0.0){;};
+    
     virtual ~Athlete_t();
 protected:
     

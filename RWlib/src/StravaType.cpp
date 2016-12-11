@@ -1,4 +1,8 @@
 #include "StravaType.h"
+#define RAPIDJSON_SSE42
+#include "rapidjson/document.h"
+
+
 
 Athlete_t::~Athlete_t()
 {
