@@ -2,7 +2,16 @@
 #include <array>
 #include <list>
 #include <cstddef>
+#include <exception>
 using namespace std;
+
+template <typename T>
+class StravaException_t : public exception
+{
+	StravaException_t(const * char str) :exception(str) {};
+};
+
+
 
 class Athlete_t;
 
@@ -61,7 +70,7 @@ public:
         created_at(NULL),updated_at(NULL),follower_count(0), friend_count(0),
         mutual_friend_count(0), athlete_type(AthleteType_t(0)),date_preference(NULL),
         measurement_preference(MeasurementType_t::meters),email(NULL),ftp(0),weight(0.0){;};
-    
+	Athlete_t(const char* json);
     virtual ~Athlete_t();
 protected:
     

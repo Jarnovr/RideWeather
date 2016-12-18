@@ -1,4 +1,4 @@
-
+#define _CRT_SECURE_NO_WARNINGS
 #include "StravaType.h"
 #include <cstdio>
 #include <iostream>
@@ -20,6 +20,9 @@ void ReadAthlete(const char *fn)
     if (read != fs)
         {fprintf(stderr, "Error reading athlete file. Read %zu of %zu\n.", read, fs);exit(1);}
     fclose(fid);
+
+	Athlete_t *athlete;
+	athlete = new Athlete_t(json);
     
     
     // Create Athlete
