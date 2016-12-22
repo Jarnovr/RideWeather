@@ -1,31 +1,34 @@
 #define _CRT_SECURE_NO_WARNINGS
 #include "StravaType.h"
-#include <cstdio>
 #include <iostream>
-#include <boost/filesystem.hpp>
+#include <fstream>
+
+
 using namespace std;
-using namespace boost::filesystem;
 
 void ReadAthlete(const char *fn)
 {
-    FILE *fid;
-    fid=fopen(fn, "rb");
-    if (fid == NULL)
-    {fprintf(stderr, "Error opening athlete file.\n");exit(1);}
-    
-    // get filesize
-    size_t fs = file_size(fn);
-    char *json = new char[fs];
-    size_t read = fread(json, 1, fs, fid);
-    if (read != fs)
-        {fprintf(stderr, "Error reading athlete file. Read %zu of %zu\n.", read, fs);exit(1);}
-    fclose(fid);
+	try {
+		std::ifstream fid;
+		fid.open(fn, ios::in | ios::binary | ios::ate);
 
-	Athlete_t *athlete;
-	athlete = new Athlete_t(json);
+		// get filesize
+		size_t fs = fid.tellg();
+		char *json = new char[fs+1];
+		fid.seekg(0, ios::beg);
+		fid.read(json, fs);
+		fid.close();
+		json[fs] = '\0';
+		// Create Athlete
+		Athlete_t *athlete;
+		athlete = new Athlete_t(json);
+	}
+	catch (StravaException_t& ex)
+	{
+		cerr << "Error reading athlete.json:" << endl;
+		cerr << ex.what() << endl;
+	}
     
-    
-    // Create Athlete
     
 };
 

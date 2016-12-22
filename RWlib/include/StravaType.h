@@ -5,10 +5,10 @@
 #include <exception>
 using namespace std;
 
-template <typename T>
 class StravaException_t : public exception
 {
-	StravaException_t(const * char str) :exception(str) {};
+public:
+	StravaException_t(const string str) :exception(str.c_str()) {};
 };
 
 
@@ -23,8 +23,8 @@ public:
 };
 
 
-typedef char* URL_t ;
-typedef char* TimeS_t;
+typedef string URL_t ;
+typedef string TimeS_t;
 
 class Club_t;
 
@@ -39,13 +39,13 @@ public:
     
     ptrdiff_t id;//summary
     ptrdiff_t resource_state;//summary
-    char* firstname;//summary
-    char* lastname;//summary
+    string firstname;//summary
+    string lastname;//summary
     URL_t profile_medium;//summary
     URL_t profile;//summary
-    char* city;//summary
-    char* state;//summary
-    char* country;//summary
+    string city;//summary
+    string state;//summary
+    string country;//summary
     char sex;//summary
     Connection_t friend_;//summary
     Connection_t follower;//summary
@@ -56,21 +56,20 @@ public:
     ptrdiff_t friend_count;//detailed only
     ptrdiff_t mutual_friend_count;//detailed only
     AthleteType_t athlete_type;//detailed only
-    char* date_preference;//format string//detailed only
+    string date_preference;//format string//detailed only
     MeasurementType_t measurement_preference;//detailed only
-    char* email;//detailed only
+    string email;//detailed only
     ptrdiff_t ftp;//detailed only
     double weight;//detailed only
     list<Club_t> clubs;//detailed only
     list<Bike_t> bikes;//detailed only
     list<Shoe_t> shoes;//detailed only
-    Athlete_t() :id(0), resource_state(0), firstname(NULL), lastname(NULL), profile(NULL),
-        profile_medium(NULL),city(NULL),state(NULL),country(NULL),sex('\0'),
+    Athlete_t() :id(0), resource_state(0), sex('\0'),
         friend_(Connection_t::null),follower(Connection_t::null),premium(false),
-        created_at(NULL),updated_at(NULL),follower_count(0), friend_count(0),
-        mutual_friend_count(0), athlete_type(AthleteType_t(0)),date_preference(NULL),
-        measurement_preference(MeasurementType_t::meters),email(NULL),ftp(0),weight(0.0){;};
-	Athlete_t(const char* json);
+        follower_count(0), friend_count(0),
+        mutual_friend_count(0), athlete_type(AthleteType_t(0)),
+        measurement_preference(MeasurementType_t::meters),ftp(0),weight(0.0){;};
+	Athlete_t(const string json);
     virtual ~Athlete_t();
 protected:
     
@@ -131,11 +130,11 @@ class Activity_t {
 
     ptrdiff_t id;
     ptrdiff_t resource_state;
-    char *external_id;
+    string external_id;
     ptrdiff_t upload_id;
     Athlete_t *athlete;
-    char *name;
-    char *description;
+    string name;
+    string description;
     double distance;//meters
     ptrdiff_t moving_time;//seconds
     ptrdiff_t elapsed_time;//seconds
@@ -143,10 +142,10 @@ class Activity_t {
     double elev_high;
     double elev_low;
     ActivityType_t type;
-    char *typeS;
+    string typeS;
     TimeS_t start_date;
     TimeS_t start_date_local;
-    char *timezone_act;
+    string timezone_act;
     Point_t start_latlng;
     Point_t end_lating;
     ptrdiff_t achievement_count;
@@ -161,11 +160,11 @@ class Activity_t {
     bool commute;
     bool manual;
     bool private_act;
-    char *device_name;
-    char *embed_token;
+    string device_name;
+    string embed_token;
     bool flagged;
     Workout_t workout_type;
-    char *gear_id;
+    string gear_id;
     Gear_t *gear;
     double average_speed;//m/s
     double max_speed;//m/s
@@ -193,7 +192,7 @@ class Activity_t {
 class Achievement_t {
     enum AchievementType_t {overall=2, pr=3, year_overall=5};
     AchievementType_t type_id;
-    char * type;
+    string  type;
     ptrdiff_t rank;
 };
 
@@ -203,17 +202,17 @@ class Club_t {
     enum Membership_t {null, member, pending};
     ptrdiff_t id;
     ptrdiff_t resource_state;
-    char *name;
+    string name;
     URL_t profile_medium;
     URL_t profile;
     URL_t cover_photo;
     URL_t cover_photo_small;
-    char *description;
+    string description;
     ClubType_t club_type;
     Sport_t sport_type;
-    char* city;//summary
-    char* state;//summary
-    char* country;//summary
+    string city;//summary
+    string state;//summary
+    string country;//summary
     bool private_club;
     ptrdiff_t member_count;
     bool featured;
@@ -226,17 +225,17 @@ class Club_t {
 };
 
 class Gear_t {
-    char *id;
+    string id;
     bool primary;
-    char *name;
+    string name;
     double distance;
-    char *description;
+    string description;
     ptrdiff_t resource_state;
 };
 
 class Bike_t : public Gear_t {
-    char *brand_name;
-    char *model_name;
+    string brand_name;
+    string model_name;
     enum FrameType_t {mtb=1, cross=2, road3, timetrial=4};
     FrameType_t frame_type;
 };
@@ -248,7 +247,7 @@ class Shoe_t : public Gear_t {
 
 class Segment_t;
 class Polyline_t {
-    char *PolyString;
+    string PolyString;
 };
 
 class Map_t {
@@ -261,8 +260,8 @@ class Map_t {
 class Route_t {
     ptrdiff_t id;
     ptrdiff_t resource_state;
-    char *name;
-    char *description;
+    string name;
+    string description;
     Athlete_t athlete;
     double distance;//meters
     double elevation_gain;//meters
@@ -281,14 +280,14 @@ class Route_t {
 class Race_t {
     ptrdiff_t id;
     ptrdiff_t resource_state;
-    char *name;
+    string name;
     enum RunningRace_t {road=0,trail=1,track=2,xc=3};
     RunningRace_t running_race_type;
     double distance;
     TimeS_t start_date_local;
-    char *city;
-    char *state;
-    char *country;
+    string city;
+    string state;
+    string country;
     list<ptrdiff_t> route_ids;
     MeasurementType_t measurement_preference;
     URL_t url;
@@ -298,7 +297,7 @@ class Race_t {
 class Segments_t {
     ptrdiff_t id;
     ptrdiff_t resource_state;
-    char *name;
+    string name;
     ActivityType_t activity_type;
     double distance;
     double average_grade;
@@ -308,9 +307,9 @@ class Segments_t {
     Point_t start_latlng;
     Point_t end_lating;
     ptrdiff_t climb_category;
-    char* city;//summary
-    char* state;//summary
-    char* country;//summary
+    string city;//summary
+    string state;//summary
+    string country;//summary
     bool private_segment;
     bool starred;
     TimeS_t created_at;
@@ -326,7 +325,7 @@ class Segments_t {
 class SegmentEffort_t {
     ptrdiff_t id;
     ptrdiff_t resource_state;
-    char *name;
+    string name;
     Activity_t *activity;
     Athlete_t *athlete;
     ptrdiff_t elapsed_time;
@@ -351,9 +350,9 @@ class Stream_t {
     enum Resolution_t {low, medium, high};
     enum StreamType_t {time, latlng, distance, altitude, velocity_smooth,
         heartrate, cadence, watts, temp, moving, grade_smooth};
-    char *type;
+    string type;
     list<T> data;
-    char * series_type;
+    string  series_type;
     ptrdiff_t original_size;
     Resolution_t resolution;
     StreamType_t stream_type;

@@ -8,7 +8,7 @@
   "city": "San Francisco",
   "state": "California",
   "country": "United States",
-  "sex": "M",
+  "sex": 5,
   "friend": null,
   "follower": null,
   "premium": true,
