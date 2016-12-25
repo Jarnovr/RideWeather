@@ -173,6 +173,7 @@ public:
     double longtitude;
 	Point_t() : latitude(0.0), longtitude(0.0) {};
 	Point_t(const double lat, const double lon) : latitude(lat), longtitude(lon) {};
+	Point_t(const rapidjson::Value& dom);
 };
 
 class Photo_t;
@@ -181,14 +182,17 @@ class Gear_t;
 class SegmentEffort_t;
 class Splits_t;
 class Effort_t;
+class Lap_t;
 
 enum class ActivityType_t {
-    Ride, Run, Swim, Hike, Walk, AlpineSki,
-    BackcountrySki, Canoeing, Crossfit, EBikeRide, Elliptical, IceSkate,
-    InlineSkate, Kayaking, Kitesurf, NordicSki, RockClimbing, RollerSki,
-    Rowing, Snowboard, Snowshoe, StairStepper, StandUpPaddling, Surfing,
-    VirtualRide, WeightTraining, Windsurf, Workout, Yoga, other
+	Ride, Run, Swim, Hike, Walk, AlpineSki,
+	BackcountrySki, Canoeing, Crossfit, EBikeRide, Elliptical, IceSkate,
+	InlineSkate, Kayaking, Kitesurf, NordicSki, RockClimbing, RollerSki,
+	Rowing, Snowboard, Snowshoe, StairStepper, StandUpPaddling, Surfing,
+	VirtualRide, WeightTraining, Windsurf, Workout, Yoga, other
 };
+
+ActivityType_t ActivityType(const string& str);
 
 class Activity_t:public Strava_t {
 public:
@@ -249,19 +253,20 @@ public:
     list<SegmentEffort_t> segment_efforts;
     list<Splits_t> splits_metric;
     list<Splits_t> splits_standard;
+	list<Lap_t> laps;
     list<Effort_t> best_efforts;
-	Activity_t() : id(0), resource_state(0), upload_id(0), athlete(NULL), distance(0.0),
+	Activity_t() : id(0), resource_state(0), upload_id(0), athlete(nullptr), distance(0.0),
 		moving_time(0), elapsed_time(0), total_elevation_gain(0.0), elev_high(0.0), elev_low(0.0),
 		type(ActivityType_t::other), start_latlng(0.0, 0.0), end_latlng(0.0, 0.0),
 		achievement_count(0), kudos_count(0), comment_count(0), athlete_count(0), photo_count(0),
-		total_photo_count(0), map(NULL), trainer(false), commute(false), manual(false),
+		total_photo_count(0), map(nullptr), trainer(false), commute(false), manual(false),
 		private_act(false), flagged(false), workout_type(Workout_t::default_workout),
-		gear(NULL), average_speed(0.0), max_speed(0.0), average_cadence(0.0),
+		gear(nullptr), average_speed(0.0), max_speed(0.0), average_cadence(0.0),
 		average_temp(0.0), average_watts(0.0), max_watts(0), weighted_avereage_watts(0),
 		kilojoules(0.0), device_watts(false), has_heartrate(false), average_heartrate(0.0),
 		max_heartrate(0), calories(0.0), suffer_score(0), has_kudoed(0) {};
 	Activity_t(const string& json);
-
+	~Activity_t();
 };
 
 class Achievement_t {
@@ -300,7 +305,7 @@ public:
     URL_t url;
 	Club_t() : id(0), resource_state(0), club_type(ClubType_t::club_other), sport_type(sport_other),
 		private_club(false), member_count(0), featured(false), verified(false),
-		membership(Membership_t::member), admin(false), owner(false), following_count(0) {};
+		membership(Membership_t::null), admin(false), owner(false), following_count(0) {};
 	Club_t(rapidjson::Value& DOM) :Club_t() { ; };
 };
 
@@ -338,11 +343,14 @@ class Polyline_t {
     string PolyString;
 };
 
-class Map_t {
+class Map_t: Strava_t {
+public:
     ptrdiff_t id;
     Polyline_t summary_polyline;
     ptrdiff_t resource_state;
     Polyline_t polyline;
+	Map_t() : id(0), resource_state(0) {};
+	Map_t(rapidjson::Value& DOM) : Map_t() {};
 };
 
 class Route_t {
@@ -410,7 +418,8 @@ class Segments_t {
     ptrdiff_t star_count;
 };
 
-class SegmentEffort_t {
+class SegmentEffort_t: public Strava_t {
+public:
     ptrdiff_t id;
     ptrdiff_t resource_state;
     string name;
@@ -431,6 +440,11 @@ class SegmentEffort_t {
     ptrdiff_t kom_rank;
     ptrdiff_t pr_rank;
     bool hidden;
+	SegmentEffort_t() : id(0), resource_state(0), activity(nullptr), athlete(nullptr), elapsed_time(0),
+		moving_time(0), distance(0.0), start_index(0), end_index(0), average_cadence(0.0),
+		device_watts(false), average_heartrate(0.0), max_heartrate(0), segment(nullptr), kom_rank(0), pr_rank(0),
+		hidden(false) {};
+	SegmentEffort_t(rapidjson::Value& DOM) : SegmentEffort_t() {};
 };
 
 class Effort_t : public Strava_t {
@@ -449,6 +463,9 @@ public:
 	TimeS_t start_date_local;
 	ptrdiff_t distance;
 	list<Achievement_t> achievements;
+	Effort_t() : id(0), resource_state(0), segment(nullptr), activity(nullptr), athlete(nullptr),
+		kom_rank(0), pr_rank(0), elapsed_time(0), moving_time(0), distance(0) {};
+	Effort_t(rapidjson::Value& DOM) : Effort_t() {};
 };
 
 class Splits_t : public Strava_t {
@@ -460,6 +477,9 @@ public:
 	ptrdiff_t	pace_zone;
 	ptrdiff_t	moving_time;
 	ptrdiff_t	split;
+	Splits_t() : average_speed(0.0), distance(0.0), elapsed_time(0), elevation_difference(0.0),
+		pace_zone(0), moving_time(0), split(0) {};
+	Splits_t(rapidjson::Value& DOM) : Splits_t() {};
 };
 
 template <typename T>
@@ -491,3 +511,29 @@ public:
 	TimeS_t created_at;
 	Point_t location;
 };
+
+class Lap_t : public Strava_t {
+public:
+	Activity_t *activity;
+	Athlete_t * athlete;
+	double average_cadence;
+	double average_speed;
+	ptrdiff_t elapsed_time;
+	ptrdiff_t end_index;
+	ptrdiff_t id;
+	ptrdiff_t lap_index;
+	double max_speed;
+	ptrdiff_t moving_speed;
+	string name;
+	ptrdiff_t resource_state;
+	ptrdiff_t split;
+	TimeS_t start_date;
+	TimeS_t start_date_local;
+	ptrdiff_t start_index;
+	double total_elevation_gain;
+	Lap_t() : activity(nullptr), athlete(nullptr), average_cadence(0.0), average_speed(0.0),
+		elapsed_time(0), end_index(0), id(0), lap_index(0), max_speed(0.0), moving_speed(0),
+		resource_state(0), split(0), start_index(0), total_elevation_gain(0.0) {};
+	Lap_t(rapidjson::Value& DOM) : Lap_t() {};
+};
+				

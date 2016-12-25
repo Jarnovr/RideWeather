@@ -289,7 +289,214 @@ Totals_t::Totals_t(const string & json)
 	all_swim_totals = Total_t(dom["all_swim_totals"]);
 }
 
-Activity_t::Activity_t(const string & json)
+Activity_t::Activity_t(const string & json):Activity_t()
 {
+	string tmp;
 
+	//set type str
+	type_str.assign("Activity_t");
+	Document document;
+	//First create rapidjson object
+	document.Parse<ParseFlag::kParseFullPrecisionFlag | ParseFlag::kParseCommentsFlag | ParseFlag::kParseNanAndInfFlag>(json.c_str());
+	//generic error checking
+	if (document.HasParseError())
+	{
+		cerr << "JSON parse error: " << GetParseError_En(document.GetParseError());
+		cerr << "(" << document.GetErrorOffset() << ")" << endl;
+
+		throw StravaException_t("Activity_t::Activity_t() JSON parser error.\n");
+	}
+
+	//go over returned dom and do error/sanity check and fill the data structure
+	if (!document.IsObject())
+		throw StravaException_t("Activity_t::Activity_t(), returned DOM no object\n");
+	dom.Swap(document);
+
+	id = ParseInt64("id");
+	resource_state = ParseInt("resource_state");
+
+	if (resource_state <= 0 || resource_state > 3)
+		throw StravaException_t("Invalid resource_state.\n");
+
+	switch (resource_state)
+	{
+	case 3:
+		calories = ParseDouble("calories");
+		ParseString(description, "description");
+		if (!dom.HasMember("gear"))
+			throw StravaException_t("Activity_t has no member gear.\n");
+		gear = new Gear_t(dom["gear"]);
+		if (!dom.HasMember("segment_efforts"))
+			throw StravaException_t("Athlete_t missing segment_efforts list");
+		if (!dom["segment_efforts"].IsArray())
+			throw StravaException_t("Athlete_t segment_efforts not array");
+		for (auto& v : dom["segment_efforts"].GetArray())
+		{
+			segment_efforts.push_back(SegmentEffort_t(v));
+		}
+		if (!dom.HasMember("splits_metric"))
+			throw StravaException_t("Athlete_t missing splits_metric list");
+		if (!dom["splits_metric"].IsArray())
+			throw StravaException_t("Athlete_t splits_metric not array");
+		for (auto& v : dom["splits_metric"].GetArray())
+		{
+			splits_metric.push_back(Splits_t(v));
+		}
+
+		if (!dom.HasMember("splits_standard"))
+			throw StravaException_t("Athlete_t missing splits_standard list");
+		if (!dom["splits_standard"].IsArray())
+			throw StravaException_t("Athlete_t splits_standard not array");
+		for (auto& v : dom["splits_metric"].GetArray())
+		{
+			splits_standard.push_back(Splits_t(v));
+		}
+		if (!dom.HasMember("best_efforts"))
+			throw StravaException_t("Athlete_t missing best_efforts list");
+		if (!dom["best_efforts"].IsArray())
+			throw StravaException_t("Athlete_t best_efforts not array");
+		for (auto& v : dom["best_efforts"].GetArray())
+		{
+			best_efforts.push_back(Effort_t(v));
+		}
+		ParseString(device_name, "device_name");
+		ParseString(embed_token, "embed_token");
+		//skip photos for now
+
+	case 2:
+		ParseString(external_id, "external_id");
+		upload_id = ParseInt64("upload_id");
+		ParseString(name, "name");
+		distance = ParseDouble("distance");
+		moving_time = ParseInt("moving_time");
+		elapsed_time = ParseInt("elapsed_time");
+		total_elevation_gain = ParseDouble("total_elevation_gain");
+		elev_high = ParseDouble("elev_high");
+		elev_low = ParseDouble("elev_low");
+		ParseString(typeS, "type");
+		type = ActivityType(typeS);
+		ParseString(start_date, "start_date");
+		ParseString(start_date_local, "start_date_local");
+		ParseString(timezone_act,"timezone");
+		if (!dom.HasMember("start_latlng"))
+			throw StravaException_t("Activity_t missing start_latlng");
+		start_latlng = Point_t(dom["start_latlng"]);
+		if (!dom.HasMember("end_latlng"))
+			throw StravaException_t("Activity_t missing end_latlng");
+		end_latlng = Point_t(dom["end_latlng"]);
+		achievement_count = ParseInt("achievement_count");
+		kudos_count = ParseInt("kudos_count");
+		comment_count = ParseInt("comment_count");
+		athlete_count = ParseInt("athlete_count");
+		photo_count = ParseInt("photo_count");
+		total_photo_count = ParseInt("total_photo_count");
+		if (!dom.HasMember("map"))
+			throw StravaException_t("Activity_t missing map");
+		map = new Map_t(dom["map"]);
+		trainer = ParseBool("trainer");
+		commute = ParseBool("commute");
+		manual = ParseBool("manual");
+		private_act = ParseBool("private");
+		flagged = ParseBool("flagged");
+		workout_type = static_cast<Workout_t> (ParseInt("workout_type"));
+		ParseString(gear_id,"gear_id");
+		average_speed = ParseDouble("average_speed");
+		max_speed = ParseDouble("max_speed");
+		average_cadence = ParseDouble("average_cadence");
+		average_temp = ParseDouble("average_temp");
+		average_watts = ParseDouble("average_watts");
+		max_watts = ParseInt("max_watts");
+		weighted_avereage_watts = ParseInt("weighted_average_watts");
+		kilojoules = ParseDouble("kilojoules");
+		device_watts = ParseBool("device_watts");
+		has_heartrate = ParseBool("has_heartrate");
+		if (has_heartrate)
+		{
+			average_heartrate = ParseDouble("average_heartrate");
+			max_heartrate = ParseInt("max_heartrate");
+		}
+		suffer_score = ParseInt("suffer_score");
+		has_kudoed = ParseBool("has_kudoed");
+		
+	case 1:;
+	}
+
+}
+
+Activity_t::~Activity_t()
+{
+	delete map;
+	delete gear;
+}
+
+ActivityType_t ActivityType(const string & str)
+{
+	if (!str.compare("Ride"))
+		return ActivityType_t::Ride;
+	if (!str.compare("Run"))
+		return ActivityType_t::Run;
+	if (!str.compare("Swim"))
+		return ActivityType_t::Swim;
+	if (!str.compare("Hike"))
+		return ActivityType_t::Hike;
+	if (!str.compare("Walt"))
+		return ActivityType_t::Walk;
+	if (!str.compare("AlpineSki"))
+		return ActivityType_t::AlpineSki;
+	if (!str.compare("BackcountrySki"))
+		return ActivityType_t::BackcountrySki;
+	if (!str.compare("Canoeing"))
+		return ActivityType_t::Canoeing;
+	if (!str.compare("Crossfit"))
+		return ActivityType_t::Crossfit;
+	if (!str.compare("EBikeRide"))
+		return ActivityType_t::EBikeRide;
+	if (!str.compare("Elliptical"))
+		return ActivityType_t::Elliptical;
+	if (!str.compare("IceSkate"))
+		return ActivityType_t::IceSkate;
+	if (!str.compare("InlineSkate"))
+		return ActivityType_t::InlineSkate;
+	if (!str.compare("Kayaking"))
+		return ActivityType_t::Kayaking;
+	if (!str.compare("Kitesurf"))
+		return ActivityType_t::Kitesurf;
+	if (!str.compare("NordicSki"))
+		return ActivityType_t::NordicSki;
+	if (!str.compare("RockClimbing"))
+		return ActivityType_t::RockClimbing;
+	if (!str.compare("RollerSki"))
+		return ActivityType_t::RollerSki;
+	if (!str.compare("Rowing"))
+		return ActivityType_t::Rowing;
+	if (!str.compare("Snowboard"))
+		return ActivityType_t::Snowboard;
+	if (!str.compare("Snowshoe"))
+		return ActivityType_t::Snowshoe;
+	if (!str.compare("StairStepper"))
+		return ActivityType_t::StairStepper;
+	if (!str.compare("StandUpPaddling"))
+		return ActivityType_t::StandUpPaddling;
+	if (!str.compare("Surfing"))
+		return ActivityType_t::Surfing;
+	if (!str.compare("VirtualRide"))
+		return ActivityType_t::VirtualRide;
+	if (!str.compare("WeightTraining"))
+		return ActivityType_t::WeightTraining;
+	if (!str.compare("Windsurf"))
+		return ActivityType_t::Windsurf;
+	if (!str.compare("Workout"))
+		return ActivityType_t::Workout;
+	if (!str.compare("Yoga"))
+		return ActivityType_t::Yoga;
+	//else
+	return ActivityType_t::other;
+}
+
+Point_t::Point_t(const rapidjson::Value & dom):Point_t()
+{
+	if (!dom.IsArray() || dom.GetArray().Size()!=2 )
+		throw StravaException_t("Point_t is not array of length 2");
+	latitude = dom.GetArray()[0].GetDouble();
+	longtitude = dom.GetArray()[1].GetDouble();
 }
