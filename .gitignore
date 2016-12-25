@@ -200,3 +200,6 @@ CTestTestfile.cmake
 *.out
 *.app
 /bin
+
+# Notepad++ backup
+*.bak
