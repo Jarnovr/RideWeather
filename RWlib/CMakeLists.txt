@@ -16,13 +16,13 @@ include_directories(${RapidJSON_SOURCE_DIR}/include)
 ENDIF()
 find_package(Boost REQUIRED filesystem system )
 
-include_directories(${PROJECT_SOURCE_DIR}/include ${PROJECT_SOURCE_DIR}/src ${Boost_INCLUDE_DIRS})
+include_directories(${PROJECT_SOURCE_DIR}/include ${PROJECT_SOURCE_DIR}/src ${Boost_INCLUDE_DIRS} ${CPR_INCLUDE_DIRS})
 link_directories(${Boost_LIBRARY_DIR} )
 
 add_library(RWlib ${HI_FILES} ${H_FILES} ${CPP_FILES})
+target_link_libraries(RWlib ${CPR_LIBRARIES})
 
-
-add_executable(RWlib_Test test/ReadJson.cpp test/main.cpp)
+add_executable(RWlib_Test test/ReadJson.cpp test/main.cpp test/ReadJson.h)
 target_link_libraries(RWlib_Test RWlib ${Boost_SYSTEM_LIBRARY_DEBUG} ${Boost_FILESYSTEM_LIBRARY_DEBUG})
 
 
