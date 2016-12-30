@@ -1,16 +1,21 @@
-#include <map>
-#include <array>
-#include <vector>
-#include <list>
-#include <cstddef>
-#include <exception>
-#include "rapidjson/document.h"
-using namespace std;
+#pragma once
 
-class StravaException_t : public exception
+#include <cstddef>
+
+#include <exception>
+#include <array>
+#include <list>
+#include <map>
+#include <memory>
+#include <vector>
+
+#include "rapidjson/document.h"
+using std::string;
+
+class StravaException_t : public std::exception
 {
 public:
-	StravaException_t(const string str) :exception(str.c_str()) {};
+	StravaException_t(const string str) :std::exception(str.c_str()) {};
 };
 
 class Strava_t {
@@ -25,14 +30,41 @@ protected:
 			throw StravaException_t(type_str.append(" ").append(var).append(" not a astring\n"));
 		dest.assign(dom[var.c_str()].GetString(), dom[var.c_str()].GetStringLength());
 	}
+
+	void ParseStringIf(string& dest, string var)
+	{
+		if (dom.HasMember(var.c_str()))
+		{
+			if (!dom[var.c_str()].IsString())
+				throw StravaException_t(type_str.append(" ").append(var).append(" not a astring\n"));
+			dest.assign(dom[var.c_str()].GetString(), dom[var.c_str()].GetStringLength());
+		}
+		else
+			dest.assign("");
+	}
+
 	int ParseInt(string var)
 	{
 		if (!dom.HasMember(var.c_str()))
 			throw StravaException_t(type_str.append(" missing ").append(var).append("\n"));
+		if (!dom[var.c_str()].IsNull())
+			return 0;
 		if (!dom[var.c_str()].IsInt())
 			throw StravaException_t(type_str.append(" ").append(var).append(" not a int\n"));
 		return dom[var.c_str()].GetInt();
 	}
+	int ParseIntIf(string var)
+	{
+		if (dom.HasMember(var.c_str()))
+		{
+			if (!dom[var.c_str()].IsInt())
+				throw StravaException_t(type_str.append(" ").append(var).append(" not a int\n"));
+			return dom[var.c_str()].GetInt();
+		}
+		else
+			return 0;
+	}
+
 	ptrdiff_t ParseInt64(string var)
 	{
 		if (!dom.HasMember(var.c_str()))
@@ -41,6 +73,18 @@ protected:
 			throw StravaException_t(type_str.append(" ").append(var).append(" not a int64\n"));
 		return dom[var.c_str()].GetInt64();
 	}
+	ptrdiff_t ParseInt64If(string var)
+	{
+		if (dom.HasMember(var.c_str()))
+		{
+			if (!dom[var.c_str()].IsInt64())
+				throw StravaException_t(type_str.append(" ").append(var).append(" not a int64\n"));
+			return dom[var.c_str()].GetInt64();
+		}
+		else
+			return 0;
+	}
+
 	double ParseDouble(string var)
 	{
 		if (!dom.HasMember(var.c_str()))
@@ -49,6 +93,19 @@ protected:
 			throw StravaException_t(type_str.append(" ").append(var).append(" not a double\n"));
 		return dom[var.c_str()].GetDouble();
 	}
+	double ParseDoubleIf(string var)
+	{
+		if (dom.HasMember(var.c_str()))
+		{
+			if (!dom[var.c_str()].IsDouble())
+				throw StravaException_t(type_str.append(" ").append(var).append(" not a double\n"));
+			return dom[var.c_str()].GetDouble();
+		}
+		else
+			return 0.0;
+
+	}
+
 	bool ParseBool(string var)
 	{
 		if (!dom.HasMember(var.c_str()))
@@ -58,17 +115,34 @@ protected:
 		return dom[var.c_str()].GetBool();
 	}
 
-
+	bool ParseBoolIf(string var)
+	{
+		if (dom.HasMember(var.c_str()))
+		{
+			if (!dom[var.c_str()].IsBool())
+				throw StravaException_t(type_str.append(" ").append(var).append(" not a bool\n"));
+			return dom[var.c_str()].GetBool();
+		}
+		else
+			return false;
+	}
+	void ParseJson(const string & json);
+	virtual void ParseDom() = 0;
 };
 
 
 
 class Athlete_t;
 
-class AccessToken_t {
+class AccessToken_t : public Strava_t{
 public:
     char access_token[40];
-    Athlete_t *athlete;
+	string token_type;
+    std::shared_ptr<Athlete_t> athlete;
+	AccessToken_t() : athlete(nullptr) { type_str.assign("AccessToken"); };
+	AccessToken_t(const string& json):AccessToken_t() { ParseJson(json); ParseDom(); };
+public:
+	void ParseDom();
 };
 
 
@@ -110,28 +184,32 @@ public:
     string email;//detailed only
     ptrdiff_t ftp;//detailed only
     double weight;//detailed only
-    list<Club_t> clubs;//detailed only
-    list<Bike_t> bikes;//detailed only
-    list<Shoe_t> shoes;//detailed only
+    std::list<Club_t> clubs;//detailed only
+    std::list<Bike_t> bikes;//detailed only
+    std::list<Shoe_t> shoes;//detailed only
     Athlete_t() :id(0), resource_state(0), sex('\0'),
         friend_(Connection_t::null),follower(Connection_t::null),premium(false),
         follower_count(0), friend_count(0),
         mutual_friend_count(0), athlete_type(AthleteType_t(0)),
-        measurement_preference(MeasurementType_t::meters),ftp(0),weight(0.0){;};
-	Athlete_t(const string& json);
+        measurement_preference(MeasurementType_t::meters),ftp(0),weight(0.0){
+		type_str.assign("Athlete_t");};
+	Athlete_t(const string& json) : Athlete_t() { ParseJson(json); ParseDom(); };
+	Athlete_t(rapidjson::Value& DOM) : Athlete_t() { dom.Swap(DOM);	ParseDom();	};
 	virtual ~Athlete_t() {};
 protected:
-    
+	void ParseDom();
 };
 
 class Zones_t: public Strava_t{
 public:
     bool heart_rate_custom;
     struct zone_t { short min; short max; };
-    vector<zone_t> heart_zones;
-    vector<zone_t> power_zones;
-	Zones_t() : heart_rate_custom(false) {};
-	Zones_t(const string& json);
+    std::vector<zone_t> heart_zones;
+    std::vector<zone_t> power_zones;
+	Zones_t() : heart_rate_custom(false) { type_str.assign("Zones_t"); };
+	Zones_t(const string& json) : Zones_t() { ParseJson(json); ParseDom(); };
+protected:
+	void ParseDom();
 };
 
 class Total_t: public Strava_t {
@@ -143,9 +221,11 @@ public:
     double elevation_gain;
     ptrdiff_t achievement_count;
 	Total_t() : count(0), distance(0.0), moving_time(0), elapsed_time(0),
-		elevation_gain(0.0), achievement_count(0) {};
-	Total_t(const string& json);
-	Total_t(rapidjson::Value& DOM);
+		elevation_gain(0.0), achievement_count(0) {
+		type_str.assign("Total_t");
+	};
+	Total_t(const string& json) : Total_t() { ParseJson(json); ParseDom(); };
+	Total_t(rapidjson::Value& DOM) : Total_t() { dom.Swap(DOM);	ParseDom(); };
 protected:
 	void ParseDom();
 };
@@ -163,15 +243,17 @@ public:
     Total_t all_ride_totals;
     Total_t all_run_totals;
     Total_t all_swim_totals;
-	Totals_t() : biggest_ride_distance(0.0), biggest_climb_elevation_gain(0.0) {};
-	Totals_t(const string& json);
+	Totals_t() : biggest_ride_distance(0.0), biggest_climb_elevation_gain(0.0) { type_str.assign("Totals_t"); };
+	Totals_t(const string& json): Totals_t() { ParseJson(json); ParseDom(); };
+protected:
+	void ParseDom();
 };
 
 class Point_t {
 public:
     double latitude;
     double longtitude;
-	Point_t() : latitude(0.0), longtitude(0.0) {};
+	Point_t() : latitude(0.0), longtitude(0.0) { };
 	Point_t(const double lat, const double lon) : latitude(lat), longtitude(lon) {};
 	Point_t(const rapidjson::Value& dom);
 };
@@ -201,7 +283,7 @@ public:
     ptrdiff_t resource_state;
     string external_id;
     ptrdiff_t upload_id;
-    Athlete_t *athlete;
+	std::shared_ptr<Athlete_t> athlete;
     string name;
     string description;
     double distance;//meters
@@ -223,8 +305,8 @@ public:
     ptrdiff_t athlete_count;
     ptrdiff_t photo_count;
     ptrdiff_t total_photo_count;
-    list<Photo_t> photos;
-    Map_t *map;
+    std::list<Photo_t> photos;
+    std::shared_ptr<Map_t> map;
     bool trainer;
     bool commute;
     bool manual;
@@ -234,7 +316,7 @@ public:
     bool flagged;
     Workout_t workout_type;
     string gear_id;
-    Gear_t *gear;
+    std::shared_ptr<Gear_t> gear;
     double average_speed;//m/s
     double max_speed;//m/s
     double average_cadence;
@@ -250,11 +332,11 @@ public:
     double calories; //kilocalories, kJ (ride), pace(runs)
     ptrdiff_t suffer_score;
     bool has_kudoed;
-    list<SegmentEffort_t> segment_efforts;
-    list<Splits_t> splits_metric;
-    list<Splits_t> splits_standard;
-	list<Lap_t> laps;
-    list<Effort_t> best_efforts;
+    std::list<SegmentEffort_t> segment_efforts;
+	std::list<Splits_t> splits_metric;
+	std::list<Splits_t> splits_standard;
+	std::list<Lap_t> laps;
+	std::list<Effort_t> best_efforts;
 	Activity_t() : id(0), resource_state(0), upload_id(0), athlete(nullptr), distance(0.0),
 		moving_time(0), elapsed_time(0), total_elevation_gain(0.0), elev_high(0.0), elev_low(0.0),
 		type(ActivityType_t::other), start_latlng(0.0, 0.0), end_latlng(0.0, 0.0),
@@ -264,23 +346,34 @@ public:
 		gear(nullptr), average_speed(0.0), max_speed(0.0), average_cadence(0.0),
 		average_temp(0.0), average_watts(0.0), max_watts(0), weighted_avereage_watts(0),
 		kilojoules(0.0), device_watts(false), has_heartrate(false), average_heartrate(0.0),
-		max_heartrate(0), calories(0.0), suffer_score(0), has_kudoed(0) {};
-	Activity_t(const string& json);
-	~Activity_t();
+		max_heartrate(0), calories(0.0), suffer_score(0), has_kudoed(0) {
+		type_str.assign("Activity_t");//set type str
+	};
+	Activity_t(const string& json):Activity_t() { ParseJson(json); ParseDom(); };	
+protected:
+	void ParseDom();
 };
 
-class Achievement_t {
-    enum AchievementType_t {overall=2, pr=3, year_overall=5};
+class Achievement_t: public Strava_t {
+public:
+    enum class AchievementType_t {overall=2, pr=3, year_overall=5};
     AchievementType_t type_id;
     string  type;
     ptrdiff_t rank;
+	Achievement_t() : type_id(AchievementType_t::overall), rank(0) {	
+		type_str.assign("Achievement_t");//set type str
+	};
+	Achievement_t(const string & json): Achievement_t() { ParseJson(json); ParseDom(); };
+	Achievement_t(rapidjson::Value & DOM) : Achievement_t() { dom.Swap(DOM); ParseDom(); };
+protected:
+	void ParseDom();
 };
 
 class Club_t: public Strava_t {
 public:
-    enum ClubType_t {casual_club, racing_team, shop, company, club_other};
-    enum Sport_t {cycling, runing, triathlon, sport_other};
-    enum Membership_t {null, member, pending};
+    enum class ClubType_t {casual_club, racing_team, shop, company, club_other};
+    enum class Sport_t {cycling, running, triathlon, sport_other};
+    enum class Membership_t {null, member, pending};
     ptrdiff_t id;
     ptrdiff_t resource_state;
     string name;
@@ -303,13 +396,18 @@ public:
     bool owner;
     ptrdiff_t following_count;
     URL_t url;
-	Club_t() : id(0), resource_state(0), club_type(ClubType_t::club_other), sport_type(sport_other),
+	Club_t() : id(0), resource_state(0), club_type(ClubType_t::club_other), sport_type(Sport_t::sport_other),
 		private_club(false), member_count(0), featured(false), verified(false),
-		membership(Membership_t::null), admin(false), owner(false), following_count(0) {};
-	Club_t(rapidjson::Value& DOM) :Club_t() { ; };
+		membership(Membership_t::null), admin(false), owner(false), following_count(0) {
+		type_str.assign("Club_t");
+	};
+	Club_t(const string & json): Club_t() { ParseJson(json); ParseDom(); };
+	Club_t(rapidjson::Value& DOM): Club_t() { dom.Swap(DOM); ParseDom(); };
+protected:
+	void ParseDom();
 };
 
-class Gear_t: Strava_t {
+class Gear_t: public Strava_t {
 public:
 	string id;
     bool primary;
@@ -317,80 +415,103 @@ public:
     double distance;
     string description;
     ptrdiff_t resource_state;
-	Gear_t() : primary(false), distance(0.0), resource_state(0) {};
-	Gear_t(rapidjson::Value& DOM) :Gear_t() { ; };
+	Gear_t() : primary(false), distance(0.0), resource_state(0) { type_str.assign("Gear_t"); };
+	Gear_t(const string & json): Gear_t() { ParseJson(json); ParseDom(); };
+	Gear_t(rapidjson::Value& DOM): Gear_t() { dom.Swap(DOM); ParseDom(); };
+protected:
+	void ParseDom();
 };
 
 class Bike_t : public Gear_t {
 public:
     string brand_name;
     string model_name;
-    enum FrameType_t {mtb=1, cross=2, road3, timetrial=4};
+    enum class FrameType_t {mtb=1, cross=2, road3, timetrial=4};
     FrameType_t frame_type;
-	Bike_t() : Gear_t(), frame_type(mtb) {};
-	Bike_t(rapidjson::Value& DOM) : Gear_t(DOM) {};
+	Bike_t() : Gear_t(), frame_type(FrameType_t::mtb) { type_str.assign("Bike_t"); };
+	Bike_t(rapidjson::Value& DOM);
 };
 
 class Shoe_t : public Gear_t {
 public:
-	Shoe_t() : Gear_t() {};
-	Shoe_t(rapidjson::Value& DOM): Gear_t(DOM) {};
-
+	Shoe_t() : Gear_t() { type_str.assign("Shoe_t"); };
+	Shoe_t(rapidjson::Value& DOM): Gear_t(DOM) { type_str.assign("Shoe_t"); };
 };
 
 class Segment_t;
-class Polyline_t {
-    string PolyString;
+class Polyline_t{
+public:
+	string PolyString;
+	std::vector<Point_t> points;
+	Polyline_t() { };
+	Polyline_t(const string& str);
 };
 
-class Map_t: Strava_t {
+class Map_t: public Strava_t {
 public:
     ptrdiff_t id;
-    Polyline_t summary_polyline;
+    std::unique_ptr<Polyline_t> summary_polyline;
     ptrdiff_t resource_state;
-    Polyline_t polyline;
-	Map_t() : id(0), resource_state(0) {};
-	Map_t(rapidjson::Value& DOM) : Map_t() {};
+    std::unique_ptr<Polyline_t> polyline;
+	Map_t() : id(0), resource_state(0) { type_str.assign("Map_t"); };
+	Map_t(rapidjson::Value& DOM): Map_t() { dom.Swap(DOM); ParseDom(); };
+protected:
+	void ParseDom();
 };
 
-class Route_t {
+class Route_t: public Strava_t {
+public:
     ptrdiff_t id;
     ptrdiff_t resource_state;
     string name;
     string description;
-    Athlete_t athlete;
+    std::shared_ptr<Athlete_t> athlete;
     double distance;//meters
     double elevation_gain;//meters
-    Map_t map;
-    enum Type_t {ride=1, run=2};
+    std::shared_ptr<Map_t> map;
+    enum class Type_t {ride=1, run=2, other=0};
     Type_t type;
-    enum SubType_t { road=1, mtb=2, cx=3, trail=4,mixed=5};
+    enum class SubType_t { road=1, mtb=2, cx=3, trail=4, mixed=5, other=0};
     SubType_t sub_type;
     bool private_route;
     bool starred;
-    ptrdiff_t timestap;//unix timestap
-    list<Segment_t> segments;
+    ptrdiff_t timestamp;//unix timestap
+    std::list<Segment_t> segments;
+	Route_t() : id(0), resource_state(0), distance(0.0), elevation_gain(0.0), athlete(nullptr),
+		map(nullptr), type(Type_t::other), sub_type(SubType_t::road), private_route(false), 
+		starred(false), timestamp(0) { type_str.assign("Route_t"); }
+	Route_t(rapidjson::Value & DOM): Route_t() { dom.Swap(DOM); ParseDom(); };
+	Route_t(string & json) : Route_t() { ParseJson(json); ParseDom(); };
+protected:
+	void ParseDom();
 };
 
 
-class Race_t {
+class Race_t: public Strava_t {
+public:
     ptrdiff_t id;
     ptrdiff_t resource_state;
     string name;
-    enum RunningRace_t {road=0,trail=1,track=2,xc=3};
+    enum class RunningRace_t {road=0,trail=1,track=2,xc=3};
     RunningRace_t running_race_type;
     double distance;
     TimeS_t start_date_local;
     string city;
     string state;
     string country;
-    list<ptrdiff_t> route_ids;
+	std::list<ptrdiff_t> route_ids;
     MeasurementType_t measurement_preference;
     URL_t url;
     URL_t website_url;
+	Race_t() : id(0), resource_state(0), running_race_type(RunningRace_t::road), distance(0.0),
+		measurement_preference(MeasurementType_t::meters) {	type_str.assign("Race_t");	};
+	Race_t(const string& json): Race_t() { ParseJson(json); ParseDom(); };
+protected:
+	void ParseDom();
 };
 
-class Segments_t {
+class Segment_t: Strava_t {
+public:
     ptrdiff_t id;
     ptrdiff_t resource_state;
     string name;
@@ -401,7 +522,7 @@ class Segments_t {
     double elevation_high;
     double elevation_low;
     Point_t start_latlng;
-    Point_t end_lating;
+    Point_t end_latlng;
     ptrdiff_t climb_category;
     string city;//summary
     string state;//summary
@@ -411,11 +532,20 @@ class Segments_t {
     TimeS_t created_at;
     TimeS_t updated_at;
     double total_elevation_gain;
-    Map_t map;
+    std::shared_ptr<Map_t> map;
     ptrdiff_t effort_count;
     ptrdiff_t athlete_count;
     bool hazardous;
     ptrdiff_t star_count;
+	Segment_t() : id(0), resource_state(0), activity_type(ActivityType_t::other), distance(0.0),
+		average_grade(0.0), maximum_grade(0.0), elevation_high(0.0), elevation_low(0.0),
+		start_latlng({ 0.0, 0.0 }), end_latlng({ 0.0, 0.0 }), climb_category(0), private_segment(false),
+		starred(false), total_elevation_gain(0.0), map(nullptr), effort_count(0), athlete_count(0),
+		hazardous(false), star_count(0) { type_str.assign("Segment_t");	};
+	Segment_t(const string& json) : Segment_t() { ParseJson(json); ParseDom(); };
+	Segment_t(rapidjson::Value & DOM) { dom.Swap(DOM); ParseDom(); };
+protected:
+	void ParseDom();
 };
 
 class SegmentEffort_t: public Strava_t {
@@ -423,8 +553,8 @@ public:
     ptrdiff_t id;
     ptrdiff_t resource_state;
     string name;
-    Activity_t *activity;
-    Athlete_t *athlete;
+    ptrdiff_t activity;
+	ptrdiff_t athlete;
     ptrdiff_t elapsed_time;
     ptrdiff_t moving_time;
     TimeS_t start_date;
@@ -436,15 +566,18 @@ public:
     bool device_watts;
     double average_heartrate;
     ptrdiff_t max_heartrate;
-    Segment_t *segment;
+	std::shared_ptr<Segment_t> segment;
     ptrdiff_t kom_rank;
     ptrdiff_t pr_rank;
     bool hidden;
-	SegmentEffort_t() : id(0), resource_state(0), activity(nullptr), athlete(nullptr), elapsed_time(0),
+	SegmentEffort_t() : id(0), resource_state(0), activity(0), athlete(0), elapsed_time(0),
 		moving_time(0), distance(0.0), start_index(0), end_index(0), average_cadence(0.0),
 		device_watts(false), average_heartrate(0.0), max_heartrate(0), segment(nullptr), kom_rank(0), pr_rank(0),
-		hidden(false) {};
-	SegmentEffort_t(rapidjson::Value& DOM) : SegmentEffort_t() {};
+		hidden(false) {	type_str.assign("SegmentEffort_t");	};
+	SegmentEffort_t(const string& json): SegmentEffort_t() { ParseJson(json); ParseDom(); };
+	SegmentEffort_t(rapidjson::Value& DOM) : SegmentEffort_t() { dom.Swap(DOM); ParseDom(); };
+protected:
+	void ParseDom();
 };
 
 class Effort_t : public Strava_t {
@@ -452,9 +585,9 @@ public:
 	ptrdiff_t id;
 	ptrdiff_t resource_state;
 	string	name;
-	Segment_t *segment;
-	Activity_t *activity;
-	Athlete_t *athlete;
+	ptrdiff_t segment;
+	ptrdiff_t activity;
+	ptrdiff_t athlete;
 	ptrdiff_t kom_rank;
 	ptrdiff_t pr_rank;
 	ptrdiff_t elapsed_time;
@@ -462,10 +595,13 @@ public:
 	TimeS_t start_date;
 	TimeS_t start_date_local;
 	ptrdiff_t distance;
-	list<Achievement_t> achievements;
-	Effort_t() : id(0), resource_state(0), segment(nullptr), activity(nullptr), athlete(nullptr),
-		kom_rank(0), pr_rank(0), elapsed_time(0), moving_time(0), distance(0) {};
-	Effort_t(rapidjson::Value& DOM) : Effort_t() {};
+	std::list<Achievement_t> achievements;
+	Effort_t() : id(0), resource_state(0), segment(0), activity(0), athlete(0),
+		kom_rank(0), pr_rank(0), elapsed_time(0), moving_time(0), distance(0) {	type_str.assign("Effort_t");	};
+	Effort_t(rapidjson::Value& DOM) : Effort_t() { dom.Swap(DOM); ParseDom(); };
+	Effort_t(const string& json) : Effort_t() { ParseJson(json); ParseDom(); };
+protected:
+	void ParseDom();
 };
 
 class Splits_t : public Strava_t {
@@ -478,22 +614,43 @@ public:
 	ptrdiff_t	moving_time;
 	ptrdiff_t	split;
 	Splits_t() : average_speed(0.0), distance(0.0), elapsed_time(0), elevation_difference(0.0),
-		pace_zone(0), moving_time(0), split(0) {};
-	Splits_t(rapidjson::Value& DOM) : Splits_t() {};
+		pace_zone(0), moving_time(0), split(0) {type_str.assign("Splits_t");};
+	Splits_t(const string& json) : Splits_t() { ParseJson(json); ParseDom(); };
+	Splits_t(rapidjson::Value& DOM) : Splits_t() { dom.Swap(DOM); ParseDom(); };
+protected:
+	void ParseDom();
 };
 
+enum class Data_t { kInt, kDouble, kBool, kPoint, kNull };
+enum class StreamType_t {
+	time, latlng, distance, altitude, velocity_smooth,
+	heartrate, cadence, watts, temp, moving, grade_smooth, null
+};
+
+
 template <typename T>
-class Stream_t {
-    enum Resolution_t {low, medium, high};
-    enum StreamType_t {time, latlng, distance, altitude, velocity_smooth,
-        heartrate, cadence, watts, temp, moving, grade_smooth};
+class Stream_t : public Strava_t{
+public:
+    enum class Resolution_t {low, medium, high};
     string type;
-    list<T> data;
-    string  series_type;
+	std::vector<T> data;
+	string  series_type;
     ptrdiff_t original_size;
     Resolution_t resolution;
     StreamType_t stream_type;
+	Data_t data_type;
+	Stream_t() : original_size(0), resolution(Resolution_t::low), stream_type(StreamType_t::null), 
+		data_type(Data_t::kNull)	{type_str.assign("Stream_t");	};
+	Stream_t(const string& json): Stream_t() { ParseJson(json); ParseDom(); };
+	Stream_t(rapidjson::Value& DOM) : Stream_t() { dom.Swap(DOM); ParseDom(); };
+protected:
+	void ParseDom();
+	void ParseData();
 };
+
+
+Data_t GetStreamType(rapidjson::Value& DOM);
+
 
 class Photo_t : public Strava_t {
 public:
@@ -503,19 +660,24 @@ public:
 	ptrdiff_t resource_state;
 	URL_t ref;
 	string uid;
-	map<ptrdiff_t, URL_t> urls;
+	std::map<string,URL_t> urls;
 	string caption;
 	string type;
 	ptrdiff_t source;
 	TimeS_t uploaded_at;
 	TimeS_t created_at;
 	Point_t location;
+	Photo_t() : id(0), activity_id(0), resource_state(0), source(0) { type_str.assign("Photo_t"); };
+	Photo_t(const string& json) : Photo_t() { ParseJson(json); ParseDom(); };
+	Photo_t(rapidjson::Value& DOM): Photo_t() { dom.Swap(DOM); ParseDom(); };
+protected:
+	void ParseDom();
 };
 
 class Lap_t : public Strava_t {
 public:
-	Activity_t *activity;
-	Athlete_t * athlete;
+	ptrdiff_t activity;
+	ptrdiff_t athlete;
 	double average_cadence;
 	double average_speed;
 	ptrdiff_t elapsed_time;
@@ -531,9 +693,108 @@ public:
 	TimeS_t start_date_local;
 	ptrdiff_t start_index;
 	double total_elevation_gain;
-	Lap_t() : activity(nullptr), athlete(nullptr), average_cadence(0.0), average_speed(0.0),
+	Lap_t() : activity(0), athlete(0), average_cadence(0.0), average_speed(0.0),
 		elapsed_time(0), end_index(0), id(0), lap_index(0), max_speed(0.0), moving_speed(0),
-		resource_state(0), split(0), start_index(0), total_elevation_gain(0.0) {};
-	Lap_t(rapidjson::Value& DOM) : Lap_t() {};
+		resource_state(0), split(0), start_index(0), total_elevation_gain(0.0) {type_str.assign("Lap_t");};
+	Lap_t(rapidjson::Value& DOM) : Lap_t() { dom.Swap(DOM); ParseDom(); };
+	Lap_t(const string& json): Lap_t() { ParseJson(json); ParseDom(); };
+protected:
+	void ParseDom();
 };
-				
+
+template <typename T>
+inline void Stream_t<T>::ParseDom()
+{
+	ParseString(type, "type");
+	if (!type.compare("time"))
+		stream_type = StreamType_t::time;
+	else if (!type.compare("latlng"))
+		stream_type = StreamType_t::latlng;
+	else if (!type.compare("distance"))
+		stream_type = StreamType_t::distance;
+	else if (!type.compare("altitude"))
+		stream_type = StreamType_t::altitude;
+	else if (!type.compare("velocity_smooth"))
+		stream_type = StreamType_t::velocity_smooth;
+	else if (!type.compare("heartrate"))
+		stream_type = StreamType_t::heartrate;
+	else if (!type.compare("cadence"))
+		stream_type = StreamType_t::cadence;
+	else if (!type.compare("watts"))
+		stream_type = StreamType_t::watts;
+	else if (!type.compare("temp"))
+		stream_type = StreamType_t::temp;
+	else if (!type.compare("moving"))
+		stream_type = StreamType_t::moving;
+	else if (!type.compare("grade_smooth"))
+		stream_type = StreamType_t::grade_smooth;
+	else
+		throw StravaException_t("Stream_t StreamType not known.");
+	original_size = ParseInt64("original_size");
+	ParseString(series_type, "series_type");
+	string tmp;
+	ParseString(tmp, "resolution");
+	if (!type.compare("low"))
+		resolution = Resolution_t::low;
+	else if (!type.compare("medium"))
+		resolution = Resolution_t::medium;
+	else if (!type.compare("high"))
+		resolution = Resolution_t::high;
+	else
+		throw StravaException_t("Stream_t illegal resolution.");
+
+	//parse data
+	data.reserve(original_size);
+	if (!dom.HasMember("data"))
+		throw StravaException_t("Stream_t missing data list");
+	if (!dom["data"].IsArray())
+		throw StravaException_t("Steam_t data not array");
+	ParseData();
+	
+}
+
+template <typename T>
+inline void Stream_t<T>::ParseData()
+{
+	throw StravaException_t("Stream_t general ParseData called");
+}
+
+template <>
+inline void Stream_t<int>::ParseData()
+{
+	data_type = Data_t::kInt;
+	for (auto& v : dom["data"].GetArray())
+	{
+		data.push_back(v.GetInt());
+	}
+}
+
+template <>
+inline void Stream_t<double>::ParseData()
+{
+	data_type = Data_t::kDouble;
+	for (auto& v : dom["data"].GetArray())
+	{
+		data.push_back(v.GetDouble());
+	}
+}
+
+template <>
+inline void Stream_t<bool>::ParseData()
+{
+	data_type = Data_t::kBool;
+	for (auto& v : dom["data"].GetArray())
+	{
+		data.push_back(v.GetBool());
+	}	
+}
+
+template <>
+inline void Stream_t<Point_t>::ParseData()
+{
+	data_type = Data_t::kPoint;
+	for (auto& v : dom["data"].GetArray())
+	{
+		data.push_back(Point_t(v));
+	}
+}
