@@ -1,3 +1,6 @@
 [submodule "rapidjson"]
 	path = rapidjson
 	url = https://github.com/miloyip/rapidjson
+[submodule "cpr"]
+	path = cpr
+	url = git@github.com:whoshuu/cpr.git
