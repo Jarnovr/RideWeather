@@ -286,6 +286,7 @@ namespace RideWeather
 	};
 
 	ActivityType_t ActivityType(const string& str);
+	string ActivityType(const ActivityType_t type);
 
 	class Activity_t :public Strava_t {
 	public:

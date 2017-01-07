@@ -367,7 +367,7 @@ namespace RideWeather
 			return ActivityType_t::Swim;
 		if (!str.compare("Hike"))
 			return ActivityType_t::Hike;
-		if (!str.compare("Walt"))
+		if (!str.compare("Walk"))
 			return ActivityType_t::Walk;
 		if (!str.compare("AlpineSki"))
 			return ActivityType_t::AlpineSki;
@@ -421,6 +421,72 @@ namespace RideWeather
 		return ActivityType_t::other;
 	}
 
+	string ActivityType(const ActivityType_t type)
+	{
+		switch (type)
+		{
+		case ActivityType_t::Ride:
+			return "Ride";
+		case ActivityType_t::Run:
+			return "Run";
+		case ActivityType_t::Swim:
+			return "Swim";
+		case ActivityType_t::Hike:
+			return "Hike";
+		case ActivityType_t::Walk:
+			return "Walt";
+		case  ActivityType_t::AlpineSki:
+			return "AlpineSki";
+		case ActivityType_t::BackcountrySki:
+			return "BackcountrySki";
+		case ActivityType_t::Canoeing:
+			return "Canoeing";
+		case ActivityType_t::Crossfit:
+			return "Crossfit";
+		case ActivityType_t::EBikeRide:
+			return "EBikeRide";
+		case ActivityType_t::Elliptical:
+			return "Elliptical";
+		case ActivityType_t::IceSkate:
+			return "IceSkate";
+		case ActivityType_t::InlineSkate:
+			return "InlineSkate";
+		case ActivityType_t::Kayaking:
+			return "Kayaking";
+		case ActivityType_t::Kitesurf:
+			return "Kitesurf";
+		case ActivityType_t::NordicSki:
+			return "NordicSki";
+		case ActivityType_t::RockClimbing:
+			return "RockClimbing";
+		case ActivityType_t::RollerSki:
+			return "RollerSki";
+		case ActivityType_t::Rowing:
+			return "Rowing";
+		case ActivityType_t::Snowboard:
+			return "Snowboard";
+		case ActivityType_t::Snowshoe:
+			return "Snowshoe";
+		case ActivityType_t::StairStepper:
+			return "StairStepper";
+		case ActivityType_t::StandUpPaddling:
+			return "StandUpPaddling";
+		case ActivityType_t::Surfing:
+			return "Surfing";
+		case ActivityType_t::VirtualRide:
+			return "VirtualRide";
+		case ActivityType_t::WeightTraining:
+			return "WeightTraining";
+		case ActivityType_t::Windsurf:
+			return "Windsurf";
+		case ActivityType_t::Workout:
+			return "Workout";
+		case ActivityType_t::Yoga:
+			return "Yoga";
+		default:
+				return "Other";
+		}
+	}
 
 	Point_t::Point_t(const rapidjson::Value & dom) :Point_t()
 	{
