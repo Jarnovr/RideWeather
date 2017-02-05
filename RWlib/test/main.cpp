@@ -21,6 +21,7 @@ int main(int argc, char** argv)
    fid.close();
    try {
 	   RideWeather::Athlete_t athlete(Athlete_json);
+	   std::cout << boost::posix_time::to_iso_extended_string(athlete.created_at) << std::endl;
    }
    catch (RideWeather::StravaException_t& ex)
    {

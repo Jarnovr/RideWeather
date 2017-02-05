@@ -10,6 +10,7 @@
 #include <memory>
 #include <string>
 #include <vector>
+#include "boost/date_time.hpp"
 
 #include "rapidjson/document.h"
 #include "rapidjson/stringbuffer.h"
@@ -18,11 +19,13 @@ using std::string;
 
 namespace RideWeather
 {
+	typedef boost::posix_time::ptime TimeS_t;
+
 
 	class StravaException_t : public std::exception
 	{
 	public:
-		StravaException_t(const string str) :std::exception(str.c_str()) {};
+		StravaException_t(const string str) : std::exception(str.c_str()) {};
 	};
 
 	class Strava_t {
@@ -50,6 +53,18 @@ namespace RideWeather
 			else
 				dest.assign("");
 		}
+
+		void ParseTimeS(TimeS_t& dest, string var)
+		{
+			if (!dom.HasMember(var))
+				throw StravaException_t(type_str.append(" missing ").append(var).append("\n"));
+			if (!dom[var].IsString())
+				throw StravaException_t(type_str.append(" ").append(var).append(" not a astring\n"));
+			string tmp(dom[var].GetString(), dom[var].GetStringLength());
+			//cut off last character (Z), as it is not part of format string
+			dest = boost::date_time::parse_delimited_time<boost::posix_time::ptime>(tmp.substr(0, tmp.length() - 1), 'T');
+		}
+
 
 		int ParseInt(string var)
 		{
@@ -157,8 +172,7 @@ namespace RideWeather
 
 
 	typedef string URL_t;
-	typedef string TimeS_t;
-
+	
 	class Club_t;
 
 	class Bike_t;

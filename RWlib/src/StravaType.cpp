@@ -143,8 +143,8 @@ namespace RideWeather
 			}
 
 			premium = ParseBool("premium");
-			ParseString(created_at, "created_at");
-			ParseString(updated_at, "updated_at");
+			ParseTimeS(created_at, "created_at");
+			ParseTimeS(updated_at, "updated_at");
 		case 1:;
 		}
 
@@ -308,8 +308,8 @@ namespace RideWeather
 			elev_low = ParseDouble("elev_low");
 			ParseString(typeS, "type");
 			type = ActivityType(typeS);
-			ParseString(start_date, "start_date");
-			ParseString(start_date_local, "start_date_local");
+			ParseTimeS(start_date, "start_date");
+			ParseTimeS(start_date_local, "start_date_local");
 			ParseString(timezone_act, "timezone");
 			if (!dom.HasMember("start_latlng"))
 				throw StravaException_t("Activity_t missing start_latlng");
@@ -736,7 +736,7 @@ namespace RideWeather
 			ParseString(name, "name");
 			running_race_type = static_cast<RunningRace_t>(ParseInt64("running_race_type"));
 			distance = ParseDouble("distance");
-			ParseString(start_date_local, "start_date_local");
+			ParseTimeS(start_date_local, "start_date_local");
 			ParseString(city, "city");
 			ParseString(state, "state");
 			ParseString(country, "country");
@@ -761,8 +761,8 @@ namespace RideWeather
 		switch (resource_state)
 		{
 		case 3:
-			ParseString(created_at, "created_at");
-			ParseString(updated_at, "updated_at");
+			ParseTimeS(created_at, "created_at");
+			ParseTimeS(updated_at, "updated_at");
 			total_elevation_gain = ParseDouble("total_elevation_gain");
 			if (!dom.HasMember("map"))
 				throw StravaException_t("Segment_t() no member map");
@@ -815,8 +815,8 @@ namespace RideWeather
 			athlete = dom["athlete"]["id"].GetInt64();
 			elapsed_time = ParseInt64("elapsed_time");
 			moving_time = ParseInt64("moving_time");
-			ParseString(start_date, "start_date");
-			ParseString(start_date_local, "start_date_local");
+			ParseTimeS(start_date, "start_date");
+			ParseTimeS(start_date_local, "start_date_local");
 			distance = ParseDouble("distance");
 			start_index = ParseInt64("start_index");
 			end_index = ParseInt64("end_index");
@@ -858,8 +858,8 @@ namespace RideWeather
 		elapsed_time = ParseInt64("elapsed_time");
 		moving_time = ParseInt64("moving_time");
 
-		ParseString(start_date, "start_date");
-		ParseString(start_date_local, "start_date_local");
+		ParseTimeS(start_date, "start_date");
+		ParseTimeS(start_date_local, "start_date_local");
 		distance = ParseInt64("distance");
 	}
 
@@ -950,8 +950,8 @@ namespace RideWeather
 		ParseString(caption, "caption");
 		ParseString(type, "type");
 		source = ParseInt64("source");
-		ParseString(uploaded_at, "uploaded_at");
-		ParseString(created_at, "created_at");
+		ParseTimeS(uploaded_at, "uploaded_at");
+		ParseTimeS(created_at, "created_at");
 		location = Point_t(dom["location"]);
 
 		if (!dom.HasMember("urls"))
@@ -986,8 +986,8 @@ namespace RideWeather
 		ParseString(name, "name");
 		resource_state = ParseInt64("resource_state");
 		split = ParseInt64("split");
-		ParseString(start_date, "start_date");
-		ParseString(start_date_local, "start_date_local");
+		ParseTimeS(start_date, "start_date");
+		ParseTimeS(start_date_local, "start_date_local");
 		total_elevation_gain = ParseDouble("total_elevation_gain");
 	}
 

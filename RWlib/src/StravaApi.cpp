@@ -141,7 +141,7 @@ namespace RideWeather
 		string auth("Bearer ");
 		auth.append(at.access_token, 40);
 		cpr::Header header{ { "Authorization", auth } };
-		cpr::Payload payload({ {"name",name},{"start_date_local",start_date_local},
+		cpr::Payload payload({ {"name",name},{"start_date_local",boost::posix_time::to_iso_extended_string(start_date_local)},
 			{"elapsed_time",std::to_string(elapsed_time)}, {"type", ActivityType(type)} });
 		
 		if (description.compare(""))
