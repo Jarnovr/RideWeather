@@ -4,6 +4,7 @@ project (RideWeather)
 set(CMAKE_VERBOSE_MAKEFILE ON)
 set(CMAKE_COLOR_MAKEFILE   ON)
 set(CMAKE_BUILD_TYPE Debug)
+set(CMAKE_CXX_STANDARD 14)
 
 if(LINUX)
 set(CMAKE_CXX_FLAGS_RELEASE  "${CMAKE_CXX_FLAGS_RELEASE} -O3 -march=native")
@@ -30,7 +31,7 @@ add_subdirectory(cpr)
 ##main project
 add_subdirectory(RWlib)
 
-add_subdirectory(RWcgi)
+#add_subdirectory(RWcgi)
 add_subdirectory(RWd)
 add_subdirectory(RWgui)
 
