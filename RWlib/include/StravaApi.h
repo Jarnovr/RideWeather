@@ -26,20 +26,20 @@ namespace RideWeather
 
 
 	///Athelete page
-	string StravaGetAthlete(const AccessToken_t& at, const ptrdiff_t id=0);
-	string StravaPutAthlete(const AccessToken_t& at, const string& city = "",
+	std::string StravaGetAthlete(const AccessToken_t& at, const ptrdiff_t id=0);
+	std::string StravaPutAthlete(const AccessToken_t& at, const string& city = "",
 		const string& state = "", const string& country = "", const char sex = '\0', const double& weight = 0.0);
-	string StravaGetZones(const AccessToken_t& at);
-	string StravaGetStats(const AccessToken_t& at);
+	std::string StravaGetZones(const AccessToken_t& at);
+	std::string StravaGetStats(const AccessToken_t& at);
 
 	//Activity page
-	string StravaCreateManualActivity(const AccessToken_t& at, const string& name, const ActivityType_t type,
+	std::string StravaCreateManualActivity(const AccessToken_t& at, const string& name, const ActivityType_t type,
 		const TimeS_t& start_date_local, ptrdiff_t elapsed_time, const string& description = "",
 		const double distance = -1.0, const bool private_act = false,
 		const bool trainer = false, const bool commute = false);
-	string StravaGetActivity(const AccessToken_t & at, const ptrdiff_t id);
-	string StravaGetActivities(const AccessToken_t& at, ptrdiff_t before=-1, ptrdiff_t after=-1, ptrdiff_t page=-1, ptrdiff_t per_page=-1);
+	std::string StravaGetActivity(const AccessToken_t & at, const ptrdiff_t id);
+	std::string StravaGetActivities(const AccessToken_t& at, ptrdiff_t before=-1, ptrdiff_t after=-1, ptrdiff_t page=-1, ptrdiff_t per_page=-1);
 
 	//Streams
-	string StravaGetActivityStream(const AccessToken_t& at, ptrdiff_t id, string types, string resolution="");
+	std::string StravaGetActivityStream(const AccessToken_t& at, ptrdiff_t id, string types, string resolution="");
 }
