@@ -14,7 +14,10 @@ int main(int argc, char** argv)
    ReadActivity("activity.json"); 
    
    RideWeather::AccessToken_t acces_token = ReadToken("token");
-   string Athlete_json = RideWeather::StravaGetAthlete(acces_token);
+   RideWeather::StravaApi_t stravaApi(acces_token,".");
+
+
+   string Athlete_json = stravaApi.GetAthlete();
    std::ofstream fid;
    fid.open("C:/Users/jarno_000/Documents/StravaData/athlete.txt", std::ios::out | std::ios::binary);
    fid << Athlete_json;

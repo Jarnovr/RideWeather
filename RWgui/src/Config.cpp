@@ -1,9 +1,8 @@
 #include "Config.h"
 
-#include <QStandardPaths>
 #include <string>
-#include <boost/filesystem/fstream.hpp>
 #include <iostream>
+#include <QStandardPaths>
 
 
 namespace RideWeather
@@ -22,11 +21,7 @@ namespace RideWeather
 			if (!boost::filesystem::exists(configFileName.parent_path()))
 			{
 				boost::filesystem::create_directories(configFileName.parent_path());//create folder
-			}
-			//Create empty file
-			boost::filesystem::ofstream configFile(configFileName);
-			configFile << "" << std::endl;
-			configFile.close();
+			}			
 		}
 		else
 		{
@@ -47,7 +42,17 @@ namespace RideWeather
 			boost::filesystem::create_directories(cacheFolder);//create folder
 		}
 
+		//read other settings from file
+		settings = new QSettings(QString::fromStdString(configFileName.generic_string()),QSettings::IniFormat);
+
 
 	}
+
+	Configuration::~Configuration()
+	{
+		delete settings;
+	}
+
+
 
 }

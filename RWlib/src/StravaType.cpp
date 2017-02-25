@@ -12,6 +12,9 @@
 using namespace rapidjson;
 using namespace std;
 
+#include "StravaType.h"
+
+
 namespace RideWeather
 {
 

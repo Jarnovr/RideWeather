@@ -161,10 +161,11 @@ namespace RideWeather
 
 	class AccessToken_t : public Strava_t {
 	public:
-		char access_token[40];
+		char access_token[41];
 		string token_type;
 		std::shared_ptr<Athlete_t> athlete;
 		AccessToken_t() : athlete(nullptr) { type_str.assign("AccessToken"); };
+		AccessToken_t(const AccessToken_t& at) { type_str.assign("AccessToken"); strncpy_s(access_token,41, at.access_token, 40); token_type = at.token_type; athlete = at.athlete; };
 		AccessToken_t(const string& json) :AccessToken_t() { ParseJson(json); ParseDom(); };
 	public:
 		void ParseDom();
@@ -174,9 +175,9 @@ namespace RideWeather
 	typedef string URL_t;
 	
 	class Club_t;
-
 	class Bike_t;
 	class Shoe_t;
+	class Activity_t;
 	enum class MeasurementType_t { feet, meters };
 
 	class Athlete_t : public Strava_t {
@@ -211,6 +212,9 @@ namespace RideWeather
 		std::list<Club_t> clubs;//detailed only
 		std::list<Bike_t> bikes;//detailed only
 		std::list<Shoe_t> shoes;//detailed only
+		std::list<Activity_t> act_run;
+		std::list<Activity_t> act_ride;
+		std::list<Activity_t> act_other;
 		Athlete_t() :id(0), resource_state(0), sex('\0'),
 			friend_(Connection_t::null), follower(Connection_t::null), premium(false),
 			follower_count(0), friend_count(0),
@@ -221,6 +225,9 @@ namespace RideWeather
 		Athlete_t(const string& json) : Athlete_t() { ParseJson(json); ParseDom(); };
 		Athlete_t(rapidjson::Value& DOM) : Athlete_t() { dom.CopyFrom(DOM, document.GetAllocator()); 	ParseDom(); };
 		virtual ~Athlete_t() {};
+		void FindActivities(const AccessToken_t& at);
+		void GetActivities(const AccessToken_t& at);
+		void GetActivityStreams(const AccessToken_t& at);
 	protected:
 		void ParseDom();
 	};
