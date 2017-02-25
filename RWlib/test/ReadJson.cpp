@@ -5,6 +5,9 @@
 
 
 using namespace std;
+using namespace RideWeather;
+
+const static string dir{ "C:/Users/jarno_000/Documents/StravaData/" };
 
 void ReadAthlete(const char *fn)
 {
@@ -55,5 +58,29 @@ void ReadActivity(const char *fn)
 	{
 		cerr << "Error reading activity.json:" << endl;
 		cerr << ex.what() << endl;
+	}
+};
+
+AccessToken_t ReadToken(const string& fn)
+{
+	try {
+		std::ifstream fid;
+		fid.open(dir+fn, ios::in | ios::binary | ios::ate);
+
+		// get filesize
+		size_t fs = fid.tellg();
+		char *json = new char[fs + 1];
+		fid.seekg(0, ios::beg);
+		fid.read(json, fs);
+		fid.close();
+		json[fs] = '\0';
+		// Create Athlete
+		return AccessToken_t(json);		
+	}
+	catch (StravaException_t& ex)
+	{
+		cerr << "Error reading token:" << endl;
+		cerr << ex.what() << endl;
+		return AccessToken_t();
 	}
 };
