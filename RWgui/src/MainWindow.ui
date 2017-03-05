@@ -90,10 +90,13 @@
       </property>
      </widget>
      <widget class="QPushButton" name="btn_GetList">
+      <property name="enabled">
+       <bool>false</bool>
+      </property>
       <property name="geometry">
        <rect>
         <x>630</x>
-        <y>30</y>
+        <y>60</y>
         <width>121</width>
         <height>23</height>
        </rect>
@@ -115,7 +118,7 @@
       <property name="geometry">
        <rect>
         <x>760</x>
-        <y>30</y>
+        <y>60</y>
         <width>161</width>
         <height>23</height>
        </rect>
@@ -147,6 +150,28 @@
       </property>
       <property name="text">
        <string>TextLabel</string>
+      </property>
+     </widget>
+     <widget class="QPushButton" name="btn_Load_Token">
+      <property name="enabled">
+       <bool>true</bool>
+      </property>
+      <property name="geometry">
+       <rect>
+        <x>630</x>
+        <y>30</y>
+        <width>121</width>
+        <height>23</height>
+       </rect>
+      </property>
+      <property name="toolTip">
+       <string>Load Athlete Token</string>
+      </property>
+      <property name="statusTip">
+       <string>Load Strava Athlete token</string>
+      </property>
+      <property name="text">
+       <string>Load Athlete Token</string>
       </property>
      </widget>
     </widget>

@@ -16,6 +16,9 @@ public:
 
 private slots:
 	void on_actionExit_triggered();
+	void on_actionAbout_triggered();
+	void on_actionAbout_QT_triggered();
+	void on_btn_Load_Token_clicked();
 
 protected:
 	Ui::MainWindow *ui;

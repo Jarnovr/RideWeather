@@ -344,6 +344,46 @@ namespace RideWeather
 		return r.text;
 	}
 
+	std::string StravaApi_t::ListActivities(ptrdiff_t before, ptrdiff_t after, ptrdiff_t page, ptrdiff_t per_page)
+	{
+		//Rate Limiting
+		WaitIfNeeded();
+
+		cpr::Url url{ "https://www.strava.com/api/v3/athlete/activities/" };
+		string auth("Bearer ");
+		auth.append(at.access_token, 40);
+		cpr::Header header{ { "Authorization", auth } };
+		
+		if ((before > 0 && after > 0) || (before > 0 && page > 0) || (after > 0 && page > 0))
+			throw StravaException_t("StravaApi::ListActivities, cannot use more than 1 of before, after and page.\n");
+		cpr::Payload payload({ { "per_page",std::to_string(per_page) } });
+
+		if (before > 0)
+			payload.AddPair({ "before",std::to_string(before) });
+		if (before > 0)
+			payload.AddPair({ "before",std::to_string(before) });
+		if (before > 0)
+			payload.AddPair({ "before",std::to_string(before) });
+
+		cpr::Response r = cpr::Post(url, header, payload, timeout);
+		if (r.error.code != cpr::ErrorCode::OK)
+		{
+			std::cerr << "HTTP Error." << std::endl;
+			std::cerr << "Error_code: " << int(r.error.code) << std::endl;
+			std::cerr << "Error_message: " << r.error.message << std::endl;
+			throw StravaException_t("StravaApi::ListActivitoes: encountered HTTP error.");
+		}
+		ProcessResponse(r.header);//Process rate limiting part of response
+		if (r.status_code >= 400)
+		{
+			std::cerr << "Received HTTP Error." << std::endl;
+			std::cerr << "Response_code: " << r.status_code << std::endl;
+			std::cerr << "Response: " << r.text << std::endl;
+			throw StravaException_t("StravaApi::ListActivities: encountered HTTP error.");
+		}
+		return r.text;
+	}
+
 	string StravaApi_t::GetActivityStream(ptrdiff_t id, string types, string resolution)
 	{
 		string json;

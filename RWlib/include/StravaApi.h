@@ -33,7 +33,7 @@ namespace RideWeather
 			const double distance = -1.0, const bool private_act = false,
 			const bool trainer = false, const bool commute = false);
 		std::string GetActivity(const ptrdiff_t id);
-		std::string GetActivities(ptrdiff_t before = -1, ptrdiff_t after = -1, ptrdiff_t page = -1, ptrdiff_t per_page = -1);
+		std::string ListActivities(ptrdiff_t before = -1, ptrdiff_t after = -1, ptrdiff_t page = -1, ptrdiff_t per_page = 50);
 
 		//Streams
 		std::string GetActivityStream(ptrdiff_t id, string types, string resolution = "");
