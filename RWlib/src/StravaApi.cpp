@@ -55,6 +55,43 @@ namespace RideWeather
 
 	}
 
+	bool StravaApi_t::GetCached(const std::string & key, std::string & out)
+	{
+		boost::filesystem::path fn = cacheFolder;
+		fn.append(key);
+		if (!(boost::filesystem::exists(fn) && boost::filesystem::is_regular_file(fn)))
+			return false;
+
+		//open file
+		boost::filesystem::ifstream file(fn, std::ios::binary | std::ios::ate);
+		// get filesize
+		size_t fs = file.tellg();
+		file.seekg(0, std::ios::beg);
+		//reserver memory
+		out.reserve(fs);
+		//read using iteratior
+		out.assign((std::istreambuf_iterator<char>(file)), (std::istreambuf_iterator<char>()) );
+		file.close();
+		return true;
+
+	}
+
+	void StravaApi_t::WriteCache(const std::string & key, const std::string & json)
+	{
+		boost::filesystem::path fn = cacheFolder;
+		fn.append(key);
+		//create folder if needed
+		if (!boost::filesystem::exists(fn.parent_path()))
+		{
+			boost::filesystem::create_directories(fn.parent_path());//create folder
+		}
+		//open file
+		boost::filesystem::ofstream file(fn, std::ios::binary);
+		file << json;
+		file.close();
+
+	}
+
 	string StravaApi_t::GetAthlete(const ptrdiff_t id)
 	{
 		string url_base;
@@ -79,18 +116,29 @@ namespace RideWeather
 			std::cerr << "HTTP Error." << std::endl;
 			std::cerr << "Error_code: " << int(r.error.code) << std::endl;
 			std::cerr << "Error_message: " << r.error.message << std::endl;
-			throw StravaException_t("StravaApi::GetAthlete: encountered HTTP error.");
+			//try cached value
+			string json;
+			if (GetCached(string("/athletes/").append(std::to_string(id)).append("/athlete"), json))
+				return json;
+			else
+				throw StravaException_t("StravaApi::GetAthlete: encountered HTTP error.");
 		}
+		ProcessResponse(r.header);//Process rate limiting part of response
 
 		if (r.status_code >= 400)
 		{
 			std::cerr << "Received HTTP Error." << std::endl;
 			std::cerr << "Response_code: " << r.status_code << std::endl;
 			std::cerr << "Response: " << r.text << std::endl;
-			throw StravaException_t("StravaApi::GetAthlete: encountered HTTP error.");
+			//try cached value
+			string json;
+			if (GetCached(string("/athletes/").append(std::to_string(id)).append("/athlete"), json))
+				return json;
+			else
+				throw StravaException_t("StravaApi::GetAthlete: encountered HTTP error.");
 		}
-		ProcessResponse(r.header);//Process rate limiting part of response
-
+		//put in cache
+		WriteCache(string("/athletes/").append(std::to_string(id)).append("/athlete"),r.text);
 
 		return r.text;
 	}
@@ -152,16 +200,28 @@ namespace RideWeather
 			std::cerr << "HTTP Error." << std::endl;
 			std::cerr << "Error_code: " << int(r.error.code) << std::endl;
 			std::cerr << "Error_message: " << r.error.message << std::endl;
-			throw StravaException_t("StravaApi::GetZones: encountered HTTP error.");
+			string json;
+			if (GetCached(string("/athletes/").append("/zones"), json))
+				return json;
+			else
+				throw StravaException_t("StravaApi::GetZones: encountered HTTP error.");
 		}
+		ProcessResponse(r.header);//Process rate limiting part of response
+
 		if (r.status_code >= 400)
 		{
 			std::cerr << "Received HTTP Error." << std::endl;
 			std::cerr << "Response_code: " << r.status_code << std::endl;
 			std::cerr << "Response: " << r.text << std::endl;
-			throw StravaException_t("StravaApi::GetZones: encountered HTTP error.");
+			string json;
+			if (GetCached(string("/athletes/").append("/zones"), json))
+				return json;
+			else
+				throw StravaException_t("StravaApi::GetZones: encountered HTTP error.");
 		}
-		ProcessResponse(r.header);//Process rate limiting part of response
+		//put in cache
+		WriteCache(string("/athletes/").append("/zones"), r.text);
+
 		return r.text;
 	}
 
@@ -182,16 +242,26 @@ namespace RideWeather
 			std::cerr << "HTTP Error." << std::endl;
 			std::cerr << "Error_code: " << int(r.error.code) << std::endl;
 			std::cerr << "Error_message: " << r.error.message << std::endl;
-			throw StravaException_t("StravaApi::GetStats: encountered HTTP error.");
+			string json;
+			if (GetCached(string("/athletes/").append("/stats"), json))
+				return json;
+			else
+				throw StravaException_t("StravaApi::GetStats: encountered HTTP error.");
 		}
+		ProcessResponse(r.header);//Process rate limiting part of response
 		if (r.status_code >= 400)
 		{
 			std::cerr << "Received HTTP Error." << std::endl;
 			std::cerr << "Response_code: " << r.status_code << std::endl;
 			std::cerr << "Response: " << r.text << std::endl;
-			throw StravaException_t("StravaApi::GetStats: encountered HTTP error.");
+			string json;
+			if (GetCached(string("/athletes/").append("/stats"), json))
+				return json;
+			else
+				throw StravaException_t("StravaApi::GetStats: encountered HTTP error.");
 		}
-		ProcessResponse(r.header);//Process rate limiting part of response
+		//put in cache
+		WriteCache(string("/athletes/").append("/stats"), r.text);
 		return r.text;
 	}
 
@@ -241,6 +311,11 @@ namespace RideWeather
 
 	string StravaApi_t::GetActivity(const ptrdiff_t id)
 	{
+		string json;
+		//Return cached activity if available
+		if (GetCached(string("/activity/").append(std::to_string(id)).append("/activity"), json))
+			return json;
+
 		//Rate Limiting
 		WaitIfNeeded();
 
@@ -257,7 +332,7 @@ namespace RideWeather
 			std::cerr << "Error_message: " << r.error.message << std::endl;
 			throw StravaException_t("StravaApi::GetActivity: encountered HTTP error.");
 		}
-
+		ProcessResponse(r.header);//Process rate limiting part of response
 		if (r.status_code >= 400)
 		{
 			std::cerr << "Received HTTP Error." << std::endl;
@@ -265,12 +340,16 @@ namespace RideWeather
 			std::cerr << "Response: " << r.text << std::endl;
 			throw StravaException_t("StravaApi::GetActivity: encountered HTTP error.");
 		}
-		ProcessResponse(r.header);//Process rate limiting part of response
+		WriteCache(string("/activity/").append(std::to_string(id)).append("/activity"), r.text);
 		return r.text;
 	}
 
 	string StravaApi_t::GetActivityStream(ptrdiff_t id, string types, string resolution)
 	{
+		string json;
+		//Return cached activity if available
+		if (GetCached(string("/activity/").append(std::to_string(id)).append("/streams/").append(types), json))
+			return json;
 		//Rate Limiting
 		WaitIfNeeded();
 
@@ -289,6 +368,7 @@ namespace RideWeather
 			std::cerr << "Error_message: " << r.error.message << std::endl;
 			throw StravaException_t("StravaApi::GetStreams: encountered HTTP error.");
 		}
+		ProcessResponse(r.header);//Process rate limiting part of response
 
 		if (r.status_code >= 400)
 		{
@@ -297,7 +377,8 @@ namespace RideWeather
 			std::cerr << "Response: " << r.text << std::endl;
 			throw StravaException_t("StravaApi::GetStreams: encountered HTTP error.");
 		}
-		ProcessResponse(r.header);//Process rate limiting part of response
+		WriteCache(string("/activity/").append(std::to_string(id)).append("/streams/").append(types), r.text);
+
 		return r.text;
 	}
 

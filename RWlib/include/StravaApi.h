@@ -48,5 +48,7 @@ namespace RideWeather
 		boost::posix_time::ptime last_usage;
 		void ProcessResponse(cpr::Header& hdr);
 		void WaitIfNeeded();
+		bool GetCached(const std::string& key, std::string& out);
+		void WriteCache(const std::string& key, const std::string& json);
 	};
 }
