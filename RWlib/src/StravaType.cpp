@@ -643,6 +643,22 @@ namespace RideWeather
 		}
 	}
 
+	AccessToken_t::AccessToken_t(const boost::filesystem::path & filename) :AccessToken_t()
+	{
+		//open file
+		boost::filesystem::ifstream file(filename, std::ios::binary | std::ios::ate);
+		// get filesize
+		size_t fs = file.tellg();
+		file.seekg(0, std::ios::beg);
+		//reserver memory
+		string json;
+		json.reserve(fs);
+		//read using iteratior
+		json.assign((std::istreambuf_iterator<char>(file)), (std::istreambuf_iterator<char>()));
+		file.close();
+		ParseJson(json); ParseDom();		
+	}
+
 	void AccessToken_t::ParseDom()
 	{
 		string tmp;
