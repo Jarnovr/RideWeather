@@ -11,6 +11,7 @@
 #include <string>
 #include <vector>
 #include "boost/date_time.hpp"
+#include "boost/filesystem.hpp"
 
 #include "rapidjson/document.h"
 #include "rapidjson/stringbuffer.h"
@@ -167,6 +168,7 @@ namespace RideWeather
 		AccessToken_t() : athlete(nullptr) { type_str.assign("AccessToken"); };
 		AccessToken_t(const AccessToken_t& at) { type_str.assign("AccessToken"); strncpy_s(access_token,41, at.access_token, 40); token_type = at.token_type; athlete = at.athlete; };
 		AccessToken_t(const string& json) :AccessToken_t() { ParseJson(json); ParseDom(); };
+		AccessToken_t(const boost::filesystem::path& filename);
 	public:
 		void ParseDom();
 	};

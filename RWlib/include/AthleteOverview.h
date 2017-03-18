@@ -4,3 +4,12 @@
 #include <map>
 
 #include "StravaType.h"
+
+
+namespace RideWeather
+{
+
+
+
+
+}

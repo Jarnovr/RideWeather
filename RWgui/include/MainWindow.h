@@ -1,6 +1,10 @@
 #pragma once
 
+#pragma warning(disable:4127)
 #include <QMainWindow>
+#pragma warning (default: 4127)
+#include "StravaType.h"
+#include "StravaApi.h"
 
 namespace Ui {
 	class MainWindow;
@@ -22,4 +26,9 @@ private slots:
 
 protected:
 	Ui::MainWindow *ui;
+	std::shared_ptr<RideWeather::Athlete_t> athlete;
+	RideWeather::AccessToken_t *access_token;
+	RideWeather::StravaApi_t *StravaApi;
 };
+
+#pragma warning(disable:4127)

@@ -12,16 +12,17 @@ const static string dir{ "C:/Users/jarno_000/Documents/StravaData/" };
 void ReadAthlete(const char *fn)
 {
 	try {
-		std::ifstream fid;
-		fid.open(fn, ios::in | ios::binary | ios::ate);
-
+		//open file
+		boost::filesystem::ifstream file(fn, std::ios::binary | std::ios::ate);
 		// get filesize
-		size_t fs = fid.tellg();
-		char *json = new char[fs+1];
-		fid.seekg(0, ios::beg);
-		fid.read(json, fs);
-		fid.close();
-		json[fs] = '\0';
+		size_t fs = file.tellg();
+		file.seekg(0, std::ios::beg);
+		//reserver memory
+		string json;
+		json.reserve(fs);
+		//read using iteratior
+		json.assign((std::istreambuf_iterator<char>(file)), (std::istreambuf_iterator<char>()));
+		file.close();
 		// Create Athlete
 		Athlete_t *athlete;
 		athlete = new Athlete_t(json);
@@ -40,17 +41,17 @@ void ReadAthlete(const char *fn)
 void ReadActivity(const char *fn)
 {
 	try {
-		std::ifstream fid;
-		fid.open(fn, ios::in | ios::binary | ios::ate);
-
+		//open file
+		boost::filesystem::ifstream file(fn, std::ios::binary | std::ios::ate);
 		// get filesize
-		size_t fs = fid.tellg();
-		char *json = new char[fs + 1];
-		fid.seekg(0, ios::beg);
-		fid.read(json, fs);
-		fid.close();
-		json[fs] = '\0';
-		// Create Athlete
+		size_t fs = file.tellg();
+		file.seekg(0, std::ios::beg);
+		//reserver memory
+		string json;
+		json.reserve(fs);
+		//read using iteratior
+		json.assign((std::istreambuf_iterator<char>(file)), (std::istreambuf_iterator<char>()));
+		file.close();
 		Activity_t *activity;
 		activity = new Activity_t(json);
 	}
@@ -64,16 +65,17 @@ void ReadActivity(const char *fn)
 AccessToken_t ReadToken(const string& fn)
 {
 	try {
-		std::ifstream fid;
-		fid.open(dir+fn, ios::in | ios::binary | ios::ate);
-
+		//open file
+		boost::filesystem::ifstream file(fn, std::ios::binary | std::ios::ate);
 		// get filesize
-		size_t fs = fid.tellg();
-		char *json = new char[fs + 1];
-		fid.seekg(0, ios::beg);
-		fid.read(json, fs);
-		fid.close();
-		json[fs] = '\0';
+		size_t fs = file.tellg();
+		file.seekg(0, std::ios::beg);
+		//reserver memory
+		string json;
+		json.reserve(fs);
+		//read using iteratior
+		json.assign((std::istreambuf_iterator<char>(file)), (std::istreambuf_iterator<char>()));
+		file.close();
 		// Create Athlete
 		return AccessToken_t(json);		
 	}

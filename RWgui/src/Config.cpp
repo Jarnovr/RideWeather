@@ -44,13 +44,19 @@ namespace RideWeather
 
 		//read other settings from file
 		settings = new QSettings(QString::fromStdString(configFileName.generic_string()),QSettings::IniFormat);
-
+		token = settings->value("Athlete/token","").toString().toUtf8().toStdString();
 
 	}
 
 	Configuration::~Configuration()
 	{
 		delete settings;
+	}
+
+	void Configuration::setToken(const boost::filesystem::path token_)
+	{
+		token = token_;
+		settings->setValue("Athlete/token",QString::fromStdString(token_.generic_string()));
 	}
 
 
