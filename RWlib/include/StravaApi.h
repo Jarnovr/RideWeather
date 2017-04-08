@@ -37,6 +37,12 @@ namespace RideWeather
 
 		//Streams
 		std::string GetActivityStream(ptrdiff_t id, string types, string resolution = "");
+
+		//General
+		void LoadAthleteActivities(Athlete_t& athlete);
+		void SaveAthleteActivities(Athlete_t& athlete);
+		void RefreshAthleteActivities(Athlete_t& athlete, bool download_all=false);
+		void GetAthleteActivityStreams(Athlete_t& athlete);
 	protected:
 		AccessToken_t at;
 		boost::filesystem::path cacheFolder;

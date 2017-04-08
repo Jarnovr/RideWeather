@@ -29,6 +29,7 @@ set(RAPIDJSON_HAS_STDSTRING ON)
 add_definitions(-DRAPIDJSON_HAS_STDSTRING) 
 add_subdirectory(rapidjson)
 set(BUILD_CPR_TESTS OFF)
+set(BUILD_CURL_TESTS OFF)
 add_subdirectory(cpr)
 
 ##main project

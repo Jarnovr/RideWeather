@@ -60,6 +60,12 @@ void MainWindow::on_btn_Load_Token_clicked()
 	StravaApi = new RideWeather::StravaApi_t(*access_token,Config->cacheFolder);
 	athlete = std::make_shared<RideWeather::Athlete_t>(StravaApi->GetAthlete(0));
 	ui->btn_GetList->setEnabled(true);
+	StravaApi->LoadAthleteActivities(*athlete);
+}
+
+void MainWindow::on_btn_GetList_clicked()
+{
+	StravaApi->RefreshAthleteActivities(*athlete);
 }
 
 

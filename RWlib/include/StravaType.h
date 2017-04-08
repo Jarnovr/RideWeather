@@ -38,6 +38,11 @@ namespace RideWeather
 		{
 			if (!dom.HasMember(var))
 				throw StravaException_t(type_str.append(" missing ").append(var).append("\n"));
+			if (dom[var].IsNull())
+			{
+				dest.assign(""); 
+				return;
+			}
 			if (!dom[var].IsString())
 				throw StravaException_t(type_str.append(" ").append(var).append(" not a astring\n"));
 			dest.assign(dom[var].GetString(), dom[var].GetStringLength());
@@ -47,6 +52,11 @@ namespace RideWeather
 		{
 			if (dom.HasMember(var))
 			{
+				if (dom[var].IsNull())
+				{
+					dest.assign("");
+					return;
+				}
 				if (!dom[var].IsString())
 					throw StravaException_t(type_str.append(" ").append(var).append(" not a astring\n"));
 				dest.assign(dom[var].GetString(), dom[var].GetStringLength());
@@ -59,6 +69,8 @@ namespace RideWeather
 		{
 			if (!dom.HasMember(var))
 				throw StravaException_t(type_str.append(" missing ").append(var).append("\n"));
+			if (dom[var].IsNull())
+				return;
 			if (!dom[var].IsString())
 				throw StravaException_t(type_str.append(" ").append(var).append(" not a astring\n"));
 			string tmp(dom[var].GetString(), dom[var].GetStringLength());
@@ -81,6 +93,8 @@ namespace RideWeather
 		{
 			if (dom.HasMember(var))
 			{
+				if (dom[var].IsNull())
+					return 0; 
 				if (!dom[var].IsInt())
 					throw StravaException_t(type_str.append(" ").append(var).append(" not a int\n"));
 				return dom[var].GetInt();
@@ -103,6 +117,8 @@ namespace RideWeather
 		{
 			if (dom.HasMember(var))
 			{
+				if (dom[var].IsNull())
+					return 0;
 				if (!dom[var].IsInt64())
 					throw StravaException_t(type_str.append(" ").append(var).append(" not a int64\n"));
 				return dom[var].GetInt64();
@@ -115,14 +131,19 @@ namespace RideWeather
 		{
 			if (!dom.HasMember(var))
 				throw StravaException_t(type_str.append(" missing ").append(var).append("\n"));
+			if (dom[var].IsNull())
+				return 0.0;
+
 			if (!dom[var].IsDouble())
-				throw StravaException_t(type_str.append(" ").append(var).append(" not a double\n"));
+				return 0.0;
 			return dom[var].GetDouble();
 		}
 		double ParseDoubleIf(string var)
 		{
 			if (dom.HasMember(var))
 			{
+				if (dom[var].IsNull())
+					return 0.0;
 				if (!dom[var].IsDouble())
 					throw StravaException_t(type_str.append(" ").append(var).append(" not a double\n"));
 				return dom[var].GetDouble();
@@ -152,6 +173,18 @@ namespace RideWeather
 			else
 				return false;
 		}
+		void DebugPrintDom()
+		{
+#ifndef NDEBUG
+			rapidjson::StringBuffer buffer;
+			buffer.Clear();
+			rapidjson::Writer<rapidjson::StringBuffer> writer(buffer);
+			dom.Accept(writer);
+			std::cerr << type_str << ": " << buffer.GetString() << std::endl;
+#endif // !NDEBUG
+		}
+
+
 		void ParseJson(const string & json);
 		virtual void ParseDom() = 0;
 	};
@@ -214,22 +247,19 @@ namespace RideWeather
 		std::list<Club_t> clubs;//detailed only
 		std::list<Bike_t> bikes;//detailed only
 		std::list<Shoe_t> shoes;//detailed only
-		std::list<Activity_t> act_run;
-		std::list<Activity_t> act_ride;
-		std::list<Activity_t> act_other;
+		std::map<ptrdiff_t,Activity_t> activities;
+		TimeS_t last_activity;
 		Athlete_t() :id(0), resource_state(0), sex('\0'),
 			friend_(Connection_t::null), follower(Connection_t::null), premium(false),
 			follower_count(0), friend_count(0),
 			mutual_friend_count(0), athlete_type(AthleteType_t(0)),
-			measurement_preference(MeasurementType_t::meters), ftp(0), weight(0.0) {
+			measurement_preference(MeasurementType_t::meters), ftp(0), weight(0.0), last_activity(boost::gregorian::date(1990,1,1)) {
 			type_str.assign("Athlete_t");
 		};
 		Athlete_t(const string& json) : Athlete_t() { ParseJson(json); ParseDom(); };
 		Athlete_t(rapidjson::Value& DOM) : Athlete_t() { dom.CopyFrom(DOM, document.GetAllocator()); 	ParseDom(); };
 		virtual ~Athlete_t() {};
-		void FindActivities(const AccessToken_t& at);
-		void GetActivities(const AccessToken_t& at);
-		void GetActivityStreams(const AccessToken_t& at);
+		
 	protected:
 		void ParseDom();
 	};
@@ -363,7 +393,7 @@ namespace RideWeather
 		bool device_watts;
 		bool has_heartrate;
 		double average_heartrate;
-		ptrdiff_t max_heartrate;
+		double max_heartrate;
 		double calories; //kilocalories, kJ (ride), pace(runs)
 		ptrdiff_t suffer_score;
 		bool has_kudoed;
@@ -385,6 +415,8 @@ namespace RideWeather
 			type_str.assign("Activity_t");//set type str
 		};
 		Activity_t(const string& json) :Activity_t() { ParseJson(json); ParseDom(); };
+		Activity_t(rapidjson::Value& DOM) : Activity_t() { dom.CopyFrom(DOM, document.GetAllocator()); 	ParseDom(); };
+
 	protected:
 		void ParseDom();
 	};
@@ -606,7 +638,7 @@ namespace RideWeather
 		double average_cadence;
 		bool device_watts;
 		double average_heartrate;
-		ptrdiff_t max_heartrate;
+		double max_heartrate;
 		std::shared_ptr<Segment_t> segment;
 		ptrdiff_t kom_rank;
 		ptrdiff_t pr_rank;
@@ -654,7 +686,7 @@ namespace RideWeather
 		double average_speed;
 		double distance;
 		ptrdiff_t	elapsed_time;
-		ptrdiff_t	elevation_difference;
+		double	elevation_difference;
 		ptrdiff_t	pace_zone;
 		ptrdiff_t	moving_time;
 		ptrdiff_t	split;

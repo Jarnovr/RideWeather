@@ -9,6 +9,9 @@
 
 int main(int argc, char** argv)
 {
+	if (argc > 1)
+		std::cerr << "Warning, no arguments expected" << std::endl;
+
    ReadAthlete("athlete.json");
    //ReadAthlete("athlete_error.json");
    ReadActivity("activity.json"); 

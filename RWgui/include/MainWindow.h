@@ -23,7 +23,7 @@ private slots:
 	void on_actionAbout_triggered();
 	void on_actionAbout_QT_triggered();
 	void on_btn_Load_Token_clicked();
-
+	void on_btn_GetList_clicked();
 protected:
 	Ui::MainWindow *ui;
 	std::shared_ptr<RideWeather::Athlete_t> athlete;

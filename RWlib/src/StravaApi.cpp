@@ -5,6 +5,8 @@
 #include <thread>
 
 #include "cpr/cpr.h"
+#include "rapidjson/reader.h"
+#include "rapidjson/error/en.h"
 
 
 namespace RideWeather
@@ -102,13 +104,14 @@ namespace RideWeather
 			url_base.assign("https://www.strava.com/api/v3/athlete");
 		else
 		{
-			url_base.assign("https://www.strava.com/api/v3/athlete/");
+			url_base.assign("https://www.strava.com/api/v3/athletes/");
 			url_base.append(std::to_string(id));
 		}
 		string auth("Bearer ");
 		auth.append(at.access_token, 40);
 
 		cpr::Header header{ { "Authorization", auth } };
+		std::cout << "Accessing: " << cpr::Url{ url_base } << std::endl;
 		cpr::Response r = cpr::Get(cpr::Url{ url_base }, header, timeout);
 		
 		if(r.error.code!=cpr::ErrorCode::OK)
@@ -123,8 +126,7 @@ namespace RideWeather
 			else
 				throw StravaException_t("StravaApi::GetAthlete: encountered HTTP error.");
 		}
-		ProcessResponse(r.header);//Process rate limiting part of response
-
+		
 		if (r.status_code >= 400)
 		{
 			std::cerr << "Received HTTP Error." << std::endl;
@@ -137,6 +139,8 @@ namespace RideWeather
 			else
 				throw StravaException_t("StravaApi::GetAthlete: encountered HTTP error.");
 		}
+		ProcessResponse(r.header);//Process rate limiting part of response
+
 		//put in cache
 		WriteCache(string("/athletes/").append(std::to_string(id)).append("/athlete"),r.text);
 
@@ -324,6 +328,8 @@ namespace RideWeather
 		string auth("Bearer ");
 		auth.append(at.access_token, 40);
 		cpr::Header header{ { "Authorization", auth } };
+		std::cout << "Accessing: " << url << std::endl;
+
 		cpr::Response r = cpr::Get(url, header, timeout);
 		if (r.error.code != cpr::ErrorCode::OK)
 		{
@@ -354,16 +360,18 @@ namespace RideWeather
 		auth.append(at.access_token, 40);
 		cpr::Header header{ { "Authorization", auth } };
 		
-		if ((before > 0 && after > 0) || (before > 0 && page > 0) || (after > 0 && page > 0))
+		if ((before > 0 && page > 0) || (after > 0 && page > 0))
 			throw StravaException_t("StravaApi::ListActivities, cannot use more than 1 of before, after and page.\n");
-		cpr::Payload payload({ { "per_page",std::to_string(per_page) } });
+		cpr::Parameters payload({ { "per_page",std::to_string(per_page) } });
 
 		if (before > 0)
-			payload.AddPair({ "before",std::to_string(before) });
-		if (before > 0)
-			payload.AddPair({ "before",std::to_string(before) });
-		if (before > 0)
-			payload.AddPair({ "before",std::to_string(before) });
+			payload.AddParameter({ "before",std::to_string(before) });
+		if (after > 0)
+			payload.AddParameter({ "after",std::to_string(after) });
+		if (page > 0)
+			payload.AddParameter({ "page",std::to_string(page) });
+		std::cout << "Accessing: " << url << std::endl;
+		std::cout << "	Payload: " << payload.content << std::endl;
 
 		cpr::Response r = cpr::Post(url, header, payload, timeout);
 		if (r.error.code != cpr::ErrorCode::OK)
@@ -420,6 +428,111 @@ namespace RideWeather
 		WriteCache(string("/activity/").append(std::to_string(id)).append("/streams/").append(types), r.text);
 
 		return r.text;
+	}
+
+	void StravaApi_t::LoadAthleteActivities(Athlete_t & athlete)
+	{
+		boost::filesystem::path fn = cacheFolder;
+		fn.append(string("/athletes/").append(std::to_string(athlete.id)).append("/activities.idx"));
+		if (!(boost::filesystem::exists(fn) && boost::filesystem::is_regular_file(fn)))
+			return;
+		//open file
+		boost::filesystem::ifstream file(fn, std::ios::binary);
+		std::string line;
+		std::getline(file, line);
+		std::istringstream(line) >> athlete.last_activity;
+		ptrdiff_t number_activities;
+		std::getline(file, line);
+		std::istringstream(line) >> number_activities;
+		for (ptrdiff_t i = 0; i < number_activities; i++)
+		{
+			ptrdiff_t act_id;
+			std::getline(file, line);
+			std::istringstream(line) >> act_id;
+			try
+			{
+				athlete.activities.insert(std::pair<ptrdiff_t, Activity_t>(act_id, Activity_t(GetActivity(act_id))));
+			}
+			catch (StravaException_t & ex)
+			{
+				std::cerr << "StravaApi_t::LoadAthleteActivities: Error getting and inserting activity into athlete" << std::endl;
+				std::cerr << ex.what() << std::endl;
+			}
+		}
+
+		file.close();
+
+	}
+
+	void StravaApi_t::SaveAthleteActivities(Athlete_t & athlete)
+	{
+		boost::filesystem::path fn = cacheFolder;
+		fn.append(string("/athletes/").append(std::to_string(athlete.id)).append("/activities.idx"));
+		//create folder if needed
+		if (!boost::filesystem::exists(fn.parent_path()))
+		{
+			boost::filesystem::create_directories(fn.parent_path());//create folder
+		}
+		//open file
+		boost::filesystem::ofstream file(fn, std::ios::binary);
+		//write date of last_activity to disk
+		file << athlete.last_activity << std::endl;
+		//write number of activities
+		file << athlete.activities.size() << std::endl;
+		for (auto& a : athlete.activities)
+		{
+			file << a.first << std::endl;
+		}
+		file.close();
+
+	}
+
+	void StravaApi_t::RefreshAthleteActivities(Athlete_t & athlete, bool dowload_all)
+	{
+		//Set start point;
+		boost::posix_time::ptime after;
+		if (dowload_all)
+			athlete.last_activity = boost::posix_time::ptime(boost::gregorian::date(1990, 1, 1));
+		else
+			athlete.last_activity-= boost::posix_time::hours(24);
+
+		rapidjson::Document document;
+		ptrdiff_t counter = 0;
+		do		
+		{
+			after = athlete.last_activity;
+			//get json
+			std::string json;
+			json = ListActivities(-1, boost::posix_time::to_time_t(after));
+			//parse json array
+			//First create rapidjson object
+		
+			document.Parse<rapidjson::ParseFlag::kParseFullPrecisionFlag | rapidjson::ParseFlag::kParseCommentsFlag | rapidjson::ParseFlag::kParseNanAndInfFlag>(json);
+			if (document.HasParseError())
+			{
+				std::cerr << "JSON parse error: " << GetParseError_En(document.GetParseError());
+				std::cerr << "(" << document.GetErrorOffset() << ")" << std::endl;
+
+				throw StravaException_t(string("StravaApi_t::RefreshAtheleteActivities").append("JSON parser error.\n"));
+			}
+			//go over returned dom and do error/sanity check and fill the data structure
+			if (!document.IsArray())
+				throw StravaException_t(string("StravaApi_t::RefreshAtheleteActivities").append(", returned DOM no array\n"));
+
+			//loop over activities in array;
+
+			for (auto& v : document.GetArray())
+			{
+				Activity_t tmp_activity(v);//create activity object from sujmamry jso
+				athlete.activities.insert(std::pair<ptrdiff_t, Activity_t>(tmp_activity.id, Activity_t(GetActivity(tmp_activity.id))));
+				if (athlete.activities.at(tmp_activity.id).start_date > athlete.last_activity)
+					athlete.last_activity = athlete.activities.at(tmp_activity.id).start_date;
+			}
+			std::cerr << document.GetArray().Size() << std::endl;
+		} while (document.GetArray().Size() > 1 && counter++ < 100);
+		
+		//save activity_list to cache
+		SaveAthleteActivities(athlete);
 	}
 
 } //name space
