@@ -7,6 +7,7 @@
 #include <iostream>
 #include <list>
 #include <map>
+#include <unordered_map>
 #include <memory>
 #include <string>
 #include <vector>
@@ -219,6 +220,8 @@ namespace RideWeather
 	class Shoe_t;
 	class Activity_t;
 	enum class MeasurementType_t { feet, meters };
+	enum class StreamType_t;
+	class Stream_t;
 
 	class Athlete_t : public Strava_t {
 	public:
@@ -407,6 +410,7 @@ namespace RideWeather
 		std::list<Splits_t> splits_standard;
 		std::list<Lap_t> laps;
 		std::list<Effort_t> best_efforts;
+		std::unordered_map<StreamType_t, Stream_t*> streams;
 		Activity_t() : id(0), resource_state(0), upload_id(0), athlete(nullptr), distance(0.0),
 			moving_time(0), elapsed_time(0), total_elevation_gain(0.0), elev_high(0.0), elev_low(0.0),
 			type(ActivityType_t::other), start_latlng(0.0, 0.0), end_latlng(0.0, 0.0),
@@ -705,38 +709,7 @@ namespace RideWeather
 		void ParseDom();
 	};
 
-	enum class Data_t { kInt, kDouble, kBool, kPoint, kNull };
-	enum class StreamType_t {
-		time, latlng, distance, altitude, velocity_smooth,
-		heartrate, cadence, watts, temp, moving, grade_smooth, null
-	};
-
-
-	template <typename T>
-	class Stream_t : public Strava_t {
-	public:
-		enum class Resolution_t { low, medium, high };
-		string type;
-		std::vector<T> data;
-		string  series_type;
-		ptrdiff_t original_size;
-		Resolution_t resolution;
-		StreamType_t stream_type;
-		Data_t data_type;
-		Stream_t() : original_size(0), resolution(Resolution_t::low), stream_type(StreamType_t::null),
-			data_type(Data_t::kNull) {
-			type_str.assign("Stream_t");
-		};
-		Stream_t(const string& json) : Stream_t() { ParseJson(json); ParseDom(); };
-		Stream_t(rapidjson::Value& DOM) : Stream_t() { dom->CopyFrom(DOM, document->GetAllocator());  ParseDom(); };
-	protected:
-		void ParseDom();
-		void ParseData();
-	};
-
-
-	Data_t GetStreamType(rapidjson::Value& dom);
-
+	
 
 	class Photo_t : public Strava_t {
 	public:
@@ -790,67 +763,58 @@ namespace RideWeather
 		void ParseDom();
 	};
 
-	template <typename T>
-	inline void Stream_t<T>::ParseDom()
-	{
-		ParseString(type, "type");
-		if (!type.compare("time"))
-			stream_type = StreamType_t::time;
-		else if (!type.compare("latlng"))
-			stream_type = StreamType_t::latlng;
-		else if (!type.compare("distance"))
-			stream_type = StreamType_t::distance;
-		else if (!type.compare("altitude"))
-			stream_type = StreamType_t::altitude;
-		else if (!type.compare("velocity_smooth"))
-			stream_type = StreamType_t::velocity_smooth;
-		else if (!type.compare("heartrate"))
-			stream_type = StreamType_t::heartrate;
-		else if (!type.compare("cadence"))
-			stream_type = StreamType_t::cadence;
-		else if (!type.compare("watts"))
-			stream_type = StreamType_t::watts;
-		else if (!type.compare("temp"))
-			stream_type = StreamType_t::temp;
-		else if (!type.compare("moving"))
-			stream_type = StreamType_t::moving;
-		else if (!type.compare("grade_smooth"))
-			stream_type = StreamType_t::grade_smooth;
-		else
-			throw StravaException_t("Stream_t StreamType not known.");
-		original_size = ParseInt64("original_size");
-		ParseString(series_type, "series_type");
-		string tmp;
-		ParseString(tmp, "resolution");
-		if (!type.compare("low"))
-			resolution = Resolution_t::low;
-		else if (!type.compare("medium"))
-			resolution = Resolution_t::medium;
-		else if (!type.compare("high"))
-			resolution = Resolution_t::high;
-		else
-			throw StravaException_t("Stream_t illegal resolution.");
 
-		//parse data
-		data.reserve(original_size);
-		if (!dom->HasMember("data"))
-			throw StravaException_t("Stream_t missing data list");
-		if (!(*dom)["data"].IsArray())
-			throw StravaException_t("Steam_t data not array");
-		ParseData();
+	enum class Data_t { kInt, kDouble, kBool, kPoint, kNull };
+	enum class StreamType_t {
+		time, latlng, distance, altitude, velocity_smooth,
+		heartrate, cadence, watts, temp, moving, grade_smooth, null
+	};
 
-	}
+	class Stream_t : public Strava_t {
+		public:
+		enum class Resolution_t { low, medium, high };
+		string type;
+		string  series_type;
+		ptrdiff_t original_size;
+		Resolution_t resolution;
+		StreamType_t stream_type;
+		Data_t data_type;
+		Stream_t() : original_size(0), resolution(Resolution_t::low), stream_type(StreamType_t::null),
+			data_type(Data_t::kNull) {
+			type_str.assign("Stream_t");
+			};
+		static Data_t DataTypeFromStreamType(StreamType_t stream_type);
+		static Data_t GetStreamType(rapidjson::Value& dom);
+	protected:
+		void ParseDom();
+		virtual void ParseData() = 0;
+	};
+
 
 	template <typename T>
-	inline void Stream_t<T>::ParseData()
+	class StreamRaw_t : public Stream_t {
+	public:
+		std::vector<T> data;
+		StreamRaw_t() : Stream_t() {};
+		StreamRaw_t(const string& json) : StreamRaw_t() { ParseJson(json); ParseDom(); };
+		StreamRaw_t(rapidjson::Value& DOM) : StreamRaw_t() { dom->CopyFrom(DOM, document->GetAllocator());  ParseDom(); };
+	protected:
+		void ParseData();
+	};
+	
+	
+	template <typename T>
+	inline void StreamRaw_t<T>::ParseData()
 	{
 		throw StravaException_t("Stream_t general ParseData called");
 	}
 
 	template <>
-	inline void Stream_t<int>::ParseData()
+	inline void StreamRaw_t<int>::ParseData()
 	{
 		data_type = Data_t::kInt;
+		data.reserve(original_size);
+
 		for (auto& v : (*dom)["data"].GetArray())
 		{
 			data.push_back(v.GetInt());
@@ -858,9 +822,11 @@ namespace RideWeather
 	}
 
 	template <>
-	inline void Stream_t<double>::ParseData()
+	inline void StreamRaw_t<double>::ParseData()
 	{
 		data_type = Data_t::kDouble;
+		data.reserve(original_size);
+
 		for (auto& v : (*dom)["data"].GetArray())
 		{
 			data.push_back(v.GetDouble());
@@ -868,9 +834,11 @@ namespace RideWeather
 	}
 
 	template <>
-	inline void Stream_t<bool>::ParseData()
+	inline void StreamRaw_t<bool>::ParseData()
 	{
 		data_type = Data_t::kBool;
+		data.reserve(original_size);
+
 		for (auto& v : (*dom)["data"].GetArray())
 		{
 			data.push_back(v.GetBool());
@@ -878,9 +846,11 @@ namespace RideWeather
 	}
 
 	template <>
-	inline void Stream_t<Point_t>::ParseData()
+	inline void StreamRaw_t<Point_t>::ParseData()
 	{
 		data_type = Data_t::kPoint;
+		data.reserve(original_size);
+
 		for (auto& v : (*dom)["data"].GetArray())
 		{
 			data.push_back(Point_t(v));

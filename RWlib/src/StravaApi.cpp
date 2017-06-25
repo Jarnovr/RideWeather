@@ -430,7 +430,7 @@ namespace RideWeather
 		return r.text;
 	}
 
-	void StravaApi_t::LoadAthleteActivities(Athlete_t & athlete)
+	void StravaApi_t::LoadAthleteActivitiesList(Athlete_t & athlete)
 	{
 		boost::filesystem::path fn = cacheFolder;
 		fn.append(string("/athletes/").append(std::to_string(athlete.id)).append("/activities.idx"));
@@ -464,7 +464,7 @@ namespace RideWeather
 
 	}
 
-	void StravaApi_t::SaveAthleteActivities(Athlete_t & athlete)
+	void StravaApi_t::SaveAthleteActivitiesList(Athlete_t & athlete)
 	{
 		boost::filesystem::path fn = cacheFolder;
 		fn.append(string("/athletes/").append(std::to_string(athlete.id)).append("/activities.idx"));
@@ -539,7 +539,19 @@ namespace RideWeather
 		} while (document.GetArray().Size() > 1 && counter++ < 100);
 		
 		//save activity_list to cache
-		SaveAthleteActivities(athlete);
+		SaveAthleteActivitiesList(athlete);
+	}
+
+	void StravaApi_t::GetAthleteActivityStreams(Athlete_t & athlete, bool download_all)
+	{
+		for (auto& v : athlete.activities)
+		{
+			ptrdiff_t act_id = v.first;
+			Activity_t& activity = v.second;
+			
+
+		}
+
 	}
 
 } //name space

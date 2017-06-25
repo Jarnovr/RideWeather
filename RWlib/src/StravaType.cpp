@@ -930,9 +930,36 @@ namespace RideWeather
 		delete dom; dom=nullptr; delete document; document=nullptr;
 	}
 
+	Data_t Stream_t::DataTypeFromStreamType(StreamType_t stream_type) {
+		switch (stream_type)
+		{
+		case StreamType_t::time:
+		case StreamType_t::heartrate:
+		case StreamType_t::cadence:
+		case StreamType_t::watts:
+		case StreamType_t::temp:
+			//Integer case
+			return Data_t::kInt;
+			break;
+		case StreamType_t::distance:
+		case StreamType_t::altitude:
+		case StreamType_t::velocity_smooth:
+		case StreamType_t::grade_smooth:
+			//float case
+			return Data_t::kDouble;
+			break;
+		case StreamType_t::moving:
+			//bool case
+			return Data_t::kBool;
+			break;
+		case StreamType_t::latlng:
+			//coordinates
+			return Data_t::kPoint;
+			break;
+		}
+	}
 
-
-	Data_t GetStreamType(rapidjson::Value & dom)
+	Data_t Stream_t::GetStreamType(rapidjson::Value & dom)
 	{
 		string type;
 		StreamType_t stream_type;
@@ -993,6 +1020,56 @@ namespace RideWeather
 			break;
 		}
 		return Data_t::kNull;
+	}
+
+
+	void Stream_t::ParseDom()
+	{
+		ParseString(type, "type");
+		if (!type.compare("time"))
+			stream_type = StreamType_t::time;
+		else if (!type.compare("latlng"))
+			stream_type = StreamType_t::latlng;
+		else if (!type.compare("distance"))
+			stream_type = StreamType_t::distance;
+		else if (!type.compare("altitude"))
+			stream_type = StreamType_t::altitude;
+		else if (!type.compare("velocity_smooth"))
+			stream_type = StreamType_t::velocity_smooth;
+		else if (!type.compare("heartrate"))
+			stream_type = StreamType_t::heartrate;
+		else if (!type.compare("cadence"))
+			stream_type = StreamType_t::cadence;
+		else if (!type.compare("watts"))
+			stream_type = StreamType_t::watts;
+		else if (!type.compare("temp"))
+			stream_type = StreamType_t::temp;
+		else if (!type.compare("moving"))
+			stream_type = StreamType_t::moving;
+		else if (!type.compare("grade_smooth"))
+			stream_type = StreamType_t::grade_smooth;
+		else
+			throw StravaException_t("Stream_t StreamType not known.");
+		original_size = ParseInt64("original_size");
+		ParseString(series_type, "series_type");
+		string tmp;
+		ParseString(tmp, "resolution");
+		if (!type.compare("low"))
+			resolution = Resolution_t::low;
+		else if (!type.compare("medium"))
+			resolution = Resolution_t::medium;
+		else if (!type.compare("high"))
+			resolution = Resolution_t::high;
+		else
+			throw StravaException_t("Stream_t illegal resolution.");
+
+		//parse data
+		if (!dom->HasMember("data"))
+			throw StravaException_t("Stream_t missing data list");
+		if (!(*dom)["data"].IsArray())
+			throw StravaException_t("Steam_t data not array");
+		ParseData();
+
 	}
 
 	void Photo_t::ParseDom()
