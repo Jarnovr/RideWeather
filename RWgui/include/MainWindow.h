@@ -27,7 +27,6 @@ private slots:
 protected:
 	Ui::MainWindow *ui;
 	std::shared_ptr<RideWeather::Athlete_t> athlete;
-	RideWeather::AccessToken_t *access_token;
 	RideWeather::StravaApi_t *StravaApi;
 };
 

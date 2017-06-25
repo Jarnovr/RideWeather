@@ -523,10 +523,17 @@ namespace RideWeather
 
 			for (auto& v : document.GetArray())
 			{
-				Activity_t tmp_activity(v);//create activity object from sujmamry jso
-				athlete.activities.insert(std::pair<ptrdiff_t, Activity_t>(tmp_activity.id, Activity_t(GetActivity(tmp_activity.id))));
-				if (athlete.activities.at(tmp_activity.id).start_date > athlete.last_activity)
-					athlete.last_activity = athlete.activities.at(tmp_activity.id).start_date;
+				try {
+					Activity_t tmp_activity(v);//create activity object from sujmamry jso
+					athlete.activities.insert(std::pair<ptrdiff_t, Activity_t>(tmp_activity.id, Activity_t(GetActivity(tmp_activity.id))));
+					if (athlete.activities.at(tmp_activity.id).start_date > athlete.last_activity)
+						athlete.last_activity = athlete.activities.at(tmp_activity.id).start_date;
+				}
+				catch (StravaException_t & ex)
+				{
+					std::cerr << "StravaApi_t::LoadAthleteActivities: Error getting and inserting activity into athlete" << std::endl;
+					std::cerr << ex.what() << std::endl;
+				}
 			}
 			std::cerr << document.GetArray().Size() << std::endl;
 		} while (document.GetArray().Size() > 1 && counter++ < 100);

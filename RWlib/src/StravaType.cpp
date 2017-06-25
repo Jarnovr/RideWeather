@@ -21,27 +21,27 @@ namespace RideWeather
 	void Strava_t::ParseJson(const string & json)
 	{
 		//First create rapidjson object
-		document.Parse<ParseFlag::kParseFullPrecisionFlag | ParseFlag::kParseCommentsFlag | ParseFlag::kParseNanAndInfFlag>(json);
+		document->Parse<ParseFlag::kParseFullPrecisionFlag | ParseFlag::kParseCommentsFlag | ParseFlag::kParseNanAndInfFlag>(json);
 		//generic error checking
-		if (document.HasParseError())
+		if (document->HasParseError())
 		{
-			cerr << "JSON parse error: " << GetParseError_En(document.GetParseError());
-			cerr << "(" << document.GetErrorOffset() << ")" << endl;
+			cerr << "JSON parse error: " << GetParseError_En(document->GetParseError());
+			cerr << "(" << document->GetErrorOffset() << ")" << endl;
 
 			throw StravaException_t(type_str.append("::").append(type_str).append("JSON parser error.\n"));
 		}
 
 		//go over returned dom and do error/sanity check and fill the data structure
-		if (!document.IsObject())
+		if (!document->IsObject())
 			throw StravaException_t(type_str.append("::").append(type_str).append(", returned DOM no object\n"));
-		//dom.Swap(document);
-		dom.CopyFrom(document,document.GetAllocator());	
+		//dom->Swap(document);
+		dom->CopyFrom(*document,document->GetAllocator());	
 	}
 
 	void Athlete_t::ParseDom()
 	{
 		string tmp;
-		DebugPrintDom();
+		//DebugPrintDom();
 
 		id = ParseInt64("id");
 		resource_state = ParseInt64("resource_state");
@@ -68,28 +68,28 @@ namespace RideWeather
 			ftp = ParseInt64("ftp");
 			weight = ParseDouble("weight");
 
-			if (!dom.HasMember("clubs"))
+			if (!dom->HasMember("clubs"))
 				throw StravaException_t("Athlete_t missing clubs list");
-			if (!dom["clubs"].IsArray())
+			if (!(*dom)["clubs"].IsArray())
 				throw StravaException_t("Athlete_t clubs not array");
-			for (auto& v : dom["clubs"].GetArray())
+			for (auto& v : (*dom)["clubs"].GetArray())
 			{
 				clubs.push_back(Club_t(v));
 			}
 
-			if (!dom.HasMember("bikes"))
+			if (!dom->HasMember("bikes"))
 				throw StravaException_t("Athlete_t missing bikes list");
-			if (!dom["bikes"].IsArray())
+			if (!(*dom)["bikes"].IsArray())
 				throw StravaException_t("Athlete_t bikes not array");
-			for (auto& v : dom["bikes"].GetArray())
+			for (auto& v : (*dom)["bikes"].GetArray())
 			{
 				bikes.push_back(Bike_t(v));
 			}
-			if (!dom.HasMember("shoes"))
+			if (!dom->HasMember("shoes"))
 				throw StravaException_t("Athlete_t missing shoes list");
-			if (!dom["shoes"].IsArray())
+			if (!(*dom)["shoes"].IsArray())
 				throw StravaException_t("Athlete_t shoes not array");
-			for (auto& v : dom["shoes"].GetArray())
+			for (auto& v : (*dom)["shoes"].GetArray())
 			{
 				shoes.push_back(Shoe_t(v));
 			}
@@ -103,15 +103,15 @@ namespace RideWeather
 			ParseString(state, "state");
 			ParseString(country, "country");
 
-			if (!dom.HasMember("sex"))
+			if (!dom->HasMember("sex"))
 				throw StravaException_t("Athlete missing sex\n");
-			if (!dom["sex"].IsString())
+			if (!(*dom)["sex"].IsString())
 				throw StravaException_t("Athlete_t sex not char\n");
-			sex = *dom["sex"].GetString();
+			sex = *(*dom)["sex"].GetString();
 
-			if (!dom.HasMember("friend"))
+			if (!dom->HasMember("friend"))
 				throw StravaException_t("Athlete missing friend\n");
-			if (dom["friend"].IsNull())
+			if ((*dom)["friend"].IsNull())
 				friend_ = Connection_t::null;
 			else
 			{
@@ -125,9 +125,9 @@ namespace RideWeather
 				else friend_ = Connection_t::null;
 			}
 
-			if (!dom.HasMember("follower"))
+			if (!dom->HasMember("follower"))
 				throw StravaException_t("Athlete missing follower\n");
-			if (dom["follower"].IsNull())
+			if ((*dom)["follower"].IsNull())
 				follower = Connection_t::null;
 			else
 			{
@@ -146,21 +146,21 @@ namespace RideWeather
 			ParseTimeS(updated_at, "updated_at");
 		case 1:;
 		}
-
+		delete dom; dom=nullptr; delete document; document=nullptr;
 	}
 
 	void Zones_t::ParseDom()
 	{
-		DebugPrintDom();
-		if (!dom.HasMember("heart_rate"))
+		//DebugPrintDom();
+		if (!dom->HasMember("heart_rate"))
 			throw StravaException_t("Zones_t missing heart_rate");
-		if (!dom["heart_rate"].HasMember("custom_zones"))
+		if (!(*dom)["heart_rate"].HasMember("custom_zones"))
 			throw StravaException_t("Zones_t heart rate has no member custom_zones");
-		heart_rate_custom = dom["heart_rate"]["custom_zones"].GetBool();
+		heart_rate_custom = (*dom)["heart_rate"]["custom_zones"].GetBool();
 
-		if (!dom["heart_rate"].HasMember("zones"))
+		if (!(*dom)["heart_rate"].HasMember("zones"))
 			throw StravaException_t("Heart_rate missing zones");
-		for (auto& v : dom["heart_rate"]["zones"].GetArray())
+		for (auto& v : (*dom)["heart_rate"]["zones"].GetArray())
 		{
 			zone_t tmp;
 			tmp.min = (short)v["min"].GetInt64();
@@ -168,11 +168,11 @@ namespace RideWeather
 			heart_zones.push_back(tmp);
 		}
 
-		if (dom.HasMember("power"))
+		if (dom->HasMember("power"))
 		{
-			if (!dom["power"].HasMember("zones"))
+			if (!(*dom)["power"].HasMember("zones"))
 				throw StravaException_t("power missing zones");
-			for (auto& v : dom["power"]["zones"].GetArray())
+			for (auto& v : (*dom)["power"]["zones"].GetArray())
 			{
 				zone_t tmp;
 				tmp.min = (short)v["min"].GetInt64();
@@ -180,12 +180,12 @@ namespace RideWeather
 				power_zones.push_back(tmp);
 			}
 		}
-
+		delete dom; dom=nullptr; delete document; document=nullptr;
 	}
 
 	void Total_t::ParseDom()
 	{
-		DebugPrintDom();
+		//DebugPrintDom();
 		//Parse content
 		count = ParseInt64("count");
 		distance = ParseDouble("distance");
@@ -193,49 +193,51 @@ namespace RideWeather
 		elapsed_time = ParseInt64("elapsed_time");
 		elevation_gain = ParseDouble("elevation gain");
 		achievement_count = ParseInt64("achievement_count");
+		delete dom; dom=nullptr; delete document; document=nullptr;
 	}
 
 	void Totals_t::ParseDom()
 	{
-		DebugPrintDom();
+		//DebugPrintDom();
 		biggest_ride_distance = ParseDouble("biggest_ride_distance");
 		biggest_climb_elevation_gain = ParseDouble("biggest_climb_elevation");
 
-		if (!dom.HasMember("recent_ride_totals"))
+		if (!dom->HasMember("recent_ride_totals"))
 			throw StravaException_t("Totals_t missing recent_ride_totals");
-		recent_ride_totals = Total_t(dom["recent_ride_totals"]);
-		if (!dom.HasMember("recent_run_totals"))
+		recent_ride_totals = Total_t((*dom)["recent_ride_totals"]);
+		if (!dom->HasMember("recent_run_totals"))
 			throw StravaException_t("Totals_t missing recent_run_totals");
-		recent_run_totals = Total_t(dom["recent_run_totals"]);
-		if (!dom.HasMember("recent_swim_totals"))
+		recent_run_totals = Total_t((*dom)["recent_run_totals"]);
+		if (!dom->HasMember("recent_swim_totals"))
 			throw StravaException_t("Totals_t missing recent_swim_totals");
-		recent_swim_totals = Total_t(dom["recent_swim_totals"]);
+		recent_swim_totals = Total_t((*dom)["recent_swim_totals"]);
 
-		if (!dom.HasMember("ytd_ride_totals"))
+		if (!dom->HasMember("ytd_ride_totals"))
 			throw StravaException_t("Totals_t missing ytd_ride_totals");
-		ytd_ride_totals = Total_t(dom["ytd_ride_totals"]);
-		if (!dom.HasMember("ytd_run_totals"))
+		ytd_ride_totals = Total_t((*dom)["ytd_ride_totals"]);
+		if (!dom->HasMember("ytd_run_totals"))
 			throw StravaException_t("Totals_t missing ytd_run_totals");
-		ytd_run_totals = Total_t(dom["ytd_run_totals"]);
-		if (!dom.HasMember("ytd_swim_totals"))
+		ytd_run_totals = Total_t((*dom)["ytd_run_totals"]);
+		if (!dom->HasMember("ytd_swim_totals"))
 			throw StravaException_t("Totals_t missing ytd_swim_totals");
-		ytd_swim_totals = Total_t(dom["ytd_swim_totals"]);
+		ytd_swim_totals = Total_t((*dom)["ytd_swim_totals"]);
 
-		if (!dom.HasMember("all_ride_totals"))
+		if (!dom->HasMember("all_ride_totals"))
 			throw StravaException_t("Totals_t missing all_ride_totals");
-		all_ride_totals = Total_t(dom["all_ride_totals"]);
-		if (!dom.HasMember("all_run_totals"))
+		all_ride_totals = Total_t((*dom)["all_ride_totals"]);
+		if (!dom->HasMember("all_run_totals"))
 			throw StravaException_t("Totals_t missing all_run_totals");
-		all_run_totals = Total_t(dom["all_run_totals"]);
-		if (!dom.HasMember("all_swim_totals"))
+		all_run_totals = Total_t((*dom)["all_run_totals"]);
+		if (!dom->HasMember("all_swim_totals"))
 			throw StravaException_t("Totals_t missing all_swim_totals");
-		all_swim_totals = Total_t(dom["all_swim_totals"]);
+		all_swim_totals = Total_t((*dom)["all_swim_totals"]);
+		delete dom; dom=nullptr; delete document; document=nullptr;
 	}
 
 	void Activity_t::ParseDom()
 	{
 		string tmp;
-		DebugPrintDom();
+		//DebugPrintDom();
 
 		id = ParseInt64("id");
 		resource_state = ParseInt64("resource_state");
@@ -248,52 +250,52 @@ namespace RideWeather
 		case 3:
 			calories = ParseDouble("calories");
 			ParseString(description, "description");
-			if (!dom.HasMember("gear"))
+			if (!dom->HasMember("gear"))
 				throw StravaException_t("Activity_t has no member gear.\n");
-			gear = make_shared<Gear_t>(dom["gear"]);
-			if (!dom.HasMember("segment_efforts"))
+			gear = make_shared<Gear_t>((*dom)["gear"]);
+			if (!dom->HasMember("segment_efforts"))
 				throw StravaException_t("Athlete_t missing segment_efforts list");
-			if (!dom["segment_efforts"].IsArray())
+			if (!(*dom)["segment_efforts"].IsArray())
 				throw StravaException_t("Athlete_t segment_efforts not array");
-			for (auto& v : dom["segment_efforts"].GetArray())
+			for (auto& v : (*dom)["segment_efforts"].GetArray())
 			{
 				segment_efforts.push_back(SegmentEffort_t(v));
 			}
-			if (dom.HasMember("splits_metric"))
+			if (dom->HasMember("splits_metric"))
 			{
 
-				if (!dom["splits_metric"].IsArray())
+				if (!(*dom)["splits_metric"].IsArray())
 					throw StravaException_t("Athlete_t splits_metric not array");
-				for (auto& v : dom["splits_metric"].GetArray())
+				for (auto& v : (*dom)["splits_metric"].GetArray())
 				{
 					splits_metric.push_back(Splits_t(v));
 				}
 			}
-			if (dom.HasMember("splits_standard"))
+			if (dom->HasMember("splits_standard"))
 			{
 
-				if (!dom["splits_standard"].IsArray())
+				if (!(*dom)["splits_standard"].IsArray())
 					throw StravaException_t("Athlete_t splits_standard not array");
-				for (auto& v : dom["splits_metric"].GetArray())
+				for (auto& v : (*dom)["splits_metric"].GetArray())
 				{
 					splits_standard.push_back(Splits_t(v));
 				}
 			}
 
-			if (dom.HasMember("laps"))
+			if (dom->HasMember("laps"))
 			{
-				if (!dom["laps"].IsArray())
+				if (!(*dom)["laps"].IsArray())
 					throw StravaException_t("Athlete_t laps not array");
-				for (auto& v : dom["laps"].GetArray())
+				for (auto& v : (*dom)["laps"].GetArray())
 				{
 					laps.push_back(Lap_t(v));
 				}
 			}
-			if (dom.HasMember("best_efforts"))
+			if (dom->HasMember("best_efforts"))
 			{
-				if (!dom["best_efforts"].IsArray())
+				if (!(*dom)["best_efforts"].IsArray())
 					throw StravaException_t("Athlete_t best_efforts not array");
-				for (auto& v : dom["best_efforts"].GetArray())
+				for (auto& v : (*dom)["best_efforts"].GetArray())
 				{
 					best_efforts.push_back(Effort_t(v));
 				}
@@ -317,26 +319,26 @@ namespace RideWeather
 			ParseTimeS(start_date, "start_date");
 			ParseTimeS(start_date_local, "start_date_local");
 			ParseString(timezone_act, "timezone");
-			if (!dom.HasMember("start_latlng"))
+			if (!dom->HasMember("start_latlng"))
 				throw StravaException_t("Activity_t missing start_latlng");
-			start_latlng = Point_t(dom["start_latlng"]);
-			if (!dom.HasMember("end_latlng"))
+			start_latlng = Point_t((*dom)["start_latlng"]);
+			if (!dom->HasMember("end_latlng"))
 				throw StravaException_t("Activity_t missing end_latlng");
-			end_latlng = Point_t(dom["end_latlng"]);
+			end_latlng = Point_t((*dom)["end_latlng"]);
 			achievement_count = ParseInt64If("achievement_count");
 			kudos_count = ParseInt64If("kudos_count");
 			comment_count = ParseInt64If("comment_count");
 			athlete_count = ParseInt64If("athlete_count");
 			photo_count = ParseInt64If("photo_count");
 			total_photo_count = ParseInt64If("total_photo_count");
-			if (dom.HasMember("map"))
-				map = make_shared<Map_t>(dom["map"]);
+			if (dom->HasMember("map"))
+				map = make_shared<Map_t>((*dom)["map"]);
 			trainer = ParseBoolIf("trainer");
 			commute = ParseBoolIf("commute");
 			manual = ParseBoolIf("manual");
 			private_act = ParseBoolIf("private");
 			flagged = ParseBool("flagged");
-			workout_type = static_cast<Workout_t> (ParseInt64("workout_type"));
+			workout_type = static_cast<Workout_t> (ParseInt64If("workout_type"));
 			ParseStringIf(gear_id, "gear_id");
 			average_speed = ParseDoubleIf("average_speed");
 			max_speed = ParseDoubleIf("max_speed");
@@ -358,7 +360,7 @@ namespace RideWeather
 
 		case 1:;
 		}
-
+		delete dom; dom=nullptr; delete document; document=nullptr;
 	}
 
 
@@ -495,11 +497,11 @@ namespace RideWeather
 
 	Point_t::Point_t(const rapidjson::Value & dom) :Point_t()
 	{
+
 		if (dom.IsNull() || !dom.IsArray() || dom.GetArray().Size() != 2)
 		{
 			latitude = 0;
-			longtitude = 0;
-			std::cerr<<"Point_t is not array of length 2"<< std::endl;
+			longtitude = 0;	
 		}
 		else
 		{
@@ -510,17 +512,18 @@ namespace RideWeather
 
 	void Achievement_t::ParseDom()
 	{
-		DebugPrintDom();
+		//DebugPrintDom();
 		type_id = static_cast<AchievementType_t>(ParseInt64("type_id"));
 		ParseString(type, "type");
 		rank = ParseInt64("rank");
+		delete dom; dom=nullptr; delete document; document=nullptr;
 	}
 
 	void Club_t::ParseDom()
 	{
 
 		string tmp;
-		DebugPrintDom();
+		//DebugPrintDom();
 		id = ParseInt64("id");
 		resource_state = ParseInt64("resource_state");
 		switch (resource_state)
@@ -575,11 +578,12 @@ namespace RideWeather
 			ParseString(url, "url");
 		case 1:;
 		}
+		delete dom; dom=nullptr; delete document; document=nullptr;
 	}
 
 	void Gear_t::ParseDom()
 	{
-		DebugPrintDom();
+		//DebugPrintDom();
 		resource_state = ParseInt64("resource_state");
 		switch (resource_state)
 		{
@@ -592,16 +596,18 @@ namespace RideWeather
 		case 1:
 			ParseString(id, "id");
 		}
+		
 	}
 
 	Bike_t::Bike_t(rapidjson::Value & DOM) : Gear_t(DOM)
 	{
-		DebugPrintDom();
-		//Note the Gear_t constructor swaps in the dom.
+		//DebugPrintDom();
+		//Note the Gear_t constructor swaps in the dom->
 		type_str.assign("Bike_t");
 		ParseStringIf(brand_name, "brand_name");
 		ParseStringIf(model_name, "model_name");
 		frame_type = static_cast<FrameType_t>(ParseInt64If("frame_type"));
+		delete dom; dom=nullptr; delete document; document=nullptr;
 	}
 
 	Polyline_t::Polyline_t(const string & str)
@@ -642,7 +648,7 @@ namespace RideWeather
 
 	void Map_t::ParseDom()
 	{
-		DebugPrintDom();
+		//DebugPrintDom();
 		ParseString(id,"id");
 		resource_state = ParseInt64("resource_state");
 		string tmp;
@@ -656,6 +662,7 @@ namespace RideWeather
 			ParseStringIf(tmp, "summary_polyline");
 			summary_polyline = std::make_unique<Polyline_t>(tmp);
 		}
+		delete dom; dom=nullptr; delete document; document=nullptr;
 	}
 
 	AccessToken_t::AccessToken_t(const boost::filesystem::path & filename) :AccessToken_t()
@@ -672,12 +679,13 @@ namespace RideWeather
 		json.assign((std::istreambuf_iterator<char>(file)), (std::istreambuf_iterator<char>()));
 		file.close();
 		ParseJson(json); ParseDom();		
+
 	}
 
 	void AccessToken_t::ParseDom()
 	{
 		string tmp;
-		DebugPrintDom();
+		//DebugPrintDom();
 		ParseString(tmp, "access_token");
 		if (tmp.length() != 40)
 			throw StravaException_t("AccessToken_t::AccesToken_t() access_token not 40 chars.");
@@ -685,39 +693,40 @@ namespace RideWeather
 
 		ParseString(token_type, "token_type");
 
-		if (!dom.HasMember("athlete"))
+		if (!dom->HasMember("athlete"))
 			throw StravaException_t("AccessToken_t::AccessToken_t() has no member athlete");
-		athlete = make_shared<Athlete_t>(dom["athlete"]);
+		athlete = make_shared<Athlete_t>((*dom)["athlete"]);
+		delete dom; dom=nullptr; delete document; document=nullptr;
 	}
 
 	void Route_t::ParseDom()
 	{
 		string tmp;
-		DebugPrintDom();
+		//DebugPrintDom();
 		resource_state = ParseInt64("resource_state");
 
 		switch (resource_state)
 		{
 		case 3:
-			if (!dom.HasMember("segments"))
+			if (!dom->HasMember("segments"))
 				throw StravaException_t("Route_t missing segments list");
-			if (!dom["segments"].IsArray())
+			if (!(*dom)["segments"].IsArray())
 				throw StravaException_t("Route_t segments not array");
-			for (auto& v : dom["segments"].GetArray())
+			for (auto& v : (*dom)["segments"].GetArray())
 			{
 				segments.push_back(Segment_t(v));
 			}
 		case 2:
 			ParseString(name, "name");
 			ParseString(description, "description");
-			if (!dom.HasMember("athlete"))
+			if (!dom->HasMember("athlete"))
 				throw StravaException_t("AccessToken_t::AccessToken_t() has no member athlete");
-			athlete = make_shared<Athlete_t>(dom["athlete"]);
+			athlete = make_shared<Athlete_t>((*dom)["athlete"]);
 			distance = ParseDouble("distance");
 			elevation_gain = ParseDouble("elevation_gain");
-			if (!dom.HasMember("map"))
+			if (!dom->HasMember("map"))
 				throw StravaException_t("AccessToken_t::AccessToken_t() has no member map");
-			map = make_shared<Map_t>(dom["map"]);
+			map = make_shared<Map_t>((*dom)["map"]);
 
 			ParseString(tmp, "type");
 			if (!tmp.compare("1"))
@@ -749,22 +758,23 @@ namespace RideWeather
 		case 1:
 			id = ParseInt64("id");
 		}
+		delete dom; dom=nullptr; delete document; document=nullptr;
 	}
 
 	void Race_t::ParseDom()
 	{
-		DebugPrintDom();
+		//DebugPrintDom();
 		id = ParseInt64("id");
 		resource_state = ParseInt64("resource_state");
 		string tmp;
 		switch (resource_state)
 		{
 		case 3:
-			if (!dom.HasMember("route_ids"))
+			if (!dom->HasMember("route_ids"))
 				throw StravaException_t("Route_t missing route_ids list");
-			if (!dom["route_ids"].IsArray())
+			if (!(*dom)["route_ids"].IsArray())
 				throw StravaException_t("Route_t route_ids not array");
-			for (auto& v : dom["route_ids"].GetArray())
+			for (auto& v : (*dom)["route_ids"].GetArray())
 			{
 				route_ids.push_back(v.GetInt64());
 			}
@@ -788,11 +798,12 @@ namespace RideWeather
 
 			ParseString(url, "url");
 		}
+		delete dom; dom=nullptr; delete document; document=nullptr;
 	}
 
 	void Segment_t::ParseDom()
 	{
-		DebugPrintDom();
+		//DebugPrintDom();
 		resource_state = ParseInt64("resource_state");
 
 		string tmp;
@@ -802,9 +813,9 @@ namespace RideWeather
 			ParseTimeS(created_at, "created_at");
 			ParseTimeS(updated_at, "updated_at");
 			total_elevation_gain = ParseDouble("total_elevation_gain");
-			if (!dom.HasMember("map"))
+			if (!dom->HasMember("map"))
 				throw StravaException_t("Segment_t() no member map");
-			map = make_shared<Map_t>(dom["map"]);
+			map = make_shared<Map_t>((*dom)["map"]);
 			effort_count = ParseInt64("effort_count");
 			athlete_count = ParseInt64("athlete_count");
 			star_count = ParseInt64("start_count");
@@ -817,12 +828,12 @@ namespace RideWeather
 			maximum_grade = ParseDouble("maximum_grade");
 			elevation_high = ParseDouble("elevation_high");
 			elevation_low = ParseDouble("elevation_low");
-			if (!dom.HasMember("start_latlng"))
+			if (!dom->HasMember("start_latlng"))
 				throw StravaException_t("Segment_t() no member start_latlng");
-			start_latlng = Point_t(dom["start_latlng"]);
-			if (!dom.HasMember("end_latlng"))
+			start_latlng = Point_t((*dom)["start_latlng"]);
+			if (!dom->HasMember("end_latlng"))
 				throw StravaException_t("Segment_t() no member end_latlng");
-			end_latlng = Point_t(dom["end_latlng"]);
+			end_latlng = Point_t((*dom)["end_latlng"]);
 			climb_category = ParseInt64("climb_category");
 			ParseString(city, "city");
 			ParseString(state, "state");
@@ -833,11 +844,12 @@ namespace RideWeather
 		case 1:
 			id = ParseInt64("id");
 		}
+		delete dom; dom=nullptr; delete document; document=nullptr;
 	}
 
 	void SegmentEffort_t::ParseDom()
 	{
-		DebugPrintDom();
+		//DebugPrintDom();
 		resource_state = ParseInt64("resource_state");
 
 		string tmp;
@@ -846,12 +858,12 @@ namespace RideWeather
 		case 3:
 		case 2:
 			ParseString(name, "name");
-			if (!dom.HasMember("activity"))
+			if (!dom->HasMember("activity"))
 				throw StravaException_t("SegmentEffort_t() no member activity");
-			activity = dom["activity"]["id"].GetInt64();
-			if (!dom.HasMember("athlete"))
+			activity = (*dom)["activity"]["id"].GetInt64();
+			if (!dom->HasMember("athlete"))
 				throw StravaException_t("SegmentEffort_t() no member athlete");
-			athlete = dom["athlete"]["id"].GetInt64();
+			athlete = (*dom)["athlete"]["id"].GetInt64();
 			elapsed_time = ParseInt64("elapsed_time");
 			moving_time = ParseInt64("moving_time");
 			ParseTimeS(start_date, "start_date");
@@ -863,35 +875,35 @@ namespace RideWeather
 			device_watts = ParseBoolIf("device_watts");
 			average_heartrate = ParseDoubleIf("average_heartrate");
 			max_heartrate = ParseDoubleIf("max_heartrate");
-			if (!dom.HasMember("segment"))
+			if (!dom->HasMember("segment"))
 				throw StravaException_t("SegmentEffort_t() no member segment");
-			segment = make_shared<Segment_t>(dom["segment"]);
+			segment = make_shared<Segment_t>((*dom)["segment"]);
 			kom_rank = ParseInt64("kom_rank");
 			pr_rank = ParseInt64("pr_rank");
 			hidden = ParseBool("hidden");
 		case 1:
 			id = ParseInt64("id");
 		}
-
+		delete dom; dom=nullptr; delete document; document=nullptr;
 	}
 
 	void Effort_t::ParseDom()
 	{
-		DebugPrintDom();
+		//DebugPrintDom();
 		resource_state = ParseInt64("resource_state");
 		id = ParseInt64("id");
 		ParseString(name, "name");
-		if (dom.HasMember("segment") && !dom["segment"].IsNull())
-			segment = dom["segment"]["id"].GetInt64();			
+		if (dom->HasMember("segment") && !(*dom)["segment"].IsNull())
+			segment = (*dom)["segment"]["id"].GetInt64();			
 		else
 			segment = 0;
 
-		if (dom.HasMember("activity") && !dom["activity"].IsNull())
-			activity = dom["activity"]["id"].GetInt64();
+		if (dom->HasMember("activity") && !(*dom)["activity"].IsNull())
+			activity = (*dom)["activity"]["id"].GetInt64();
 		else activity = 0; 
 
-		if (dom.HasMember("athlete") && !dom["athlete"].IsNull())
-			athlete = dom["athlete"]["id"].GetInt64(); 
+		if (dom->HasMember("athlete") && !(*dom)["athlete"].IsNull())
+			athlete = (*dom)["athlete"]["id"].GetInt64(); 
 		else athlete = 0;
 
 		kom_rank = ParseInt64If("kom_rank");
@@ -902,11 +914,12 @@ namespace RideWeather
 		ParseTimeS(start_date, "start_date");
 		ParseTimeS(start_date_local, "start_date_local");
 		distance = ParseInt64If("distance");
+		delete dom; dom=nullptr; delete document; document=nullptr;
 	}
 
 	void Splits_t::ParseDom()
 	{
-		DebugPrintDom();
+		//DebugPrintDom();
 		average_speed = ParseDouble("average_speed");
 		distance = ParseDouble("distance");
 		elapsed_time = ParseInt64("elapsed_time");
@@ -914,20 +927,21 @@ namespace RideWeather
 		pace_zone = ParseInt64("pace_zone");
 		moving_time = ParseInt64("moving_time");
 		split = ParseInt64("split");
+		delete dom; dom=nullptr; delete document; document=nullptr;
 	}
 
 
 
-	Data_t GetStreamType(rapidjson::Value & DOM)
+	Data_t GetStreamType(rapidjson::Value & dom)
 	{
 		string type;
 		StreamType_t stream_type;
 
-		if (!DOM.HasMember("type"))
+		if (!dom.HasMember("type"))
 			throw StravaException_t("GetStreamType missing type.\n");
-		if (!DOM["type"].IsString())
+		if (!(dom)["type"].IsString())
 			throw StravaException_t("GetStreamType type not a astring\n");
-		type.assign(DOM["type"].GetString(), DOM["type"].GetStringLength());
+		type.assign((dom)["type"].GetString(), (dom)["type"].GetStringLength());
 		if (!type.compare("time"))
 			stream_type = StreamType_t::time;
 		else if (!type.compare("latlng"))
@@ -983,7 +997,7 @@ namespace RideWeather
 
 	void Photo_t::ParseDom()
 	{
-		DebugPrintDom();
+		//DebugPrintDom();
 		id = ParseInt64("id");
 		resource_state = ParseInt64("resource_state");
 		ParseString(unique_id, "unique_id");
@@ -995,29 +1009,30 @@ namespace RideWeather
 		source = ParseInt64("source");
 		ParseTimeS(uploaded_at, "uploaded_at");
 		ParseTimeS(created_at, "created_at");
-		location = Point_t(dom["location"]);
+		location = Point_t((*dom)["location"]);
 
-		if (!dom.HasMember("urls"))
+		if (!dom->HasMember("urls"))
 			throw StravaException_t("Photo_t missing urls object");
-		Value& url = dom["urls"];
+		Value& url = (*dom)["urls"];
 		for (auto v = url.MemberBegin(); v != url.MemberEnd(); ++v)
 		{
 			string n(v->name.GetString());
 			URL_t val(v->value.GetString());
 			urls.insert(std::pair<string, URL_t>(n, val));
 		}
+		delete dom; dom=nullptr; delete document; document=nullptr;
 	}
 
 	void Lap_t::ParseDom()
 	{
-		DebugPrintDom();
-		if (dom.HasMember("activity") && dom["activity"].IsNull())
+		//DebugPrintDom();
+		if (dom->HasMember("activity") && (*dom)["activity"].IsNull())
 			activity = 0;
-		else activity = dom["activity"]["id"].GetInt64();
+		else activity = (*dom)["activity"]["id"].GetInt64();
 
-		if (dom.HasMember("athlete") && dom["athlete"].IsNull())
+		if (dom->HasMember("athlete") && (*dom)["athlete"].IsNull())
 			athlete = 0;
-		else athlete = dom["athlete"]["id"].GetInt64();
+		else athlete = (*dom)["athlete"]["id"].GetInt64();
 
 		average_cadence = ParseDoubleIf("average_cadence");
 		average_speed = ParseDoubleIf("average_speed");
@@ -1033,6 +1048,7 @@ namespace RideWeather
 		ParseTimeS(start_date, "start_date");
 		ParseTimeS(start_date_local, "start_date_local");
 		total_elevation_gain = ParseDoubleIf("total_elevation_gain");
+		delete dom; dom=nullptr; delete document; document=nullptr;
 	}
 
 }//namespace RideWeather

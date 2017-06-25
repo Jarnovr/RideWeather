@@ -41,6 +41,7 @@ void MainWindow::on_actionAbout_QT_triggered()
 
 void MainWindow::on_btn_Load_Token_clicked()
 {
+	ui->btn_Load_Token->setEnabled(false);
 	//gets token from config exist.
 	boost::filesystem::path token = Config->getToken();
 	//check existiance, otherwise ask user for file
@@ -56,8 +57,7 @@ void MainWindow::on_btn_Load_Token_clicked()
 		Config->setToken(token);
 	}
 	//try opening token
-	access_token = new RideWeather::AccessToken_t(token);
-	StravaApi = new RideWeather::StravaApi_t(*access_token,Config->cacheFolder);
+	StravaApi = new RideWeather::StravaApi_t(RideWeather::AccessToken_t(token),Config->cacheFolder);
 	athlete = std::make_shared<RideWeather::Athlete_t>(StravaApi->GetAthlete(0));
 	ui->btn_GetList->setEnabled(true);
 	StravaApi->LoadAthleteActivities(*athlete);
@@ -65,13 +65,15 @@ void MainWindow::on_btn_Load_Token_clicked()
 
 void MainWindow::on_btn_GetList_clicked()
 {
+	ui->btn_GetList->setEnabled(false);
 	StravaApi->RefreshAthleteActivities(*athlete);
+	ui->btn_GetList->setEnabled(true);
+	ui->btn_DownloadDetail->setEnabled(true);
 }
 
 
 MainWindow::~MainWindow()
 {
 	delete ui;
-	delete access_token;
 	delete StravaApi;
 }

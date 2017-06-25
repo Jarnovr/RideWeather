@@ -31,35 +31,40 @@ namespace RideWeather
 
 	class Strava_t {
 	protected:
-		rapidjson::Document document;
-		rapidjson::Value dom;
+		rapidjson::Document *document;
+		rapidjson::Value *dom;
 		string type_str;
+		Strava_t() { document = new rapidjson::Document; dom = new rapidjson::Value; }
+		virtual ~Strava_t() { if (dom!=nullptr) { delete dom; dom = nullptr; }
+			if (document!=nullptr) { delete document; document = nullptr; }
+			};
+
 		void ParseString(string& dest, string var)
 		{
-			if (!dom.HasMember(var))
+			if (!dom->HasMember(var))
 				throw StravaException_t(type_str.append(" missing ").append(var).append("\n"));
-			if (dom[var].IsNull())
+			if ((*dom)[var].IsNull())
 			{
 				dest.assign(""); 
 				return;
 			}
-			if (!dom[var].IsString())
+			if (!(*dom)[var].IsString())
 				throw StravaException_t(type_str.append(" ").append(var).append(" not a astring\n"));
-			dest.assign(dom[var].GetString(), dom[var].GetStringLength());
+			dest.assign((*dom)[var].GetString(), (*dom)[var].GetStringLength());
 		}
 
 		void ParseStringIf(string& dest, string var)
 		{
-			if (dom.HasMember(var))
+			if (dom->HasMember(var))
 			{
-				if (dom[var].IsNull())
+				if ((*dom)[var].IsNull())
 				{
 					dest.assign("");
 					return;
 				}
-				if (!dom[var].IsString())
+				if (!(*dom)[var].IsString())
 					throw StravaException_t(type_str.append(" ").append(var).append(" not a astring\n"));
-				dest.assign(dom[var].GetString(), dom[var].GetStringLength());
+				dest.assign((*dom)[var].GetString(), (*dom)[var].GetStringLength());
 			}
 			else
 				dest.assign("");
@@ -67,13 +72,13 @@ namespace RideWeather
 
 		void ParseTimeS(TimeS_t& dest, string var)
 		{
-			if (!dom.HasMember(var))
+			if (!dom->HasMember(var))
 				throw StravaException_t(type_str.append(" missing ").append(var).append("\n"));
-			if (dom[var].IsNull())
+			if ((*dom)[var].IsNull())
 				return;
-			if (!dom[var].IsString())
+			if (!(*dom)[var].IsString())
 				throw StravaException_t(type_str.append(" ").append(var).append(" not a astring\n"));
-			string tmp(dom[var].GetString(), dom[var].GetStringLength());
+			string tmp((*dom)[var].GetString(), (*dom)[var].GetStringLength());
 			//cut off last character (Z), as it is not part of format string
 			dest = boost::date_time::parse_delimited_time<boost::posix_time::ptime>(tmp.substr(0, tmp.length() - 1), 'T');
 		}
@@ -81,23 +86,23 @@ namespace RideWeather
 
 		int ParseInt(string var)
 		{
-			if (!dom.HasMember(var))
+			if (!dom->HasMember(var))
 				throw StravaException_t(type_str.append(" missing ").append(var).append("\n"));
-			if (dom[var].IsNull())
+			if ((*dom)[var].IsNull())
 				return 0;
-			if (!dom[var].IsInt())
+			if (!(*dom)[var].IsInt())
 				throw StravaException_t(type_str.append(" ").append(var).append(" not a int\n"));
-			return dom[var].GetInt();
+			return (*dom)[var].GetInt();
 		}
 		int ParseIntIf(string var)
 		{
-			if (dom.HasMember(var))
+			if (dom->HasMember(var))
 			{
-				if (dom[var].IsNull())
+				if ((*dom)[var].IsNull())
 					return 0; 
-				if (!dom[var].IsInt())
+				if (!(*dom)[var].IsInt())
 					throw StravaException_t(type_str.append(" ").append(var).append(" not a int\n"));
-				return dom[var].GetInt();
+				return (*dom)[var].GetInt();
 			}
 			else
 				return 0;
@@ -105,23 +110,23 @@ namespace RideWeather
 
 		ptrdiff_t ParseInt64(string var)
 		{
-			if (!dom.HasMember(var))
+			if (!dom->HasMember(var))
 				throw StravaException_t(type_str.append(" missing ").append(var).append("\n"));
-			if (dom[var].IsNull())
+			if ((*dom)[var].IsNull())
 				return 0;
-			if (!dom[var].IsInt64())
+			if (!(*dom)[var].IsInt64())
 				throw StravaException_t(type_str.append(" ").append(var).append(" not a int64\n"));
-			return dom[var].GetInt64();
+			return (*dom)[var].GetInt64();
 		}
 		ptrdiff_t ParseInt64If(string var)
 		{
-			if (dom.HasMember(var))
+			if (dom->HasMember(var))
 			{
-				if (dom[var].IsNull())
+				if ((*dom)[var].IsNull())
 					return 0;
-				if (!dom[var].IsInt64())
+				if (!(*dom)[var].IsInt64())
 					throw StravaException_t(type_str.append(" ").append(var).append(" not a int64\n"));
-				return dom[var].GetInt64();
+				return (*dom)[var].GetInt64();
 			}
 			else
 				return 0;
@@ -129,24 +134,24 @@ namespace RideWeather
 
 		double ParseDouble(string var)
 		{
-			if (!dom.HasMember(var))
+			if (!dom->HasMember(var))
 				throw StravaException_t(type_str.append(" missing ").append(var).append("\n"));
-			if (dom[var].IsNull())
+			if ((*dom)[var].IsNull())
 				return 0.0;
 
-			if (!dom[var].IsDouble())
+			if (!(*dom)[var].IsDouble())
 				return 0.0;
-			return dom[var].GetDouble();
+			return (*dom)[var].GetDouble();
 		}
 		double ParseDoubleIf(string var)
 		{
-			if (dom.HasMember(var))
+			if (dom->HasMember(var))
 			{
-				if (dom[var].IsNull())
+				if ((*dom)[var].IsNull())
 					return 0.0;
-				if (!dom[var].IsDouble())
+				if (!(*dom)[var].IsDouble())
 					throw StravaException_t(type_str.append(" ").append(var).append(" not a double\n"));
-				return dom[var].GetDouble();
+				return (*dom)[var].GetDouble();
 			}
 			else
 				return 0.0;
@@ -155,20 +160,20 @@ namespace RideWeather
 
 		bool ParseBool(string var)
 		{
-			if (!dom.HasMember(var))
+			if (!dom->HasMember(var))
 				throw StravaException_t(type_str.append(" missing ").append(var).append("\n"));
-			if (!dom[var].IsBool())
+			if (!(*dom)[var].IsBool())
 				throw StravaException_t(type_str.append(" ").append(var).append(" not a bool\n"));
-			return dom[var].GetBool();
+			return (*dom)[var].GetBool();
 		}
 
 		bool ParseBoolIf(string var)
 		{
-			if (dom.HasMember(var))
+			if (dom->HasMember(var))
 			{
-				if (!dom[var].IsBool())
+				if (!(*dom)[var].IsBool())
 					throw StravaException_t(type_str.append(" ").append(var).append(" not a bool\n"));
-				return dom[var].GetBool();
+				return (*dom)[var].GetBool();
 			}
 			else
 				return false;
@@ -179,7 +184,7 @@ namespace RideWeather
 			rapidjson::StringBuffer buffer;
 			buffer.Clear();
 			rapidjson::Writer<rapidjson::StringBuffer> writer(buffer);
-			dom.Accept(writer);
+			dom->Accept(writer);
 			std::cerr << type_str << ": " << buffer.GetString() << std::endl;
 #endif // !NDEBUG
 		}
@@ -257,7 +262,7 @@ namespace RideWeather
 			type_str.assign("Athlete_t");
 		};
 		Athlete_t(const string& json) : Athlete_t() { ParseJson(json); ParseDom(); };
-		Athlete_t(rapidjson::Value& DOM) : Athlete_t() { dom.CopyFrom(DOM, document.GetAllocator()); 	ParseDom(); };
+		Athlete_t(rapidjson::Value& DOM) : Athlete_t() { dom->CopyFrom(DOM, document->GetAllocator()); 	ParseDom(); };
 		virtual ~Athlete_t() {};
 		
 	protected:
@@ -289,7 +294,7 @@ namespace RideWeather
 			type_str.assign("Total_t");
 		};
 		Total_t(const string& json) : Total_t() { ParseJson(json); ParseDom(); };
-		Total_t(rapidjson::Value& DOM) : Total_t() { dom.CopyFrom(DOM, document.GetAllocator()); 	ParseDom(); };
+		Total_t(rapidjson::Value& DOM) : Total_t() { dom->CopyFrom(DOM, document->GetAllocator()); 	ParseDom(); };
 	protected:
 		void ParseDom();
 	};
@@ -415,7 +420,7 @@ namespace RideWeather
 			type_str.assign("Activity_t");//set type str
 		};
 		Activity_t(const string& json) :Activity_t() { ParseJson(json); ParseDom(); };
-		Activity_t(rapidjson::Value& DOM) : Activity_t() { dom.CopyFrom(DOM, document.GetAllocator()); 	ParseDom(); };
+		Activity_t(rapidjson::Value& DOM) : Activity_t() { dom->CopyFrom(DOM, document->GetAllocator()); 	ParseDom(); };
 
 	protected:
 		void ParseDom();
@@ -431,7 +436,7 @@ namespace RideWeather
 			type_str.assign("Achievement_t");//set type str
 		};
 		Achievement_t(const string & json) : Achievement_t() { ParseJson(json); ParseDom(); };
-		Achievement_t(rapidjson::Value & DOM) : Achievement_t() { dom.CopyFrom(DOM, document.GetAllocator());  ParseDom(); };
+		Achievement_t(rapidjson::Value & DOM) : Achievement_t() { dom->CopyFrom(DOM, document->GetAllocator());  ParseDom(); };
 	protected:
 		void ParseDom();
 	};
@@ -469,7 +474,7 @@ namespace RideWeather
 			type_str.assign("Club_t");
 		};
 		Club_t(const string & json) : Club_t() { ParseJson(json); ParseDom(); };
-		Club_t(rapidjson::Value& DOM) : Club_t() { dom.CopyFrom(DOM, document.GetAllocator());  ParseDom(); };
+		Club_t(rapidjson::Value& DOM) : Club_t() { dom->CopyFrom(DOM, document->GetAllocator());  ParseDom(); };
 	protected:
 		void ParseDom();
 	};
@@ -484,7 +489,7 @@ namespace RideWeather
 		ptrdiff_t resource_state;
 		Gear_t() : primary(false), distance(0.0), resource_state(0) { type_str.assign("Gear_t"); };
 		Gear_t(const string & json) : Gear_t() { ParseJson(json); ParseDom(); };
-		Gear_t(rapidjson::Value& DOM) : Gear_t() { dom.CopyFrom(DOM, document.GetAllocator());  ParseDom(); };
+		Gear_t(rapidjson::Value& DOM) : Gear_t() { dom->CopyFrom(DOM, document->GetAllocator());  ParseDom(); };
 	protected:
 		void ParseDom();
 	};
@@ -502,7 +507,7 @@ namespace RideWeather
 	class Shoe_t : public Gear_t {
 	public:
 		Shoe_t() : Gear_t() { type_str.assign("Shoe_t"); };
-		Shoe_t(rapidjson::Value& DOM) : Gear_t(DOM) { type_str.assign("Shoe_t"); };
+		Shoe_t(rapidjson::Value& DOM) : Gear_t(DOM) { type_str.assign("Shoe_t"); delete dom; dom = nullptr; delete document; document = nullptr;};
 	};
 
 	class Segment_t;
@@ -521,7 +526,7 @@ namespace RideWeather
 		ptrdiff_t resource_state;
 		std::unique_ptr<Polyline_t> polyline;
 		Map_t() : resource_state(0) { type_str.assign("Map_t"); };
-		Map_t(rapidjson::Value& DOM) : Map_t() { dom.CopyFrom(DOM, document.GetAllocator());  ParseDom(); };
+		Map_t(rapidjson::Value& DOM) : Map_t() { dom->CopyFrom(DOM, document->GetAllocator());  ParseDom(); };
 	protected:
 		void ParseDom();
 	};
@@ -549,7 +554,7 @@ namespace RideWeather
 			starred(false), timestamp(0) {
 			type_str.assign("Route_t");
 		}
-		Route_t(rapidjson::Value & DOM) : Route_t() { dom.CopyFrom(DOM, document.GetAllocator());  ParseDom(); };
+		Route_t(rapidjson::Value & DOM) : Route_t() { dom->CopyFrom(DOM, document->GetAllocator());  ParseDom(); };
 		Route_t(string & json) : Route_t() { ParseJson(json); ParseDom(); };
 	protected:
 		void ParseDom();
@@ -616,7 +621,7 @@ namespace RideWeather
 			type_str.assign("Segment_t");
 		};
 		Segment_t(const string& json) : Segment_t() { ParseJson(json); ParseDom(); };
-		Segment_t(rapidjson::Value & DOM) { dom.CopyFrom(DOM, document.GetAllocator());  ParseDom(); };
+		Segment_t(rapidjson::Value & DOM) { dom->CopyFrom(DOM, document->GetAllocator());  ParseDom(); };
 	protected:
 		void ParseDom();
 	};
@@ -650,7 +655,7 @@ namespace RideWeather
 			type_str.assign("SegmentEffort_t");
 		};
 		SegmentEffort_t(const string& json) : SegmentEffort_t() { ParseJson(json); ParseDom(); };
-		SegmentEffort_t(rapidjson::Value& DOM) : SegmentEffort_t() { dom.CopyFrom(DOM, document.GetAllocator());  ParseDom(); };
+		SegmentEffort_t(rapidjson::Value& DOM) : SegmentEffort_t() { dom->CopyFrom(DOM, document->GetAllocator());  ParseDom(); };
 	protected:
 		void ParseDom();
 	};
@@ -675,7 +680,7 @@ namespace RideWeather
 			kom_rank(0), pr_rank(0), elapsed_time(0), moving_time(0), distance(0) {
 			type_str.assign("Effort_t");
 		};
-		Effort_t(rapidjson::Value& DOM) : Effort_t() { dom.CopyFrom(DOM, document.GetAllocator());  ParseDom(); };
+		Effort_t(rapidjson::Value& DOM) : Effort_t() { dom->CopyFrom(DOM, document->GetAllocator());  ParseDom(); };
 		Effort_t(const string& json) : Effort_t() { ParseJson(json); ParseDom(); };
 	protected:
 		void ParseDom();
@@ -695,7 +700,7 @@ namespace RideWeather
 			type_str.assign("Splits_t");
 		};
 		Splits_t(const string& json) : Splits_t() { ParseJson(json); ParseDom(); };
-		Splits_t(rapidjson::Value& DOM) : Splits_t() { dom.CopyFrom(DOM, document.GetAllocator());  ParseDom(); };
+		Splits_t(rapidjson::Value& DOM) : Splits_t() { dom->CopyFrom(DOM, document->GetAllocator());  ParseDom(); };
 	protected:
 		void ParseDom();
 	};
@@ -723,14 +728,14 @@ namespace RideWeather
 			type_str.assign("Stream_t");
 		};
 		Stream_t(const string& json) : Stream_t() { ParseJson(json); ParseDom(); };
-		Stream_t(rapidjson::Value& DOM) : Stream_t() { dom.CopyFrom(DOM, document.GetAllocator());  ParseDom(); };
+		Stream_t(rapidjson::Value& DOM) : Stream_t() { dom->CopyFrom(DOM, document->GetAllocator());  ParseDom(); };
 	protected:
 		void ParseDom();
 		void ParseData();
 	};
 
 
-	Data_t GetStreamType(rapidjson::Value& DOM);
+	Data_t GetStreamType(rapidjson::Value& dom);
 
 
 	class Photo_t : public Strava_t {
@@ -750,7 +755,7 @@ namespace RideWeather
 		Point_t location;
 		Photo_t() : id(0), activity_id(0), resource_state(0), source(0) { type_str.assign("Photo_t"); };
 		Photo_t(const string& json) : Photo_t() { ParseJson(json); ParseDom(); };
-		Photo_t(rapidjson::Value& DOM) : Photo_t() { dom.CopyFrom(DOM, document.GetAllocator());  ParseDom(); };
+		Photo_t(rapidjson::Value& DOM) : Photo_t() { dom->CopyFrom(DOM, document->GetAllocator());  ParseDom(); };
 	protected:
 		void ParseDom();
 	};
@@ -779,7 +784,7 @@ namespace RideWeather
 			resource_state(0), split(0), start_index(0), total_elevation_gain(0.0) {
 			type_str.assign("Lap_t");
 		};
-		Lap_t(rapidjson::Value& DOM) : Lap_t() { dom.CopyFrom(DOM, document.GetAllocator());  ParseDom(); };
+		Lap_t(rapidjson::Value& DOM) : Lap_t() { dom->CopyFrom(DOM, document->GetAllocator());  ParseDom(); };
 		Lap_t(const string& json) : Lap_t() { ParseJson(json); ParseDom(); };
 	protected:
 		void ParseDom();
@@ -828,9 +833,9 @@ namespace RideWeather
 
 		//parse data
 		data.reserve(original_size);
-		if (!dom.HasMember("data"))
+		if (!dom->HasMember("data"))
 			throw StravaException_t("Stream_t missing data list");
-		if (!dom["data"].IsArray())
+		if (!(*dom)["data"].IsArray())
 			throw StravaException_t("Steam_t data not array");
 		ParseData();
 
@@ -846,7 +851,7 @@ namespace RideWeather
 	inline void Stream_t<int>::ParseData()
 	{
 		data_type = Data_t::kInt;
-		for (auto& v : dom["data"].GetArray())
+		for (auto& v : (*dom)["data"].GetArray())
 		{
 			data.push_back(v.GetInt());
 		}
@@ -856,7 +861,7 @@ namespace RideWeather
 	inline void Stream_t<double>::ParseData()
 	{
 		data_type = Data_t::kDouble;
-		for (auto& v : dom["data"].GetArray())
+		for (auto& v : (*dom)["data"].GetArray())
 		{
 			data.push_back(v.GetDouble());
 		}
@@ -866,7 +871,7 @@ namespace RideWeather
 	inline void Stream_t<bool>::ParseData()
 	{
 		data_type = Data_t::kBool;
-		for (auto& v : dom["data"].GetArray())
+		for (auto& v : (*dom)["data"].GetArray())
 		{
 			data.push_back(v.GetBool());
 		}
@@ -876,7 +881,7 @@ namespace RideWeather
 	inline void Stream_t<Point_t>::ParseData()
 	{
 		data_type = Data_t::kPoint;
-		for (auto& v : dom["data"].GetArray())
+		for (auto& v : (*dom)["data"].GetArray())
 		{
 			data.push_back(Point_t(v));
 		}
