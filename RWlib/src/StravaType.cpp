@@ -38,6 +38,21 @@ namespace RideWeather
 		dom->CopyFrom(*document,document->GetAllocator());	
 	}
 
+	void Athlete_t::MakeActivityIds()
+	{
+		activity_ids.clear();
+		activity_ids.reserve(activities.size());
+		for (auto& v : activities)
+		{
+			activity_ids.push_back(v.first);
+		}
+	}
+
+	bool Athlete_t::isActIdListOutDated() const
+	{
+		return activities.size() != activity_ids.size();
+	}
+
 	void Athlete_t::ParseDom()
 	{
 		string tmp;
@@ -956,6 +971,8 @@ namespace RideWeather
 			//coordinates
 			return Data_t::kPoint;
 			break;
+		default:
+			return Data_t::kNull;
 		}
 	}
 

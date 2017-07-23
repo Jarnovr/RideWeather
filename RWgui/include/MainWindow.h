@@ -5,6 +5,7 @@
 #pragma warning (default: 4127)
 #include "StravaType.h"
 #include "StravaApi.h"
+#include "AthleteModelView.h"
 
 namespace Ui {
 	class MainWindow;
@@ -29,6 +30,7 @@ protected:
 	Ui::MainWindow *ui;
 	std::shared_ptr<RideWeather::Athlete_t> athlete;
 	RideWeather::StravaApi_t *StravaApi;
+	RideWeather::ActivityModel *_activityModel;
 };
 
 #pragma warning(disable:4127)

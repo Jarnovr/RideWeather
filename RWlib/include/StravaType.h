@@ -256,6 +256,7 @@ namespace RideWeather
 		std::list<Bike_t> bikes;//detailed only
 		std::list<Shoe_t> shoes;//detailed only
 		std::map<ptrdiff_t,Activity_t> activities;
+		std::vector<ptrdiff_t> activity_ids;
 		TimeS_t last_activity;
 		Athlete_t() :id(0), resource_state(0), sex('\0'),
 			friend_(Connection_t::null), follower(Connection_t::null), premium(false),
@@ -267,7 +268,8 @@ namespace RideWeather
 		Athlete_t(const string& json) : Athlete_t() { ParseJson(json); ParseDom(); };
 		Athlete_t(rapidjson::Value& DOM) : Athlete_t() { dom->CopyFrom(DOM, document->GetAllocator()); 	ParseDom(); };
 		virtual ~Athlete_t() {};
-		
+		void MakeActivityIds();
+		bool isActIdListOutDated() const;
 	protected:
 		void ParseDom();
 	};

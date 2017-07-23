@@ -14,14 +14,14 @@
 RideWeather::Configuration* Config;
 
 MainWindow::MainWindow(QWidget *parent) :
-	QMainWindow(parent), ui(new Ui::MainWindow)
+	QMainWindow(parent), ui(new Ui::MainWindow), StravaApi (nullptr), _activityModel(nullptr)
 {
 	QCoreApplication::setOrganizationDomain("roosmalen.org");
 	QCoreApplication::setOrganizationName("JarnoSoft");
 	QCoreApplication::setApplicationName("RideWeather");
 		Config = new RideWeather::Configuration();
 	ui->setupUi(this);
-	ui->lbl_Output->setText(QString::fromStdString(Config->configFileName.string()));
+	ui->lbl_Output->setText(QString::fromStdString(Config->configFileName.string()));	
 }
 
 void MainWindow::on_actionExit_triggered()
@@ -71,6 +71,8 @@ void MainWindow::on_btn_GetList_clicked()
 	StravaApi->RefreshAthleteActivities(*athlete);
 	ui->btn_GetList->setEnabled(true);
 	ui->btn_DownloadDetail->setEnabled(true);
+	_activityModel = new RideWeather::ActivityModel(athlete);
+	ui->tableView_Activities->setModel(_activityModel);
 }
 
 void MainWindow::on_btn_DownloadDetail_clicked()
@@ -85,5 +87,6 @@ void MainWindow::on_btn_DownloadDetail_clicked()
 MainWindow::~MainWindow()
 {
 	delete ui;
-	delete StravaApi;
+	if (StravaApi!=nullptr)
+		delete StravaApi;
 }
