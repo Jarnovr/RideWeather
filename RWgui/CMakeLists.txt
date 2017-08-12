@@ -8,7 +8,7 @@ set(CMAKE_AUTOMOC ON)
 set(CMAKE_AUTOUIC ON)
 
 if(WIN32)
-set(CMAKE_PREFIX_PATH "D:/Qt/5.8/msvc2015_64/lib/cmake")
+set(CMAKE_PREFIX_PATH "D:/Qt/5.9.1/msvc2017_64/lib/cmake")
 endif()
 
 IF(WIN32)
