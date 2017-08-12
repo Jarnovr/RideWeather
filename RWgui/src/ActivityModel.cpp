@@ -1,4 +1,4 @@
-#include "AthleteModelView.h"
+#include "ACtivityModel.h"
 
 
 #include <QDateTime>

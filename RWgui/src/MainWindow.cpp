@@ -14,7 +14,7 @@
 RideWeather::Configuration* Config;
 
 MainWindow::MainWindow(QWidget *parent) :
-	QMainWindow(parent), ui(new Ui::MainWindow), StravaApi (nullptr), _activityModel(nullptr)
+	QMainWindow(parent), ui(new Ui::MainWindow), _stravaApiController (nullptr), _activityModel(nullptr)
 {
 	QCoreApplication::setOrganizationDomain("roosmalen.org");
 	QCoreApplication::setOrganizationName("JarnoSoft");
@@ -48,7 +48,7 @@ void MainWindow::on_btn_Load_Token_clicked()
 	//check existiance, otherwise ask user for file
 	if (!boost::filesystem::exists(token))
 	{
-		std::cerr << "Token filename from config does not exist."<<std::endl;
+		std::cerr << "Token filename from config does not exist." << std::endl;
 		token = QFileDialog::getOpenFileName(this, "Open Strava Token", "", "Strava Tokens (*.token);;All Files (*)").toUtf8().toStdString();
 		if (!boost::filesystem::exists(token))
 		{
@@ -58,10 +58,18 @@ void MainWindow::on_btn_Load_Token_clicked()
 		Config->setToken(token);
 	}
 	//try opening token
-	StravaApi = new RideWeather::StravaApi_t(RideWeather::AccessToken_t(token),Config->cacheFolder);
-	athlete = std::make_shared<RideWeather::Athlete_t>(StravaApi->GetAthlete(0));
-	ui->btn_GetList->setEnabled(true);
+	StravaApi = new RideWeather::StravaApi_t(RideWeather::AccessToken_t(token), Config->cacheFolder);
+	_stravaApiController = new RideWeather::StravaApiController_t(StravaApi);
+	connect(_stravaApiController, &RideWeather::StravaApiController_t::AthleteReadySignal, this, &MainWindow::on_AthleteReady);
+	_stravaApiController->GetAthlete(0);
+}
+
+
+void MainWindow::on_AthleteReady(const std::shared_ptr<RideWeather::Athlete_t> & Athlete)
+{
+	athlete = Athlete;	
 	StravaApi->LoadAthleteActivitiesList(*athlete);
+	ui->btn_GetList->setEnabled(true);
 }
 
 void MainWindow::on_btn_GetList_clicked()
