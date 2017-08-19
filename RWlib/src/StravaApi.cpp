@@ -72,7 +72,7 @@ namespace RideWeather
 		//reserver memory
 		out.reserve(fs);
 		//read using iteratior
-		out.assign((std::istreambuf_iterator<char>(file)), (std::istreambuf_iterator<char>()) );
+		out.assign((std::istreambuf_iterator<char>(file)), (std::istreambuf_iterator<char>()));
 		file.close();
 		return true;
 
@@ -113,8 +113,8 @@ namespace RideWeather
 		cpr::Header header{ { "Authorization", auth } };
 		std::cout << "Accessing: " << cpr::Url{ url_base } << std::endl;
 		cpr::Response r = cpr::Get(cpr::Url{ url_base }, header, timeout);
-		
-		if(r.error.code!=cpr::ErrorCode::OK)
+
+		if (r.error.code != cpr::ErrorCode::OK)
 		{
 			std::cerr << "HTTP Error." << std::endl;
 			std::cerr << "Error_code: " << int(r.error.code) << std::endl;
@@ -126,7 +126,7 @@ namespace RideWeather
 			else
 				throw StravaException_t("StravaApi::GetAthlete: encountered HTTP error.");
 		}
-		
+
 		if (r.status_code >= 400)
 		{
 			std::cerr << "Received HTTP Error." << std::endl;
@@ -142,7 +142,7 @@ namespace RideWeather
 		ProcessResponse(r.header);//Process rate limiting part of response
 
 		//put in cache
-		WriteCache(string("/athletes/").append(std::to_string(id)).append("/athlete"),r.text);
+		WriteCache(string("/athletes/").append(std::to_string(id)).append("/athlete"), r.text);
 
 		return r.text;
 	}
@@ -274,7 +274,7 @@ namespace RideWeather
 		const double distance, const bool private_act, const bool trainer, const bool commute)
 	{
 		//Rate Limiting
-		WaitIfNeeded(); 
+		WaitIfNeeded();
 		const static cpr::Url url{ "https://www.strava.com/api/v3/activities" };
 		string auth("Bearer ");
 		auth.append(at.access_token, 40);
@@ -359,7 +359,7 @@ namespace RideWeather
 		string auth("Bearer ");
 		auth.append(at.access_token, 40);
 		cpr::Header header{ { "Authorization", auth } };
-		
+
 		if ((before > 0 && page > 0) || (after > 0 && page > 0))
 			throw StravaException_t("StravaApi::ListActivities, cannot use more than 1 of before, after and page.\n");
 		cpr::Parameters payload({ { "per_page",std::to_string(per_page) } });
@@ -444,6 +444,7 @@ namespace RideWeather
 		ptrdiff_t number_activities;
 		std::getline(file, line);
 		std::istringstream(line) >> number_activities;
+		ptrdiff_t progress_freq = number_activities / 20;
 		for (ptrdiff_t i = 0; i < number_activities; i++)
 		{
 			ptrdiff_t act_id;
@@ -458,7 +459,7 @@ namespace RideWeather
 				std::cerr << "StravaApi_t::LoadAthleteActivities: Error getting and inserting activity into athlete" << std::endl;
 				std::cerr << ex.what() << std::endl;
 			}
-			if (progress != nullptr)
+			if (progress != nullptr && ((i%progress_freq) == 0))
 			{
 				progress(static_cast<int>(i * 100 / number_activities));
 			}
@@ -498,11 +499,11 @@ namespace RideWeather
 		if (dowload_all)
 			athlete.last_activity = boost::posix_time::ptime(boost::gregorian::date(1990, 1, 1));
 		else
-			athlete.last_activity-= boost::posix_time::hours(24);
+			athlete.last_activity -= boost::posix_time::hours(24);
 
 		rapidjson::Document document;
 		ptrdiff_t counter = 0;
-		do		
+		do
 		{
 			after = athlete.last_activity;
 			//get json
@@ -510,7 +511,7 @@ namespace RideWeather
 			json = ListActivities(-1, boost::posix_time::to_time_t(after));
 			//parse json array
 			//First create rapidjson object
-		
+
 			document.Parse<rapidjson::ParseFlag::kParseFullPrecisionFlag | rapidjson::ParseFlag::kParseCommentsFlag | rapidjson::ParseFlag::kParseNanAndInfFlag>(json);
 			if (document.HasParseError())
 			{
@@ -526,7 +527,7 @@ namespace RideWeather
 			//loop over activities in array;
 			int  i = 0; int total = document.GetArray().Size();
 			for (auto& v : document.GetArray())
-			{				
+			{
 				try {
 					Activity_t tmp_activity(v);//create activity object from sujmamry jso
 					athlete.activities.insert(std::pair<ptrdiff_t, Activity_t>(tmp_activity.id, Activity_t(GetActivity(tmp_activity.id))));
@@ -547,7 +548,7 @@ namespace RideWeather
 			}
 			std::cerr << document.GetArray().Size() << std::endl;
 		} while (document.GetArray().Size() > 1 && counter++ < 100);
-		
+
 		//save activity_list to cache
 		SaveAthleteActivitiesList(athlete);
 	}
@@ -558,7 +559,7 @@ namespace RideWeather
 		{
 			ptrdiff_t act_id = v.first;
 			Activity_t& activity = v.second;
-			
+
 
 		}
 

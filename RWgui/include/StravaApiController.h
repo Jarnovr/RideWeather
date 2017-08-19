@@ -26,6 +26,7 @@ namespace RideWeather
 			}
 			return _instance;
 		}
+		virtual ~StravaApiWorker() { _instance = nullptr; }
 	public slots:
 		void GetAthlete(const ptrdiff_t id) const;
 		void GetList(const std::shared_ptr<RideWeather::Athlete_t>& athlete) const;

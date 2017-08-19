@@ -81,9 +81,6 @@
           <property name="toolTip">
            <string>Load Athlete Token</string>
           </property>
-          <property name="statusTip">
-           <string>Load Strava Athlete token</string>
-          </property>
           <property name="text">
            <string>Load Athlete Token</string>
           </property>
@@ -109,9 +106,6 @@
           <property name="toolTip">
            <string>Get new activities from Strava</string>
           </property>
-          <property name="statusTip">
-           <string>Get new activities from Strava</string>
-          </property>
           <property name="text">
            <string>Refresh Activity List</string>
           </property>
@@ -135,9 +129,6 @@
            </size>
           </property>
           <property name="toolTip">
-           <string>Download details including gps track of the activities</string>
-          </property>
-          <property name="statusTip">
            <string>Download details including gps track of the activities</string>
           </property>
           <property name="text">
@@ -178,9 +169,6 @@
             <horstretch>1</horstretch>
             <verstretch>1</verstretch>
            </sizepolicy>
-          </property>
-          <property name="statusTip">
-           <string>List of Strava Activities</string>
           </property>
           <property name="editTriggers">
            <set>QAbstractItemView::NoEditTriggers</set>
@@ -262,9 +250,6 @@
   <action name="actionExit">
    <property name="text">
     <string>Exit</string>
-   </property>
-   <property name="statusTip">
-    <string>Exit Application</string>
    </property>
    <property name="shortcut">
     <string>Ctrl+X</string>

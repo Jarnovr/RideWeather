@@ -32,7 +32,7 @@ public slots:
 	void on_AthleteReady(const std::shared_ptr<RideWeather::Athlete_t> & Athlete);
 	void on_ListReady();
 	void on_DownloadDetailComplete();
-	void on_SetProgress(int value) { progressBar->setValue (value); };
+	void on_SetProgress(int value) { progressBar->setVisible(true); progressBar->setValue(value); };
 signals:
 	void GetAthleteSignal(const ptrdiff_t id);
 	void GetListSignal(const std::shared_ptr<RideWeather::Athlete_t>& athlete);
