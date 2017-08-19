@@ -11,6 +11,9 @@
 
 namespace RideWeather
 {
+	typedef void(*progress_t)(int);
+
+
 	class StravaApi_t {
 	public:
 		bool ExceptInsteadWait;
@@ -39,10 +42,10 @@ namespace RideWeather
 		std::string GetActivityStream(ptrdiff_t id, string types, string resolution = "");
 
 		//General
-		void LoadAthleteActivitiesList(Athlete_t& athlete);
+		void LoadAthleteActivitiesList(Athlete_t& athlete, progress_t progress = nullptr);
 		void SaveAthleteActivitiesList(Athlete_t& athlete);
-		void RefreshAthleteActivities(Athlete_t& athlete, bool download_all=false);
-		void GetAthleteActivityStreams(Athlete_t& athlete, bool download_all = false);
+		void RefreshAthleteActivities(Athlete_t& athlete, progress_t progress = nullptr, bool download_all=false);
+		void GetAthleteActivityStreams(Athlete_t& athlete, progress_t progress = nullptr, bool download_all = false);
 	protected:
 		AccessToken_t at;
 		boost::filesystem::path cacheFolder;

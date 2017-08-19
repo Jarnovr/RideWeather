@@ -12,27 +12,38 @@ namespace RideWeather
 		qRegisterMetaType<ptrdiff_t>("ptrdiff_t");
 		qRegisterMetaType<std::shared_ptr<RideWeather::Athlete_t>>("std::shared_ptr<RideWeather::Athlete_t>");
 
-		GetAthleteWorker *getAthleteWorker = new GetAthleteWorker(_stravaApi);
-		getAthleteWorker->moveToThread(&workerThread);
-		connect(&workerThread, &QThread::finished, getAthleteWorker, &QObject::deleteLater);
-		connect(this, &StravaApiController_t::GetAthleteSignal, getAthleteWorker, &GetAthleteWorker::GetAthlete);
-		connect(getAthleteWorker, &GetAthleteWorker::AthleteReady, this, &StravaApiController_t::AthleteReady);
-
-
+		stravaApiWorker = StravaApiWorker::GetWorker(stravaApi);
+		stravaApiWorker->moveToThread(&workerThread);
+		connect(&workerThread, &QThread::finished, stravaApiWorker, &QObject::deleteLater);
+				
 		workerThread.start();
 	}
 
 
 	StravaApiController_t::~StravaApiController_t()
 	{
+		delete stravaApiWorker;
 		workerThread.quit();
 		workerThread.wait();
 	}
+	StravaApiWorker* StravaApiWorker::_instance = nullptr;
 
-
-	void GetAthleteWorker::GetAthlete(const ptrdiff_t id)
+	void StravaApiWorker::GetAthlete(const ptrdiff_t id) const
 	{
 		auto athlete = std::make_shared<RideWeather::Athlete_t>(_stravaApi->GetAthlete(id));
+		_stravaApi->LoadAthleteActivitiesList(*athlete, &StravaApiWorker::SetProgress);
 		emit AthleteReady(athlete);
+	}
+
+	void StravaApiWorker::GetList(const std::shared_ptr<RideWeather::Athlete_t>& athlete) const
+	{
+		_stravaApi->RefreshAthleteActivities(*athlete, &StravaApiWorker::SetProgress);
+		emit ListReady();
+	}
+
+	void StravaApiWorker::DownloadDetail(const std::shared_ptr<RideWeather::Athlete_t>& athlete) const
+	{
+		_stravaApi->GetAthleteActivityStreams(*athlete, &StravaApiWorker::SetProgress);
+		emit DownloadDetailReady();
 	}
 }

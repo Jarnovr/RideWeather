@@ -430,7 +430,7 @@ namespace RideWeather
 		return r.text;
 	}
 
-	void StravaApi_t::LoadAthleteActivitiesList(Athlete_t & athlete)
+	void StravaApi_t::LoadAthleteActivitiesList(Athlete_t & athlete, progress_t progress)
 	{
 		boost::filesystem::path fn = cacheFolder;
 		fn.append(string("/athletes/").append(std::to_string(athlete.id)).append("/activities.idx"));
@@ -457,6 +457,10 @@ namespace RideWeather
 			{
 				std::cerr << "StravaApi_t::LoadAthleteActivities: Error getting and inserting activity into athlete" << std::endl;
 				std::cerr << ex.what() << std::endl;
+			}
+			if (progress != nullptr)
+			{
+				progress(static_cast<int>(i * 100 / number_activities));
 			}
 		}
 
@@ -487,7 +491,7 @@ namespace RideWeather
 
 	}
 
-	void StravaApi_t::RefreshAthleteActivities(Athlete_t & athlete, bool dowload_all)
+	void StravaApi_t::RefreshAthleteActivities(Athlete_t & athlete, progress_t progress, bool dowload_all)
 	{
 		//Set start point;
 		boost::posix_time::ptime after;
@@ -520,9 +524,9 @@ namespace RideWeather
 				throw StravaException_t(string("StravaApi_t::RefreshAtheleteActivities").append(", returned DOM no array\n"));
 
 			//loop over activities in array;
-
+			int  i = 0; int total = document.GetArray().Size();
 			for (auto& v : document.GetArray())
-			{
+			{				
 				try {
 					Activity_t tmp_activity(v);//create activity object from sujmamry jso
 					athlete.activities.insert(std::pair<ptrdiff_t, Activity_t>(tmp_activity.id, Activity_t(GetActivity(tmp_activity.id))));
@@ -534,6 +538,12 @@ namespace RideWeather
 					std::cerr << "StravaApi_t::LoadAthleteActivities: Error getting and inserting activity into athlete" << std::endl;
 					std::cerr << ex.what() << std::endl;
 				}
+				if (progress != nullptr)
+				{
+					i++;
+					progress(i * 100 / total);
+				}
+
 			}
 			std::cerr << document.GetArray().Size() << std::endl;
 		} while (document.GetArray().Size() > 1 && counter++ < 100);
@@ -542,7 +552,7 @@ namespace RideWeather
 		SaveAthleteActivitiesList(athlete);
 	}
 
-	void StravaApi_t::GetAthleteActivityStreams(Athlete_t & athlete, bool download_all)
+	void StravaApi_t::GetAthleteActivityStreams(Athlete_t & athlete, progress_t progress, bool download_all)
 	{
 		for (auto& v : athlete.activities)
 		{

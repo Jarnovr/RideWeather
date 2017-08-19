@@ -2,6 +2,7 @@
 
 #pragma warning(disable:4127)
 #include <QMainWindow>
+#include <QtWidgets/QProgressBar>
 #pragma warning (default: 4127)
 #include "StravaType.h"
 #include "StravaApi.h"
@@ -29,8 +30,16 @@ private slots:
 	void on_btn_DownloadDetail_clicked();
 public slots:
 	void on_AthleteReady(const std::shared_ptr<RideWeather::Athlete_t> & Athlete);
+	void on_ListReady();
+	void on_DownloadDetailComplete();
+	void on_SetProgress(int value) { progressBar->setValue (value); };
+signals:
+	void GetAthleteSignal(const ptrdiff_t id);
+	void GetListSignal(const std::shared_ptr<RideWeather::Athlete_t>& athlete);
+	void DownloadDetailSignal(const std::shared_ptr<RideWeather::Athlete_t>& athlete);
 protected:
 	Ui::MainWindow *ui;
+	QProgressBar *progressBar;
 	std::shared_ptr<RideWeather::Athlete_t> athlete;
 	RideWeather::StravaApiController_t *_stravaApiController;
 	RideWeather::StravaApi_t * StravaApi;

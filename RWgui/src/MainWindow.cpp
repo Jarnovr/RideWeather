@@ -22,6 +22,11 @@ MainWindow::MainWindow(QWidget *parent) :
 		Config = new RideWeather::Configuration();
 	ui->setupUi(this);
 	ui->lbl_Output->setText(QString::fromStdString(Config->configFileName.string()));	
+	progressBar = new QProgressBar(ui->statusbar);
+	progressBar->setAlignment(Qt::AlignRight);
+	progressBar->setMaximumWidth(500);
+	ui->statusbar->addPermanentWidget(progressBar);
+	progressBar->setVisible(false);
 }
 
 void MainWindow::on_actionExit_triggered()
@@ -60,37 +65,58 @@ void MainWindow::on_btn_Load_Token_clicked()
 	//try opening token
 	StravaApi = new RideWeather::StravaApi_t(RideWeather::AccessToken_t(token), Config->cacheFolder);
 	_stravaApiController = new RideWeather::StravaApiController_t(StravaApi);
-	connect(_stravaApiController, &RideWeather::StravaApiController_t::AthleteReadySignal, this, &MainWindow::on_AthleteReady);
-	_stravaApiController->GetAthlete(0);
+	connect(_stravaApiController->Worker(), &RideWeather::StravaApiWorker::AthleteReady, this, &MainWindow::on_AthleteReady);
+	connect(this, &MainWindow::GetAthleteSignal, _stravaApiController->Worker(), &RideWeather::StravaApiWorker::GetAthlete);
+	connect(_stravaApiController->Worker(), &RideWeather::StravaApiWorker::SignalProgress, this, &MainWindow::on_SetProgress);
+	progressBar->setVisible(true);
+	progressBar->setValue(0);
+	emit GetAthleteSignal(0);
 }
 
 
 void MainWindow::on_AthleteReady(const std::shared_ptr<RideWeather::Athlete_t> & Athlete)
 {
-	athlete = Athlete;	
-	StravaApi->LoadAthleteActivitiesList(*athlete);
+	athlete = Athlete;		
 	ui->btn_GetList->setEnabled(true);
+	progressBar->setVisible(false);
 }
 
 void MainWindow::on_btn_GetList_clicked()
 {
 	ui->btn_GetList->setEnabled(false);
-	QCoreApplication::processEvents();
-	StravaApi->RefreshAthleteActivities(*athlete);
+
+	connect(_stravaApiController->Worker(), &RideWeather::StravaApiWorker::ListReady, this, &MainWindow::on_ListReady);
+	connect(this, &MainWindow::GetListSignal, _stravaApiController->Worker(), &RideWeather::StravaApiWorker::GetList);
+	progressBar->setVisible(true);
+	progressBar->setValue(0); 
+	emit GetListSignal(athlete);
+}
+
+void MainWindow::on_ListReady()
+{
 	ui->btn_GetList->setEnabled(true);
 	ui->btn_DownloadDetail->setEnabled(true);
 	_activityModel = new RideWeather::ActivityModel(athlete);
 	ui->tableView_Activities->setModel(_activityModel);
+	progressBar->setVisible(false);
 }
 
 void MainWindow::on_btn_DownloadDetail_clicked()
 {
 	ui->btn_DownloadDetail->setEnabled(false);
-	QCoreApplication::processEvents();
-	StravaApi->GetAthleteActivityStreams(*athlete);
-	ui->btn_DownloadDetail->setEnabled(true);
-
+	connect(_stravaApiController->Worker(), &RideWeather::StravaApiWorker::DownloadDetailReady, this, &MainWindow::on_DownloadDetailComplete);
+	connect(this, &MainWindow::DownloadDetailSignal, _stravaApiController->Worker(), &RideWeather::StravaApiWorker::DownloadDetail);
+	progressBar->setVisible(true);
+	progressBar->setValue(0); 
+	emit DownloadDetailSignal(athlete);
 }
+
+void MainWindow::on_DownloadDetailComplete()
+{
+	ui->btn_DownloadDetail->setEnabled(true);
+	progressBar->setVisible(false);
+}
+
 
 MainWindow::~MainWindow()
 {
