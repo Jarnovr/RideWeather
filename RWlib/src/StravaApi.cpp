@@ -396,7 +396,7 @@ namespace RideWeather
 	{
 		string json;
 		//Return cached activity if available
-		if (GetCached(string("/activity/").append(std::to_string(id)).append("/streams/").append(types), json))
+		if (GetCached(string("/activity/").append(std::to_string(id)).append("/streams/").append(resolution).append("/").append(types), json))
 			return json;
 		//Rate Limiting
 		WaitIfNeeded();
@@ -408,6 +408,10 @@ namespace RideWeather
 		string auth("Bearer ");
 		auth.append(at.access_token, 40);
 		cpr::Header header{ { "Authorization", auth } };
+		cpr::Parameters payload;
+		if (resolution.compare("all") != 0)
+			payload.AddParameter({"resolution",resolution});
+
 		cpr::Response r = cpr::Get(url, header, timeout);
 		if (r.error.code != cpr::ErrorCode::OK)
 		{
@@ -425,7 +429,7 @@ namespace RideWeather
 			std::cerr << "Response: " << r.text << std::endl;
 			throw StravaException_t("StravaApi::GetStreams: encountered HTTP error.");
 		}
-		WriteCache(string("/activity/").append(std::to_string(id)).append("/streams/").append(types), r.text);
+		WriteCache(string("/activity/").append(std::to_string(id)).append("/streams/").append(resolution).append("/").append(types), r.text);
 
 		return r.text;
 	}
@@ -536,7 +540,7 @@ namespace RideWeather
 				}
 				catch (StravaException_t & ex)
 				{
-					std::cerr << "StravaApi_t::LoadAthleteActivities: Error getting and inserting activity into athlete" << std::endl;
+					std::cerr << "StravaApi_t::RefreshAthleteActivities: Error getting and inserting activity into athlete" << std::endl;
 					std::cerr << ex.what() << std::endl;
 				}
 				if (progress != nullptr)
@@ -555,12 +559,21 @@ namespace RideWeather
 
 	void StravaApi_t::GetAthleteActivityStreams(Athlete_t & athlete, progress_t progress, bool download_all)
 	{
+		size_t i = 0; size_t total = athlete.activities.size();
 		for (auto& v : athlete.activities)
 		{
 			ptrdiff_t act_id = v.first;
 			Activity_t& activity = v.second;
+			if (activity.manual)
+				continue;
 
-
+			string streams = GetActivityStream(act_id,"time,latlng,altitude,distance,heartrate,cadence,moving");
+			Stream_t::ParseStreamArray(streams, activity);
+			if (progress != nullptr)
+			{
+				i++;
+				progress(int(i * 100 / total));
+			}
 		}
 
 	}

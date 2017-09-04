@@ -35,7 +35,7 @@ namespace RideWeather
 		if (!document->IsObject())
 			throw StravaException_t(type_str.append("::").append(type_str).append(", returned DOM no object\n"));
 		//dom->Swap(document);
-		dom->CopyFrom(*document,document->GetAllocator());	
+		dom->CopyFrom(*document, document->GetAllocator());
 	}
 
 	void Athlete_t::MakeActivityIds()
@@ -161,7 +161,7 @@ namespace RideWeather
 			ParseTimeS(updated_at, "updated_at");
 		case 1:;
 		}
-		delete dom; dom=nullptr; delete document; document=nullptr;
+		delete dom; dom = nullptr; delete document; document = nullptr;
 	}
 
 	void Zones_t::ParseDom()
@@ -195,7 +195,7 @@ namespace RideWeather
 				power_zones.push_back(tmp);
 			}
 		}
-		delete dom; dom=nullptr; delete document; document=nullptr;
+		delete dom; dom = nullptr; delete document; document = nullptr;
 	}
 
 	void Total_t::ParseDom()
@@ -208,7 +208,7 @@ namespace RideWeather
 		elapsed_time = ParseInt64("elapsed_time");
 		elevation_gain = ParseDouble("elevation gain");
 		achievement_count = ParseInt64("achievement_count");
-		delete dom; dom=nullptr; delete document; document=nullptr;
+		delete dom; dom = nullptr; delete document; document = nullptr;
 	}
 
 	void Totals_t::ParseDom()
@@ -246,7 +246,7 @@ namespace RideWeather
 		if (!dom->HasMember("all_swim_totals"))
 			throw StravaException_t("Totals_t missing all_swim_totals");
 		all_swim_totals = Total_t((*dom)["all_swim_totals"]);
-		delete dom; dom=nullptr; delete document; document=nullptr;
+		delete dom; dom = nullptr; delete document; document = nullptr;
 	}
 
 	void Activity_t::ParseDom()
@@ -375,7 +375,7 @@ namespace RideWeather
 
 		case 1:;
 		}
-		delete dom; dom=nullptr; delete document; document=nullptr;
+		delete dom; dom = nullptr; delete document; document = nullptr;
 	}
 
 
@@ -506,7 +506,7 @@ namespace RideWeather
 		case ActivityType_t::Yoga:
 			return "Yoga";
 		default:
-				return "Other";
+			return "Other";
 		}
 	}
 
@@ -516,7 +516,7 @@ namespace RideWeather
 		if (dom.IsNull() || !dom.IsArray() || dom.GetArray().Size() != 2)
 		{
 			latitude = 0;
-			longtitude = 0;	
+			longtitude = 0;
 		}
 		else
 		{
@@ -531,7 +531,7 @@ namespace RideWeather
 		type_id = static_cast<AchievementType_t>(ParseInt64("type_id"));
 		ParseString(type, "type");
 		rank = ParseInt64("rank");
-		delete dom; dom=nullptr; delete document; document=nullptr;
+		delete dom; dom = nullptr; delete document; document = nullptr;
 	}
 
 	void Club_t::ParseDom()
@@ -593,7 +593,7 @@ namespace RideWeather
 			ParseString(url, "url");
 		case 1:;
 		}
-		delete dom; dom=nullptr; delete document; document=nullptr;
+		delete dom; dom = nullptr; delete document; document = nullptr;
 	}
 
 	void Gear_t::ParseDom()
@@ -611,7 +611,7 @@ namespace RideWeather
 		case 1:
 			ParseString(id, "id");
 		}
-		
+
 	}
 
 	Bike_t::Bike_t(rapidjson::Value & DOM) : Gear_t(DOM)
@@ -622,7 +622,7 @@ namespace RideWeather
 		ParseStringIf(brand_name, "brand_name");
 		ParseStringIf(model_name, "model_name");
 		frame_type = static_cast<FrameType_t>(ParseInt64If("frame_type"));
-		delete dom; dom=nullptr; delete document; document=nullptr;
+		delete dom; dom = nullptr; delete document; document = nullptr;
 	}
 
 	Polyline_t::Polyline_t(const string & str)
@@ -664,7 +664,7 @@ namespace RideWeather
 	void Map_t::ParseDom()
 	{
 		//DebugPrintDom();
-		ParseString(id,"id");
+		ParseString(id, "id");
 		resource_state = ParseInt64("resource_state");
 		string tmp;
 
@@ -677,7 +677,7 @@ namespace RideWeather
 			ParseStringIf(tmp, "summary_polyline");
 			summary_polyline = std::make_unique<Polyline_t>(tmp);
 		}
-		delete dom; dom=nullptr; delete document; document=nullptr;
+		delete dom; dom = nullptr; delete document; document = nullptr;
 	}
 
 	AccessToken_t::AccessToken_t(const boost::filesystem::path & filename) :AccessToken_t()
@@ -693,7 +693,7 @@ namespace RideWeather
 		//read using iteratior
 		json.assign((std::istreambuf_iterator<char>(file)), (std::istreambuf_iterator<char>()));
 		file.close();
-		ParseJson(json); ParseDom();		
+		ParseJson(json); ParseDom();
 
 	}
 
@@ -711,7 +711,7 @@ namespace RideWeather
 		if (!dom->HasMember("athlete"))
 			throw StravaException_t("AccessToken_t::AccessToken_t() has no member athlete");
 		athlete = make_shared<Athlete_t>((*dom)["athlete"]);
-		delete dom; dom=nullptr; delete document; document=nullptr;
+		delete dom; dom = nullptr; delete document; document = nullptr;
 	}
 
 	void Route_t::ParseDom()
@@ -773,7 +773,7 @@ namespace RideWeather
 		case 1:
 			id = ParseInt64("id");
 		}
-		delete dom; dom=nullptr; delete document; document=nullptr;
+		delete dom; dom = nullptr; delete document; document = nullptr;
 	}
 
 	void Race_t::ParseDom()
@@ -813,7 +813,7 @@ namespace RideWeather
 
 			ParseString(url, "url");
 		}
-		delete dom; dom=nullptr; delete document; document=nullptr;
+		delete dom; dom = nullptr; delete document; document = nullptr;
 	}
 
 	void Segment_t::ParseDom()
@@ -859,7 +859,7 @@ namespace RideWeather
 		case 1:
 			id = ParseInt64("id");
 		}
-		delete dom; dom=nullptr; delete document; document=nullptr;
+		delete dom; dom = nullptr; delete document; document = nullptr;
 	}
 
 	void SegmentEffort_t::ParseDom()
@@ -899,7 +899,7 @@ namespace RideWeather
 		case 1:
 			id = ParseInt64("id");
 		}
-		delete dom; dom=nullptr; delete document; document=nullptr;
+		delete dom; dom = nullptr; delete document; document = nullptr;
 	}
 
 	void Effort_t::ParseDom()
@@ -909,16 +909,16 @@ namespace RideWeather
 		id = ParseInt64("id");
 		ParseString(name, "name");
 		if (dom->HasMember("segment") && !(*dom)["segment"].IsNull())
-			segment = (*dom)["segment"]["id"].GetInt64();			
+			segment = (*dom)["segment"]["id"].GetInt64();
 		else
 			segment = 0;
 
 		if (dom->HasMember("activity") && !(*dom)["activity"].IsNull())
 			activity = (*dom)["activity"]["id"].GetInt64();
-		else activity = 0; 
+		else activity = 0;
 
 		if (dom->HasMember("athlete") && !(*dom)["athlete"].IsNull())
-			athlete = (*dom)["athlete"]["id"].GetInt64(); 
+			athlete = (*dom)["athlete"]["id"].GetInt64();
 		else athlete = 0;
 
 		kom_rank = ParseInt64If("kom_rank");
@@ -929,7 +929,7 @@ namespace RideWeather
 		ParseTimeS(start_date, "start_date");
 		ParseTimeS(start_date_local, "start_date_local");
 		distance = ParseInt64If("distance");
-		delete dom; dom=nullptr; delete document; document=nullptr;
+		delete dom; dom = nullptr; delete document; document = nullptr;
 	}
 
 	void Splits_t::ParseDom()
@@ -942,7 +942,7 @@ namespace RideWeather
 		pace_zone = ParseInt64("pace_zone");
 		moving_time = ParseInt64("moving_time");
 		split = ParseInt64("split");
-		delete dom; dom=nullptr; delete document; document=nullptr;
+		delete dom; dom = nullptr; delete document; document = nullptr;
 	}
 
 	Data_t Stream_t::DataTypeFromStreamType(StreamType_t stream_type) {
@@ -976,109 +976,109 @@ namespace RideWeather
 		}
 	}
 
-	Data_t Stream_t::GetStreamType(rapidjson::Value & dom)
+	StreamType_t Stream_t::GetStreamType(rapidjson::Value & dom)
 	{
 		string type;
-		StreamType_t stream_type;
-
 		if (!dom.HasMember("type"))
 			throw StravaException_t("GetStreamType missing type.\n");
 		if (!(dom)["type"].IsString())
 			throw StravaException_t("GetStreamType type not a astring\n");
 		type.assign((dom)["type"].GetString(), (dom)["type"].GetStringLength());
 		if (!type.compare("time"))
-			stream_type = StreamType_t::time;
+			return StreamType_t::time;
 		else if (!type.compare("latlng"))
-			stream_type = StreamType_t::latlng;
+			return StreamType_t::latlng;
 		else if (!type.compare("distance"))
-			stream_type = StreamType_t::distance;
+			return StreamType_t::distance;
 		else if (!type.compare("altitude"))
-			stream_type = StreamType_t::altitude;
+			return StreamType_t::altitude;
 		else if (!type.compare("velocity_smooth"))
-			stream_type = StreamType_t::velocity_smooth;
+			return StreamType_t::velocity_smooth;
 		else if (!type.compare("heartrate"))
-			stream_type = StreamType_t::heartrate;
+			return StreamType_t::heartrate;
 		else if (!type.compare("cadence"))
-			stream_type = StreamType_t::cadence;
+			return StreamType_t::cadence;
 		else if (!type.compare("watts"))
-			stream_type = StreamType_t::watts;
+			return StreamType_t::watts;
 		else if (!type.compare("temp"))
-			stream_type = StreamType_t::temp;
+			return StreamType_t::temp;
 		else if (!type.compare("moving"))
-			stream_type = StreamType_t::moving;
+			return StreamType_t::moving;
 		else if (!type.compare("grade_smooth"))
-			stream_type = StreamType_t::grade_smooth;
+			return StreamType_t::grade_smooth;
 		else
 			throw StravaException_t("Stream_t StreamType not known.");
-		switch (stream_type)
+	}
+
+	void Stream_t::ParseStreamArray(const string & json, Activity_t & activity)
+	{
+		//parse json array
+		//First create rapidjson object
+		rapidjson::Document document;
+		document.Parse<rapidjson::ParseFlag::kParseFullPrecisionFlag | rapidjson::ParseFlag::kParseCommentsFlag | rapidjson::ParseFlag::kParseNanAndInfFlag>(json);
+		if (document.HasParseError())
 		{
-		case StreamType_t::time:
-		case StreamType_t::heartrate:
-		case StreamType_t::cadence:
-		case StreamType_t::watts:
-		case StreamType_t::temp:
-			//Integer case
-			return Data_t::kInt;
-			break;
-		case StreamType_t::distance:
-		case StreamType_t::altitude:
-		case StreamType_t::velocity_smooth:
-		case StreamType_t::grade_smooth:
-			//float case
-			return Data_t::kDouble;
-			break;
-		case StreamType_t::moving:
-			//bool case
-			return Data_t::kBool;
-			break;
-		case StreamType_t::latlng:
-			//coordinates
-			return Data_t::kPoint;
-			break;
+			std::cerr << "JSON parse error: " << GetParseError_En(document.GetParseError());
+			std::cerr << "(" << document.GetErrorOffset() << ")" << std::endl;
+
+			throw StravaException_t(string("Stream_t::PasreStreamArray").append("JSON parser error.\n"));
 		}
-		return Data_t::kNull;
+		//go over returned dom and do error/sanity check and fill the data structure
+		if (!document.IsArray())
+			throw StravaException_t(string("Stream_t::PasreStreamArray").append(", returned DOM no array\n"));
+
+		//loop over activities in array;
+		activity.streams.reserve(document.GetArray().Size());
+		for (auto& v : document.GetArray())
+		{
+			try {
+				StreamType_t streamtype = GetStreamType(v);
+				Data_t datatype = DataTypeFromStreamType(streamtype);
+				Stream_t *stream = nullptr;
+				switch (datatype)
+				{
+				case RideWeather::Data_t::kInt:
+					stream = new StreamRaw_t<int>(v);
+					break;
+				case RideWeather::Data_t::kDouble:
+					stream = new StreamRaw_t<double>(v);
+					break;
+				case RideWeather::Data_t::kBool:
+					stream = new StreamRaw_t<Bool>(v);
+					break;
+				case RideWeather::Data_t::kPoint:
+					stream = new StreamRaw_t<Point_t>(v);
+					break;
+				default:
+					throw StravaException_t(string("Stream_t::PasreStreamArray").append(", stream has invalid dataType\n"));
+					break;
+				}
+				activity.streams.insert_or_assign(streamtype,stream);
+			}
+			catch (StravaException_t & ex)
+			{
+				std::cerr << "Stream_t::ParseStreamArray: Error parsing streams" << std::endl;
+				std::cerr << ex.what() << std::endl;
+			}
+		}
 	}
 
 
 	void Stream_t::ParseDom()
 	{
-		ParseString(type, "type");
-		if (!type.compare("time"))
-			stream_type = StreamType_t::time;
-		else if (!type.compare("latlng"))
-			stream_type = StreamType_t::latlng;
-		else if (!type.compare("distance"))
-			stream_type = StreamType_t::distance;
-		else if (!type.compare("altitude"))
-			stream_type = StreamType_t::altitude;
-		else if (!type.compare("velocity_smooth"))
-			stream_type = StreamType_t::velocity_smooth;
-		else if (!type.compare("heartrate"))
-			stream_type = StreamType_t::heartrate;
-		else if (!type.compare("cadence"))
-			stream_type = StreamType_t::cadence;
-		else if (!type.compare("watts"))
-			stream_type = StreamType_t::watts;
-		else if (!type.compare("temp"))
-			stream_type = StreamType_t::temp;
-		else if (!type.compare("moving"))
-			stream_type = StreamType_t::moving;
-		else if (!type.compare("grade_smooth"))
-			stream_type = StreamType_t::grade_smooth;
-		else
-			throw StravaException_t("Stream_t StreamType not known.");
+		stream_type = GetStreamType(*dom);
 		original_size = ParseInt64("original_size");
 		ParseString(series_type, "series_type");
 		string tmp;
 		ParseString(tmp, "resolution");
-		if (!type.compare("low"))
+		if (type.compare("low")==0)
 			resolution = Resolution_t::low;
-		else if (!type.compare("medium"))
+		else if (type.compare("medium")==0)
 			resolution = Resolution_t::medium;
-		else if (!type.compare("high"))
+		else if (type.compare("high")==0)
 			resolution = Resolution_t::high;
 		else
-			throw StravaException_t("Stream_t illegal resolution.");
+			resolution = Resolution_t::default;
 
 		//parse data
 		if (!dom->HasMember("data"))
@@ -1086,7 +1086,6 @@ namespace RideWeather
 		if (!(*dom)["data"].IsArray())
 			throw StravaException_t("Steam_t data not array");
 		ParseData();
-
 	}
 
 	void Photo_t::ParseDom()
@@ -1114,7 +1113,7 @@ namespace RideWeather
 			URL_t val(v->value.GetString());
 			urls.insert(std::pair<string, URL_t>(n, val));
 		}
-		delete dom; dom=nullptr; delete document; document=nullptr;
+		delete dom; dom = nullptr; delete document; document = nullptr;
 	}
 
 	void Lap_t::ParseDom()
@@ -1142,7 +1141,7 @@ namespace RideWeather
 		ParseTimeS(start_date, "start_date");
 		ParseTimeS(start_date_local, "start_date_local");
 		total_elevation_gain = ParseDoubleIf("total_elevation_gain");
-		delete dom; dom=nullptr; delete document; document=nullptr;
+		delete dom; dom = nullptr; delete document; document = nullptr;
 	}
 
 }//namespace RideWeather

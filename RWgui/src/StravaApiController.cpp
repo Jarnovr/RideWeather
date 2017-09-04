@@ -1,5 +1,8 @@
 #include "StravaApiController.h"
 
+#include <exception>
+#include <iostream>
+
 namespace RideWeather
 {
 
@@ -30,20 +33,44 @@ namespace RideWeather
 
 	void StravaApiWorker::GetAthlete(const ptrdiff_t id) const
 	{
-		auto athlete = std::make_shared<RideWeather::Athlete_t>(_stravaApi->GetAthlete(id));
-		_stravaApi->LoadAthleteActivitiesList(*athlete, &StravaApiWorker::SetProgress);
-		emit AthleteReady(athlete);
+		try
+		{
+			auto athlete = std::make_shared<RideWeather::Athlete_t>(_stravaApi->GetAthlete(id));
+			_stravaApi->LoadAthleteActivitiesList(*athlete, &StravaApiWorker::SetProgress);
+			emit AthleteReady(athlete);
+		}
+		catch (std::exception e)
+		{
+			std::cerr << "An exception occured during StravaApiWOrker::GetAthlete(): " << std::endl;
+			std::cerr << e.what() << std::endl;
+		}
 	}
 
 	void StravaApiWorker::GetList(const std::shared_ptr<RideWeather::Athlete_t>& athlete) const
 	{
-		_stravaApi->RefreshAthleteActivities(*athlete, &StravaApiWorker::SetProgress);
-		emit ListReady();
+		try
+		{
+			_stravaApi->RefreshAthleteActivities(*athlete, &StravaApiWorker::SetProgress);
+			emit ListReady();
+		}
+		catch (std::exception e)
+		{
+			std::cerr << "An exception occured during StravaApiWOrker::GetList(): " << std::endl;
+			std::cerr << e.what() << std::endl;
+		}
 	}
 
 	void StravaApiWorker::DownloadDetail(const std::shared_ptr<RideWeather::Athlete_t>& athlete) const
 	{
-		_stravaApi->GetAthleteActivityStreams(*athlete, &StravaApiWorker::SetProgress);
-		emit DownloadDetailReady();
+		try
+		{
+			_stravaApi->GetAthleteActivityStreams(*athlete, &StravaApiWorker::SetProgress);
+			emit DownloadDetailReady();
+		}
+		catch (std::exception e)
+		{
+			std::cerr << "An exception occured during StravaApiWOrker::DownloadDetail(): " << std::endl;
+			std::cerr << e.what() << std::endl;
+		}
 	}
 }

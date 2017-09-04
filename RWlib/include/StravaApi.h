@@ -39,7 +39,7 @@ namespace RideWeather
 		std::string ListActivities(ptrdiff_t before = -1, ptrdiff_t after = -1, ptrdiff_t page = -1, ptrdiff_t per_page = 50);
 
 		//Streams
-		std::string GetActivityStream(ptrdiff_t id, string types, string resolution = "");
+		std::string GetActivityStream(ptrdiff_t id, string types, string resolution = "all");
 
 		//General
 		void LoadAthleteActivitiesList(Athlete_t& athlete, progress_t progress = nullptr);

@@ -427,7 +427,13 @@ namespace RideWeather
 		};
 		Activity_t(const string& json) :Activity_t() { ParseJson(json); ParseDom(); };
 		Activity_t(rapidjson::Value& DOM) : Activity_t() { dom->CopyFrom(DOM, document->GetAllocator()); 	ParseDom(); };
-
+		virtual ~Activity_t() {
+			//cleanup streams
+			for (auto &v : streams)
+			{
+				delete v.second;
+			}
+		}
 	protected:
 		void ParseDom();
 	};
@@ -774,7 +780,7 @@ namespace RideWeather
 
 	class Stream_t : public Strava_t {
 		public:
-		enum class Resolution_t { low, medium, high };
+		enum class Resolution_t { low, medium, high, default };
 		string type;
 		string  series_type;
 		ptrdiff_t original_size;
@@ -785,11 +791,28 @@ namespace RideWeather
 			data_type(Data_t::kNull) {
 			type_str.assign("Stream_t");
 			};
+		virtual void* GetData() = 0;
+		virtual size_t GetSize() = 0;
 		static Data_t DataTypeFromStreamType(StreamType_t stream_type);
-		static Data_t GetStreamType(rapidjson::Value& dom);
+		static StreamType_t GetStreamType(rapidjson::Value& dom);
+		static void ParseStreamArray(const string &json, Activity_t &activity);
+		virtual ~Stream_t() { ; };
 	protected:
 		void ParseDom();
 		virtual void ParseData() = 0;
+	};
+
+	class Bool
+	{
+	public:
+		Bool() : m_value() {}
+		Bool(bool value) : m_value(value) {}
+		operator bool() const { return m_value; }
+		// the following operators are to allow bool* b = &v[0]; (v is a vector here).
+		bool* operator& () { return &m_value; }
+		const bool * const operator& () const { return &m_value; }
+	private:
+		bool m_value;
 	};
 
 
@@ -800,6 +823,12 @@ namespace RideWeather
 		StreamRaw_t() : Stream_t() {};
 		StreamRaw_t(const string& json) : StreamRaw_t() { ParseJson(json); ParseDom(); };
 		StreamRaw_t(rapidjson::Value& DOM) : StreamRaw_t() { dom->CopyFrom(DOM, document->GetAllocator());  ParseDom(); };
+		virtual ~StreamRaw_t() { ; };
+		void* GetData()
+		{
+			return (void*) data.data();
+		};
+		size_t GetSize() { return data.size(); };
 	protected:
 		void ParseData();
 	};
@@ -836,7 +865,7 @@ namespace RideWeather
 	}
 
 	template <>
-	inline void StreamRaw_t<bool>::ParseData()
+	inline void StreamRaw_t<Bool>::ParseData()
 	{
 		data_type = Data_t::kBool;
 		data.reserve(original_size);
