@@ -15,16 +15,31 @@ namespace RideWeather
 
 	void StravaApi_t::ProcessResponse(cpr::Header & hdr)
 	{
-		auto hdrlimit = hdr.find("X-Ratelimit-Limit");
-		auto hdrusage = hdr.find("X-Ratelimit-Usage");
-		last_usage = boost::posix_time::microsec_clock::universal_time();
-		string lim = hdrlimit->second;
-		size_t idx;
-		short_limit = stoi(lim, &idx);
-		long_limit = stoi(lim.substr(idx + 1), &idx);
-		string us = hdrusage->second;
-		short_usage = stoi(us, &idx);
-		long_usage = stoi(us.substr(idx + 1), &idx);
+		try
+		{
+			auto hdrlimit = hdr.find("X-RateLimit-Limit");
+			auto hdrusage = hdr.find("X-RateLimit-Usage");
+			last_usage = boost::posix_time::microsec_clock::universal_time();
+			if (hdrlimit == hdr.end()) throw new std::exception("Null pointer exception");
+			if (hdrusage == hdr.end()) throw new std::exception("Null pointer exception");
+
+			string lim = hdrlimit->second;
+			size_t idx;
+			short_limit = stoi(lim, &idx);
+			long_limit = stoi(lim.substr(idx + 1), &idx);
+			string us = hdrusage->second;
+			short_usage = stoi(us, &idx);
+			long_usage = stoi(us.substr(idx + 1), &idx);
+		}
+		catch (std::exception e)
+		{
+			std::cerr << "An Exception occured during StravaApi_t::ProcessResponse()" << std::endl;
+			std::cerr << e.what() << std::endl;
+			short_limit = 600;
+			long_limit = 30000;
+			short_usage = 0;
+			long_usage = 0;
+		}
 	}
 
 	void StravaApi_t::WaitIfNeeded()
@@ -373,7 +388,7 @@ namespace RideWeather
 		std::cout << "Accessing: " << url << std::endl;
 		std::cout << "	Payload: " << payload.content << std::endl;
 
-		cpr::Response r = cpr::Post(url, header, payload, timeout);
+		cpr::Response r = cpr::Get(url, header, payload, timeout);
 		if (r.error.code != cpr::ErrorCode::OK)
 		{
 			std::cerr << "HTTP Error." << std::endl;
