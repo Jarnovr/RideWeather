@@ -20,7 +20,10 @@ endif()
 
 set(EXECUTABLE_OUTPUT_PATH ${CMAKE_BINARY_DIR}/bin)
 set(LIBRARY_OUTPUT_PATH ${CMAKE_BINARY_DIR}/bin)
- 
+
+set(CMAKE_EXECUTABLE_OUTPUT_PATH ${CMAKE_BINARY_DIR}/bin)
+set(CMAKE_LIBRARY_OUTPUT_PATH ${CMAKE_BINARY_DIR}/bin)
+
 #dependencies
 set(RAPIDJSON_BUILD_DOC OFF)
 set(RAPIDJSON_BUILD_EXAMPLES OFF)
@@ -30,6 +33,7 @@ add_definitions(-DRAPIDJSON_HAS_STDSTRING)
 add_subdirectory(rapidjson)
 set(BUILD_CPR_TESTS OFF)
 set(BUILD_CURL_TESTS OFF)
+set(BUILD_TESTING OFF)
 add_subdirectory(cpr)
 
 ##main project

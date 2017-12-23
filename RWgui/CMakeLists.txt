@@ -24,7 +24,7 @@ find_package(Boost REQUIRED filesystem date_time)
 # Find the QtWidgets library
 find_package(Qt5Widgets)
 
-find_library(RWLIB_DEBUG RWlib PATHS ${LIBRARY_OUTPUT_PATH}/Debug)
+find_library(RWLIB_DEBUG RWlib-d PATHS ${LIBRARY_OUTPUT_PATH}/Debug)
 find_library(RWLIB_RELEASE RWlib PATHS ${LIBRARY_OUTPUT_PATH}/Release)
 
 
@@ -42,3 +42,12 @@ get_property(dirs DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR} PROPERTY INCLUDE_DIRECTO
 set(${PROJECT_NAME}_INCLUDE_DIRS ${dirs}
  CACHE INTERNAL "${PROJECT_NAME}: Include Directories" FORCE)
 
+  if (WIN32) 
+  
+add_custom_command(TARGET RideWeather POST_BUILD        # Adds a post-build event to MyTest
+WORKING_DIRECTORY D:\\Qt\\5.9.3\\msvc2017_64\\bin
+    COMMAND windeployqt --debug ${CMAKE_EXECUTABLE_OUTPUT_PATH}\\Debug   )
+add_custom_command(TARGET RideWeather POST_BUILD        # Adds a post-build event to MyTest
+WORKING_DIRECTORY D:\\Qt\\5.9.3\\msvc2017_64\\bin
+    COMMAND windeployqt --release ${CMAKE_EXECUTABLE_OUTPUT_PATH}\\Release   )
+	endif()

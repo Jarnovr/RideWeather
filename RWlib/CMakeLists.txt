@@ -33,3 +33,17 @@ target_link_libraries(RWlib_Test RWlib)
 GET_DIRECTORY_PROPERTY(dirs INCLUDE_DIRECTORIES)
 set(${PROJECT_NAME}_INCLUDE_DIRS ${dirs}
  CACHE INTERNAL "${PROJECT_NAME}: Include Directories" FORCE)
+
+  if (WIN32)
+  
+add_custom_command(TARGET RWlib POST_BUILD        # Adds a post-build event to MyTest
+WORKING_DIRECTORY ${CMAKE_BINARY_DIR}/lib/Debug
+    COMMAND copy * "..\\..\\bin\\Debug"   )
+
+	add_custom_command(TARGET RWlib POST_BUILD   
+WORKING_DIRECTORY "${CMAKE_BINARY_DIR}/lib/Release"	
+	COMMAND copy * "..\\..\\bin\\Release"    )
+	
+endif()
+
+		
