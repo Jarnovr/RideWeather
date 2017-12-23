@@ -49,7 +49,7 @@ namespace RideWeather
 			std::cerr << "Short limit reached, waiting till next quarter of hour." << std::endl;
 			//make endtime
 			boost::posix_time::ptime endWait = last_usage;
-			int wait_time = 901 - (endWait.time_of_day().total_seconds() % 900); //get seconds in day, modulo quarter, caclulate how long till next.
+			int wait_time = 905 - (endWait.time_of_day().total_seconds() % 900); //get seconds in day, modulo quarter, caclulate how long till next.
 			//sleep
 			std::this_thread::sleep_for(std::chrono::seconds(wait_time));
 			short_usage = 0;
