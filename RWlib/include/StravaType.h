@@ -340,6 +340,124 @@ namespace RideWeather
 	class Effort_t;
 	class Lap_t;
 
+
+
+	enum class Data_t { kInt, kDouble, kBool, kPoint, kNull };
+	enum class StreamType_t {
+		time, latlng, distance, altitude, velocity_smooth,
+		heartrate, cadence, watts, temp, moving, grade_smooth, null
+	};
+
+	class Stream_t : public Strava_t {
+	public:
+		enum class Resolution_t { low, medium, high, default };
+		string type;
+		string  series_type;
+		ptrdiff_t original_size;
+		Resolution_t resolution;
+		StreamType_t stream_type;
+		Data_t data_type;
+		Stream_t() : original_size(0), resolution(Resolution_t::low), stream_type(StreamType_t::null),
+			data_type(Data_t::kNull) {
+			type_str.assign("Stream_t");
+		};
+		virtual void* GetData() = 0;
+		virtual size_t GetSize() = 0;
+		static Data_t DataTypeFromStreamType(StreamType_t stream_type);
+		static StreamType_t GetStreamType(rapidjson::Value& dom);
+		static void ParseStreamArray(const string &json, Activity_t &activity);
+		virtual ~Stream_t() { ; };
+	protected:
+		void ParseDom();
+		virtual void ParseData() = 0;
+	};
+
+	class Bool
+	{
+	public:
+		Bool() : m_value() {}
+		Bool(bool value) : m_value(value) {}
+		operator bool() const { return m_value; }
+		// the following operators are to allow bool* b = &v[0]; (v is a vector here).
+		bool* operator& () { return &m_value; }
+		const bool * const operator& () const { return &m_value; }
+	private:
+		bool m_value;
+	};
+
+
+	template <typename T>
+	class StreamRaw_t : public Stream_t {
+	public:
+		std::vector<T> data;
+		StreamRaw_t() : Stream_t() {};
+		StreamRaw_t(const string& json) : StreamRaw_t() { ParseJson(json); ParseDom(); };
+		StreamRaw_t(rapidjson::Value& DOM) : StreamRaw_t() { dom->CopyFrom(DOM, document->GetAllocator());  ParseDom(); };
+		virtual ~StreamRaw_t() { ; };
+		void* GetData()
+		{
+			return (void*)data.data();
+		};
+		size_t GetSize() { return data.size(); };
+	protected:
+		void ParseData();
+	};
+
+
+	template <typename T>
+	inline void StreamRaw_t<T>::ParseData()
+	{
+		throw StravaException_t("Stream_t general ParseData called");
+	}
+
+	template <>
+	inline void StreamRaw_t<int>::ParseData()
+	{
+		data_type = Data_t::kInt;
+		data.reserve(original_size);
+
+		for (auto& v : (*dom)["data"].GetArray())
+		{
+			data.push_back(v.GetInt());
+		}
+	}
+
+	template <>
+	inline void StreamRaw_t<double>::ParseData()
+	{
+		data_type = Data_t::kDouble;
+		data.reserve(original_size);
+
+		for (auto& v : (*dom)["data"].GetArray())
+		{
+			data.push_back(v.GetDouble());
+		}
+	}
+
+	template <>
+	inline void StreamRaw_t<Bool>::ParseData()
+	{
+		data_type = Data_t::kBool;
+		data.reserve(original_size);
+
+		for (auto& v : (*dom)["data"].GetArray())
+		{
+			data.push_back(v.GetBool());
+		}
+	}
+
+	template <>
+	inline void StreamRaw_t<Point_t>::ParseData()
+	{
+		data_type = Data_t::kPoint;
+		data.reserve(original_size);
+
+		for (auto& v : (*dom)["data"].GetArray())
+		{
+			data.push_back(Point_t(v));
+		}
+	}
+
 	enum class ActivityType_t {
 		Ride, Run, Swim, Hike, Walk, AlpineSki,
 		BackcountrySki, Canoeing, Crossfit, EBikeRide, Elliptical, IceSkate,
@@ -431,7 +549,25 @@ namespace RideWeather
 			//cleanup streams
 			for (auto &v : streams)
 			{
-				delete v.second;
+				auto streamtype = v.first;
+				auto datatype = Stream_t::DataTypeFromStreamType(streamtype);
+				switch (datatype)
+				{
+				case Data_t::kInt:
+					delete (StreamRaw_t<int>*)(v.second);
+					break;
+				case Data_t::kDouble:
+					delete (StreamRaw_t<double>*)(v.second);
+					break;
+				case Data_t::kBool:
+					delete (StreamRaw_t<Bool>*)(v.second);
+					break;
+				case Data_t::kPoint:
+					delete (StreamRaw_t<Point_t>*)(v.second);
+					break;
+				default:					
+					break;
+				}				
 			}
 		}
 	protected:
@@ -770,123 +906,4 @@ namespace RideWeather
 	protected:
 		void ParseDom();
 	};
-
-
-	enum class Data_t { kInt, kDouble, kBool, kPoint, kNull };
-	enum class StreamType_t {
-		time, latlng, distance, altitude, velocity_smooth,
-		heartrate, cadence, watts, temp, moving, grade_smooth, null
-	};
-
-	class Stream_t : public Strava_t {
-		public:
-		enum class Resolution_t { low, medium, high, default };
-		string type;
-		string  series_type;
-		ptrdiff_t original_size;
-		Resolution_t resolution;
-		StreamType_t stream_type;
-		Data_t data_type;
-		Stream_t() : original_size(0), resolution(Resolution_t::low), stream_type(StreamType_t::null),
-			data_type(Data_t::kNull) {
-			type_str.assign("Stream_t");
-			};
-		virtual void* GetData() = 0;
-		virtual size_t GetSize() = 0;
-		static Data_t DataTypeFromStreamType(StreamType_t stream_type);
-		static StreamType_t GetStreamType(rapidjson::Value& dom);
-		static void ParseStreamArray(const string &json, Activity_t &activity);
-		virtual ~Stream_t() { ; };
-	protected:
-		void ParseDom();
-		virtual void ParseData() = 0;
-	};
-
-	class Bool
-	{
-	public:
-		Bool() : m_value() {}
-		Bool(bool value) : m_value(value) {}
-		operator bool() const { return m_value; }
-		// the following operators are to allow bool* b = &v[0]; (v is a vector here).
-		bool* operator& () { return &m_value; }
-		const bool * const operator& () const { return &m_value; }
-	private:
-		bool m_value;
-	};
-
-
-	template <typename T>
-	class StreamRaw_t : public Stream_t {
-	public:
-		std::vector<T> data;
-		StreamRaw_t() : Stream_t() {};
-		StreamRaw_t(const string& json) : StreamRaw_t() { ParseJson(json); ParseDom(); };
-		StreamRaw_t(rapidjson::Value& DOM) : StreamRaw_t() { dom->CopyFrom(DOM, document->GetAllocator());  ParseDom(); };
-		virtual ~StreamRaw_t() { ; };
-		void* GetData()
-		{
-			return (void*) data.data();
-		};
-		size_t GetSize() { return data.size(); };
-	protected:
-		void ParseData();
-	};
-	
-	
-	template <typename T>
-	inline void StreamRaw_t<T>::ParseData()
-	{
-		throw StravaException_t("Stream_t general ParseData called");
-	}
-
-	template <>
-	inline void StreamRaw_t<int>::ParseData()
-	{
-		data_type = Data_t::kInt;
-		data.reserve(original_size);
-
-		for (auto& v : (*dom)["data"].GetArray())
-		{
-			data.push_back(v.GetInt());
-		}
-	}
-
-	template <>
-	inline void StreamRaw_t<double>::ParseData()
-	{
-		data_type = Data_t::kDouble;
-		data.reserve(original_size);
-
-		for (auto& v : (*dom)["data"].GetArray())
-		{
-			data.push_back(v.GetDouble());
-		}
-	}
-
-	template <>
-	inline void StreamRaw_t<Bool>::ParseData()
-	{
-		data_type = Data_t::kBool;
-		data.reserve(original_size);
-
-		for (auto& v : (*dom)["data"].GetArray())
-		{
-			data.push_back(v.GetBool());
-		}
-	}
-
-	template <>
-	inline void StreamRaw_t<Point_t>::ParseData()
-	{
-		data_type = Data_t::kPoint;
-		data.reserve(original_size);
-
-		for (auto& v : (*dom)["data"].GetArray())
-		{
-			data.push_back(Point_t(v));
-		}
-	}
-
-
 }//namespace RideWeather

@@ -1,0 +1,73 @@
+#include <boost/filesystem.hpp>
+#include <boost/date_time.hpp>
+#include <map>
+
+namespace RideWeather
+{
+	class WeatherSource_t
+	{
+	public:
+		enum class Resolution { Hour, TenMinutes, Undefined };
+		Resolution resolution;
+
+		WeatherSource_t(Resolution resolution_);
+		virtual ~WeatherSource_t();
+	};
+
+
+	class KnmiTenMin : WeatherSource_t
+	{
+	private:
+		struct KnmiTenMinRecord
+		{
+			boost::posix_time::ptime time;
+			float temp;
+			float pressure;
+			float wind_dir;
+			float wind_speed;
+			float wind_scale;
+			uint16_t visibility;
+			uint8_t humidity;
+		};
+		std::map<boost::posix_time::ptime,KnmiTenMinRecord> records;
+
+	public:
+		KnmiTenMin(boost::filesystem::path dir);
+		virtual ~KnmiTenMin() {};
+
+	};
+
+	class KnmiHourly : WeatherSource_t
+	{
+	public:
+		KnmiHourly(boost::filesystem::path cacheFolder);
+		virtual ~KnmiHourly() {};
+	private:
+		struct KnmiHourlyRecord
+		{
+			boost::gregorian::date date;
+			unsigned short wind_dir;
+			unsigned short wind_speed; // in 0.1 m/s
+			unsigned short wind_speed10; //in 0.1 m/s over last 10 min
+			unsigned short wind_gust; //in 0.1 m/s
+			unsigned short insolation; // In J/cm^2/h = 100/36 W/m^2
+			unsigned short rain_sum; //in 0.1 mm / hour
+			unsigned short pressure; //in 0.1 hPa sealevel
+			short temp; //in 0.1 deg Celsius
+			short wet_temp; //in 0.1 deg Celsius
+			uint16_t visibility;
+			uint8_t hour;
+			uint8_t cloud_cover; // in eights
+			uint8_t humidity; // in %
+			int8_t sun; // in 0.1 hours or -1
+			int8_t rain_dur; // in 0.1 hours or -1
+			bool fog;
+			bool rain;
+			bool snow;
+			bool thunderstorm;
+			bool icing;			
+		};
+
+		boost::filesystem::path _cacheFolder;
+	};
+}

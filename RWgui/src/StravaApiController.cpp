@@ -73,4 +73,5 @@ namespace RideWeather
 			std::cerr << e.what() << std::endl;
 		}
 	}
+
 }
