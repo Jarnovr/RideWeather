@@ -10,7 +10,14 @@ namespace RideWeather
 		enum class Resolution { Hour, TenMinutes, Undefined };
 		Resolution resolution;
 
-		WeatherSource_t(Resolution resolution_);
+		virtual void GetDataForPeriod(const boost::posix_time::ptime begin, const boost::posix_time::ptime end) = 0;
+		virtual float GetTemp(const boost::posix_time::ptime time) = 0;
+		virtual float GetPressure(const boost::posix_time::ptime time) = 0;
+		virtual float GetWindDir(const boost::posix_time::ptime time) = 0;
+		virtual float GetWindSpeed(const boost::posix_time::ptime time) = 0;
+		virtual float GetHumidity(const boost::posix_time::ptime time) = 0;
+
+		WeatherSource_t(const Resolution resolution_);
 		virtual ~WeatherSource_t();
 	};
 
@@ -29,19 +36,33 @@ namespace RideWeather
 			uint16_t visibility;
 			uint8_t humidity;
 		};
-		std::map<boost::posix_time::ptime,KnmiTenMinRecord> records;
-
+		std::map<boost::posix_time::ptime, KnmiTenMinRecord> records;
+		boost::posix_time::ptime RoundTime(const boost::posix_time::ptime input);
+		auto GetRecordForTime(const boost::posix_time::ptime time);
 	public:
-		KnmiTenMin(boost::filesystem::path dir);
+		KnmiTenMin(const boost::filesystem::path& dir);
 		virtual ~KnmiTenMin() {};
 
+		void GetDataForPeriod(const boost::posix_time::ptime begin, const boost::posix_time::ptime end);
+		float GetTemp(const boost::posix_time::ptime time);
+		float GetPressure(const boost::posix_time::ptime time);
+		float GetWindDir(const boost::posix_time::ptime time);
+		float GetWindSpeed(const boost::posix_time::ptime time);
+		float GetHumidity(const boost::posix_time::ptime time);
 	};
 
 	class KnmiHourly : WeatherSource_t
 	{
 	public:
-		KnmiHourly(boost::filesystem::path cacheFolder);
+		KnmiHourly(const boost::filesystem::path& cacheFolder);
 		virtual ~KnmiHourly() {};
+
+		void GetDataForPeriod(const boost::posix_time::ptime begin, const boost::posix_time::ptime end);
+		float GetTemp(const boost::posix_time::ptime time);
+		float GetPressure(const boost::posix_time::ptime time);
+		float GetWindDir(const boost::posix_time::ptime time);
+		float GetWindSpeed(const boost::posix_time::ptime time);
+		float GetHumidity(const boost::posix_time::ptime time);
 	private:
 		struct KnmiHourlyRecord
 		{
@@ -65,9 +86,17 @@ namespace RideWeather
 			bool rain;
 			bool snow;
 			bool thunderstorm;
-			bool icing;			
+			bool icing;
 		};
 
 		boost::filesystem::path _cacheFolder;
+		std::map<boost::posix_time::ptime, KnmiHourlyRecord> records;
+		void GetDataForMonth(const boost::gregorian::date startOfMonth);
+		bool GetCached(boost::gregorian::date startOfMonth, std::string& stream);
+		void WriteCache(boost::gregorian::date startOfMonth, const std::string & stream);
+		std::string GetOnline(boost::gregorian::date startOfMonth);
+		void ParseEntries(const std::string& text);
+		boost::posix_time::ptime RoundTime(const boost::posix_time::ptime input);
+		auto GetRecordForTime(const boost::posix_time::ptime time);
 	};
 }

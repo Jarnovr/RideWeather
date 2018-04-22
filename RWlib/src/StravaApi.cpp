@@ -90,7 +90,6 @@ namespace RideWeather
 		out.assign((std::istreambuf_iterator<char>(file)), (std::istreambuf_iterator<char>()));
 		file.close();
 		return true;
-
 	}
 
 	void StravaApi_t::WriteCache(const std::string & key, const std::string & json)
@@ -106,7 +105,6 @@ namespace RideWeather
 		boost::filesystem::ofstream file(fn, std::ios::binary);
 		file << json;
 		file.close();
-
 	}
 
 	string StravaApi_t::GetAthlete(const ptrdiff_t id)
