@@ -8,15 +8,15 @@ set(CMAKE_AUTOMOC ON)
 set(CMAKE_AUTOUIC ON)
 
 if(WIN32)
-set(CMAKE_PREFIX_PATH "D:/Qt/5.9.3/msvc2017_64/lib/cmake")
+set(CMAKE_PREFIX_PATH "D:/Qt/5.11.1/msvc2017_64/lib/cmake")
 endif()
 
 IF(WIN32)
 set(Boost_USE_STATIC_LIBS        ON)
 set(Boost_USE_MULTITHREADED      ON)
 set(Boost_USE_STATIC_RUNTIME    OFF)
-set(BOOST_ROOT D:/boost_1_63_0)
-set(BOOT_LIBRARYDIR D:/boost_1_63_0/stage/lib )
+set(BOOST_ROOT D:/boost_1_68_0)
+set(BOOT_LIBRARYDIR D:/boost_1_68_0/stage/lib )
 include_directories(${RapidJSON_SOURCE_DIR}/include)
 ENDIF()
 find_package(Boost REQUIRED filesystem date_time)
@@ -45,9 +45,9 @@ set(${PROJECT_NAME}_INCLUDE_DIRS ${dirs}
   if (WIN32) 
   
 add_custom_command(TARGET RideWeather POST_BUILD        # Adds a post-build event to MyTest
-WORKING_DIRECTORY D:\\Qt\\5.9.3\\msvc2017_64\\bin
+WORKING_DIRECTORY D:\\Qt\\5.11.1\\msvc2017_64\\bin
     COMMAND windeployqt --debug ${CMAKE_EXECUTABLE_OUTPUT_PATH}\\Debug   )
 add_custom_command(TARGET RideWeather POST_BUILD        # Adds a post-build event to MyTest
-WORKING_DIRECTORY D:\\Qt\\5.9.3\\msvc2017_64\\bin
+WORKING_DIRECTORY D:\\Qt\\5.11.1\\msvc2017_64\\bin
     COMMAND windeployqt --release ${CMAKE_EXECUTABLE_OUTPUT_PATH}\\Release   )
 	endif()
