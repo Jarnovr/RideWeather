@@ -79,7 +79,6 @@ namespace RideWeather
 				measurement_preference = MeasurementType_t::meters;
 			else
 				throw StravaException_t("Athlete_t measurement_preference not feet or meters");
-			ParseString(email, "email");
 			ftp = ParseInt64("ftp");
 			weight = ParseDouble("weight");
 
@@ -265,9 +264,8 @@ namespace RideWeather
 		case 3:
 			calories = ParseDouble("calories");
 			ParseString(description, "description");
-			if (!dom->HasMember("gear"))
-				throw StravaException_t("Activity_t has no member gear.\n");
-			gear = make_shared<Gear_t>((*dom)["gear"]);
+			if (dom->HasMember("gear"))
+				gear = make_shared<Gear_t>((*dom)["gear"]);
 			if (!dom->HasMember("segment_efforts"))
 				throw StravaException_t("Athlete_t missing segment_efforts list");
 			if (!(*dom)["segment_efforts"].IsArray())

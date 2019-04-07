@@ -249,7 +249,6 @@ namespace RideWeather
 		AthleteType_t athlete_type;//detailed only
 		string date_preference;//format string//detailed only
 		MeasurementType_t measurement_preference;//detailed only
-		string email;//detailed only
 		ptrdiff_t ftp;//detailed only
 		double weight;//detailed only
 		std::list<Club_t> clubs;//detailed only
