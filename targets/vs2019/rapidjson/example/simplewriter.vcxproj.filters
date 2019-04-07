@@ -1,0 +1,16 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="16.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <ClCompile Include="C:\Users\Jarno\Documents\GitHub\RideWeather\rapidjson\example\simplewriter\simplewriter.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <CustomBuild Include="C:\Users\Jarno\Documents\GitHub\RideWeather\rapidjson\example\CMakeLists.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{D9D116A1-3FBB-3B71-B25E-95D06F20E56E}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+</Project>

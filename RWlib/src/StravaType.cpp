@@ -1078,7 +1078,7 @@ namespace RideWeather
 		else if (type.compare("high")==0)
 			resolution = Resolution_t::high;
 		else
-			resolution = Resolution_t::default;
+			resolution = Resolution_t::def;
 
 		//parse data
 		if (!dom->HasMember("data"))

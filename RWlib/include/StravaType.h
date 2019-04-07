@@ -350,7 +350,7 @@ namespace RideWeather
 
 	class Stream_t : public Strava_t {
 	public:
-		enum class Resolution_t { low, medium, high, default };
+		enum class Resolution_t { low, medium, high, def };
 		string type;
 		string  series_type;
 		ptrdiff_t original_size;

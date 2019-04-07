@@ -1,0 +1,578 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="16.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <PreferredToolArchitecture>x64</PreferredToolArchitecture>
+  </PropertyGroup>
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|x64">
+      <Configuration>Debug</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|x64">
+      <Configuration>Release</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="MinSizeRel|x64">
+      <Configuration>MinSizeRel</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="RelWithDebInfo|x64">
+      <Configuration>RelWithDebInfo</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{9D02E10E-5854-3878-ADDC-4C09D50B33F2}</ProjectGuid>
+    <WindowsTargetPlatformVersion>10.0.17763.0</WindowsTargetPlatformVersion>
+    <Keyword>Win32Proj</Keyword>
+    <Platform>x64</Platform>
+    <ProjectName>libcurl</ProjectName>
+    <VCProjectUpgraderObjectName>NoUpgrade</VCProjectUpgraderObjectName>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <CharacterSet>MultiByte</CharacterSet>
+    <PlatformToolset>v142</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <CharacterSet>MultiByte</CharacterSet>
+    <PlatformToolset>v142</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'" Label="Configuration">
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <CharacterSet>MultiByte</CharacterSet>
+    <PlatformToolset>v142</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'" Label="Configuration">
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <CharacterSet>MultiByte</CharacterSet>
+    <PlatformToolset>v142</PlatformToolset>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup>
+    <_ProjectFileVersion>10.0.20506.1</_ProjectFileVersion>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">C:\Users\Jarno\Documents\GitHub\RideWeather\targets\vs2019\cpr\lib\Debug\</OutDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">libcurl.dir\Debug\</IntDir>
+    <TargetName Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">libcurl-d</TargetName>
+    <TargetExt Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">.dll</TargetExt>
+    <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</LinkIncremental>
+    <GenerateManifest Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</GenerateManifest>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='Release|x64'">C:\Users\Jarno\Documents\GitHub\RideWeather\targets\vs2019\cpr\lib\Release\</OutDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='Release|x64'">libcurl.dir\Release\</IntDir>
+    <TargetName Condition="'$(Configuration)|$(Platform)'=='Release|x64'">libcurl</TargetName>
+    <TargetExt Condition="'$(Configuration)|$(Platform)'=='Release|x64'">.dll</TargetExt>
+    <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</LinkIncremental>
+    <GenerateManifest Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</GenerateManifest>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">C:\Users\Jarno\Documents\GitHub\RideWeather\targets\vs2019\cpr\lib\MinSizeRel\</OutDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">libcurl.dir\MinSizeRel\</IntDir>
+    <TargetName Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">libcurl</TargetName>
+    <TargetExt Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">.dll</TargetExt>
+    <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">false</LinkIncremental>
+    <GenerateManifest Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">true</GenerateManifest>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">C:\Users\Jarno\Documents\GitHub\RideWeather\targets\vs2019\cpr\lib\RelWithDebInfo\</OutDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">libcurl.dir\RelWithDebInfo\</IntDir>
+    <TargetName Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">libcurl</TargetName>
+    <TargetExt Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">.dll</TargetExt>
+    <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">true</LinkIncremental>
+    <GenerateManifest Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">true</GenerateManifest>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <ClCompile>
+      <AdditionalIncludeDirectories>C:\Users\Jarno\Documents\GitHub\RideWeather\targets\vs2019\cpr\opt\curl\include\curl;C:\Users\Jarno\Documents\GitHub\RideWeather\cpr\opt\curl\include;C:\Users\Jarno\Documents\GitHub\RideWeather\targets\vs2019\cpr\opt\curl\lib\..\include;C:\Users\Jarno\Documents\GitHub\RideWeather\cpr\opt\curl\lib\..;C:\Users\Jarno\Documents\GitHub\RideWeather\cpr\opt\curl\lib\..\include;C:\Users\Jarno\Documents\GitHub\RideWeather\targets\vs2019\cpr\opt\curl\lib\..;C:\Users\Jarno\Documents\GitHub\RideWeather\cpr\opt\curl\lib;C:\Users\Jarno\Documents\GitHub\RideWeather\targets\vs2019\cpr\opt\curl\lib;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AssemblerListingLocation>Debug/</AssemblerListingLocation>
+      <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
+      <CompileAs>CompileAsC</CompileAs>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+      <DisableSpecificWarnings>4127</DisableSpecificWarnings>
+      <ExceptionHandling>
+      </ExceptionHandling>
+      <InlineFunctionExpansion>Disabled</InlineFunctionExpansion>
+      <Optimization>Disabled</Optimization>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
+      <UseFullPaths>false</UseFullPaths>
+      <WarningLevel>Level4</WarningLevel>
+      <PreprocessorDefinitions>WIN32;_WINDOWS;BUILDING_LIBCURL;CURL_HIDDEN_SYMBOLS;USE_SYSTEM_GTEST;_WIN32_WINNT=0x0600;HAVE_CONFIG_H;_CRT_SECURE_NO_DEPRECATE;_CRT_NONSTDC_NO_DEPRECATE;_USRDLL;CMAKE_INTDIR="Debug";libcurl_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <ObjectFileName>$(IntDir)</ObjectFileName>
+    </ClCompile>
+    <ResourceCompile>
+      <PreprocessorDefinitions>WIN32;_DEBUG;_WINDOWS;BUILDING_LIBCURL;CURL_HIDDEN_SYMBOLS;USE_SYSTEM_GTEST;_WIN32_WINNT=0x0600;HAVE_CONFIG_H;_CRT_SECURE_NO_DEPRECATE;_CRT_NONSTDC_NO_DEPRECATE;_USRDLL;CMAKE_INTDIR=\"Debug\";libcurl_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>C:\Users\Jarno\Documents\GitHub\RideWeather\targets\vs2019\cpr\opt\curl\include\curl;C:\Users\Jarno\Documents\GitHub\RideWeather\cpr\opt\curl\include;C:\Users\Jarno\Documents\GitHub\RideWeather\targets\vs2019\cpr\opt\curl\lib\..\include;C:\Users\Jarno\Documents\GitHub\RideWeather\cpr\opt\curl\lib\..;C:\Users\Jarno\Documents\GitHub\RideWeather\cpr\opt\curl\lib\..\include;C:\Users\Jarno\Documents\GitHub\RideWeather\targets\vs2019\cpr\opt\curl\lib\..;C:\Users\Jarno\Documents\GitHub\RideWeather\cpr\opt\curl\lib;C:\Users\Jarno\Documents\GitHub\RideWeather\targets\vs2019\cpr\opt\curl\lib;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ResourceCompile>
+    <Midl>
+      <AdditionalIncludeDirectories>C:\Users\Jarno\Documents\GitHub\RideWeather\targets\vs2019\cpr\opt\curl\include\curl;C:\Users\Jarno\Documents\GitHub\RideWeather\cpr\opt\curl\include;C:\Users\Jarno\Documents\GitHub\RideWeather\targets\vs2019\cpr\opt\curl\lib\..\include;C:\Users\Jarno\Documents\GitHub\RideWeather\cpr\opt\curl\lib\..;C:\Users\Jarno\Documents\GitHub\RideWeather\cpr\opt\curl\lib\..\include;C:\Users\Jarno\Documents\GitHub\RideWeather\targets\vs2019\cpr\opt\curl\lib\..;C:\Users\Jarno\Documents\GitHub\RideWeather\cpr\opt\curl\lib;C:\Users\Jarno\Documents\GitHub\RideWeather\targets\vs2019\cpr\opt\curl\lib;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <OutputDirectory>$(ProjectDir)/$(IntDir)</OutputDirectory>
+      <HeaderFileName>%(Filename).h</HeaderFileName>
+      <TypeLibraryName>%(Filename).tlb</TypeLibraryName>
+      <InterfaceIdentifierFileName>%(Filename)_i.c</InterfaceIdentifierFileName>
+      <ProxyFileName>%(Filename)_p.c</ProxyFileName>
+    </Midl>
+    <Link>
+      <AdditionalDependencies>wldap32.lib;winmm.lib;ws2_32.lib;crypt32.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;comdlg32.lib;advapi32.lib</AdditionalDependencies>
+      <AdditionalLibraryDirectories>%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalOptions>%(AdditionalOptions) /machine:x64</AdditionalOptions>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <IgnoreSpecificDefaultLibraries>%(IgnoreSpecificDefaultLibraries)</IgnoreSpecificDefaultLibraries>
+      <ImportLibrary>C:/Users/Jarno/Documents/GitHub/RideWeather/targets/vs2019/cpr/lib/Debug/libcurl-d_imp.lib</ImportLibrary>
+      <ProgramDataBaseFile>C:/Users/Jarno/Documents/GitHub/RideWeather/targets/vs2019/cpr/lib/Debug/libcurl-d.pdb</ProgramDataBaseFile>
+      <SubSystem>Console</SubSystem>
+    </Link>
+    <ProjectReference>
+      <LinkLibraryDependencies>false</LinkLibraryDependencies>
+    </ProjectReference>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <ClCompile>
+      <AdditionalIncludeDirectories>C:\Users\Jarno\Documents\GitHub\RideWeather\targets\vs2019\cpr\opt\curl\include\curl;C:\Users\Jarno\Documents\GitHub\RideWeather\cpr\opt\curl\include;C:\Users\Jarno\Documents\GitHub\RideWeather\targets\vs2019\cpr\opt\curl\lib\..\include;C:\Users\Jarno\Documents\GitHub\RideWeather\cpr\opt\curl\lib\..;C:\Users\Jarno\Documents\GitHub\RideWeather\cpr\opt\curl\lib\..\include;C:\Users\Jarno\Documents\GitHub\RideWeather\targets\vs2019\cpr\opt\curl\lib\..;C:\Users\Jarno\Documents\GitHub\RideWeather\cpr\opt\curl\lib;C:\Users\Jarno\Documents\GitHub\RideWeather\targets\vs2019\cpr\opt\curl\lib;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AssemblerListingLocation>Release/</AssemblerListingLocation>
+      <CompileAs>CompileAsC</CompileAs>
+      <DisableSpecificWarnings>4127</DisableSpecificWarnings>
+      <ExceptionHandling>
+      </ExceptionHandling>
+      <InlineFunctionExpansion>AnySuitable</InlineFunctionExpansion>
+      <Optimization>MaxSpeed</Optimization>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
+      <UseFullPaths>false</UseFullPaths>
+      <WarningLevel>Level4</WarningLevel>
+      <PreprocessorDefinitions>WIN32;_WINDOWS;NDEBUG;BUILDING_LIBCURL;CURL_HIDDEN_SYMBOLS;USE_SYSTEM_GTEST;_WIN32_WINNT=0x0600;HAVE_CONFIG_H;_CRT_SECURE_NO_DEPRECATE;_CRT_NONSTDC_NO_DEPRECATE;_USRDLL;CMAKE_INTDIR="Release";libcurl_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <ObjectFileName>$(IntDir)</ObjectFileName>
+      <DebugInformationFormat>
+      </DebugInformationFormat>
+    </ClCompile>
+    <ResourceCompile>
+      <PreprocessorDefinitions>WIN32;_WINDOWS;NDEBUG;BUILDING_LIBCURL;CURL_HIDDEN_SYMBOLS;USE_SYSTEM_GTEST;_WIN32_WINNT=0x0600;HAVE_CONFIG_H;_CRT_SECURE_NO_DEPRECATE;_CRT_NONSTDC_NO_DEPRECATE;_USRDLL;CMAKE_INTDIR=\"Release\";libcurl_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>C:\Users\Jarno\Documents\GitHub\RideWeather\targets\vs2019\cpr\opt\curl\include\curl;C:\Users\Jarno\Documents\GitHub\RideWeather\cpr\opt\curl\include;C:\Users\Jarno\Documents\GitHub\RideWeather\targets\vs2019\cpr\opt\curl\lib\..\include;C:\Users\Jarno\Documents\GitHub\RideWeather\cpr\opt\curl\lib\..;C:\Users\Jarno\Documents\GitHub\RideWeather\cpr\opt\curl\lib\..\include;C:\Users\Jarno\Documents\GitHub\RideWeather\targets\vs2019\cpr\opt\curl\lib\..;C:\Users\Jarno\Documents\GitHub\RideWeather\cpr\opt\curl\lib;C:\Users\Jarno\Documents\GitHub\RideWeather\targets\vs2019\cpr\opt\curl\lib;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ResourceCompile>
+    <Midl>
+      <AdditionalIncludeDirectories>C:\Users\Jarno\Documents\GitHub\RideWeather\targets\vs2019\cpr\opt\curl\include\curl;C:\Users\Jarno\Documents\GitHub\RideWeather\cpr\opt\curl\include;C:\Users\Jarno\Documents\GitHub\RideWeather\targets\vs2019\cpr\opt\curl\lib\..\include;C:\Users\Jarno\Documents\GitHub\RideWeather\cpr\opt\curl\lib\..;C:\Users\Jarno\Documents\GitHub\RideWeather\cpr\opt\curl\lib\..\include;C:\Users\Jarno\Documents\GitHub\RideWeather\targets\vs2019\cpr\opt\curl\lib\..;C:\Users\Jarno\Documents\GitHub\RideWeather\cpr\opt\curl\lib;C:\Users\Jarno\Documents\GitHub\RideWeather\targets\vs2019\cpr\opt\curl\lib;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <OutputDirectory>$(ProjectDir)/$(IntDir)</OutputDirectory>
+      <HeaderFileName>%(Filename).h</HeaderFileName>
+      <TypeLibraryName>%(Filename).tlb</TypeLibraryName>
+      <InterfaceIdentifierFileName>%(Filename)_i.c</InterfaceIdentifierFileName>
+      <ProxyFileName>%(Filename)_p.c</ProxyFileName>
+    </Midl>
+    <Link>
+      <AdditionalDependencies>wldap32.lib;winmm.lib;ws2_32.lib;crypt32.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;comdlg32.lib;advapi32.lib</AdditionalDependencies>
+      <AdditionalLibraryDirectories>%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalOptions>%(AdditionalOptions) /machine:x64</AdditionalOptions>
+      <GenerateDebugInformation>false</GenerateDebugInformation>
+      <IgnoreSpecificDefaultLibraries>%(IgnoreSpecificDefaultLibraries)</IgnoreSpecificDefaultLibraries>
+      <ImportLibrary>C:/Users/Jarno/Documents/GitHub/RideWeather/targets/vs2019/cpr/lib/Release/libcurl_imp.lib</ImportLibrary>
+      <ProgramDataBaseFile>C:/Users/Jarno/Documents/GitHub/RideWeather/targets/vs2019/cpr/lib/Release/libcurl.pdb</ProgramDataBaseFile>
+      <SubSystem>Console</SubSystem>
+    </Link>
+    <ProjectReference>
+      <LinkLibraryDependencies>false</LinkLibraryDependencies>
+    </ProjectReference>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">
+    <ClCompile>
+      <AdditionalIncludeDirectories>C:\Users\Jarno\Documents\GitHub\RideWeather\targets\vs2019\cpr\opt\curl\include\curl;C:\Users\Jarno\Documents\GitHub\RideWeather\cpr\opt\curl\include;C:\Users\Jarno\Documents\GitHub\RideWeather\targets\vs2019\cpr\opt\curl\lib\..\include;C:\Users\Jarno\Documents\GitHub\RideWeather\cpr\opt\curl\lib\..;C:\Users\Jarno\Documents\GitHub\RideWeather\cpr\opt\curl\lib\..\include;C:\Users\Jarno\Documents\GitHub\RideWeather\targets\vs2019\cpr\opt\curl\lib\..;C:\Users\Jarno\Documents\GitHub\RideWeather\cpr\opt\curl\lib;C:\Users\Jarno\Documents\GitHub\RideWeather\targets\vs2019\cpr\opt\curl\lib;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AssemblerListingLocation>MinSizeRel/</AssemblerListingLocation>
+      <CompileAs>CompileAsC</CompileAs>
+      <DisableSpecificWarnings>4127</DisableSpecificWarnings>
+      <ExceptionHandling>
+      </ExceptionHandling>
+      <InlineFunctionExpansion>OnlyExplicitInline</InlineFunctionExpansion>
+      <Optimization>MinSpace</Optimization>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
+      <UseFullPaths>false</UseFullPaths>
+      <WarningLevel>Level4</WarningLevel>
+      <PreprocessorDefinitions>WIN32;_WINDOWS;NDEBUG;BUILDING_LIBCURL;CURL_HIDDEN_SYMBOLS;USE_SYSTEM_GTEST;_WIN32_WINNT=0x0600;HAVE_CONFIG_H;_CRT_SECURE_NO_DEPRECATE;_CRT_NONSTDC_NO_DEPRECATE;_USRDLL;CMAKE_INTDIR="MinSizeRel";libcurl_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <ObjectFileName>$(IntDir)</ObjectFileName>
+      <DebugInformationFormat>
+      </DebugInformationFormat>
+    </ClCompile>
+    <ResourceCompile>
+      <PreprocessorDefinitions>WIN32;_WINDOWS;NDEBUG;BUILDING_LIBCURL;CURL_HIDDEN_SYMBOLS;USE_SYSTEM_GTEST;_WIN32_WINNT=0x0600;HAVE_CONFIG_H;_CRT_SECURE_NO_DEPRECATE;_CRT_NONSTDC_NO_DEPRECATE;_USRDLL;CMAKE_INTDIR=\"MinSizeRel\";libcurl_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>C:\Users\Jarno\Documents\GitHub\RideWeather\targets\vs2019\cpr\opt\curl\include\curl;C:\Users\Jarno\Documents\GitHub\RideWeather\cpr\opt\curl\include;C:\Users\Jarno\Documents\GitHub\RideWeather\targets\vs2019\cpr\opt\curl\lib\..\include;C:\Users\Jarno\Documents\GitHub\RideWeather\cpr\opt\curl\lib\..;C:\Users\Jarno\Documents\GitHub\RideWeather\cpr\opt\curl\lib\..\include;C:\Users\Jarno\Documents\GitHub\RideWeather\targets\vs2019\cpr\opt\curl\lib\..;C:\Users\Jarno\Documents\GitHub\RideWeather\cpr\opt\curl\lib;C:\Users\Jarno\Documents\GitHub\RideWeather\targets\vs2019\cpr\opt\curl\lib;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ResourceCompile>
+    <Midl>
+      <AdditionalIncludeDirectories>C:\Users\Jarno\Documents\GitHub\RideWeather\targets\vs2019\cpr\opt\curl\include\curl;C:\Users\Jarno\Documents\GitHub\RideWeather\cpr\opt\curl\include;C:\Users\Jarno\Documents\GitHub\RideWeather\targets\vs2019\cpr\opt\curl\lib\..\include;C:\Users\Jarno\Documents\GitHub\RideWeather\cpr\opt\curl\lib\..;C:\Users\Jarno\Documents\GitHub\RideWeather\cpr\opt\curl\lib\..\include;C:\Users\Jarno\Documents\GitHub\RideWeather\targets\vs2019\cpr\opt\curl\lib\..;C:\Users\Jarno\Documents\GitHub\RideWeather\cpr\opt\curl\lib;C:\Users\Jarno\Documents\GitHub\RideWeather\targets\vs2019\cpr\opt\curl\lib;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <OutputDirectory>$(ProjectDir)/$(IntDir)</OutputDirectory>
+      <HeaderFileName>%(Filename).h</HeaderFileName>
+      <TypeLibraryName>%(Filename).tlb</TypeLibraryName>
+      <InterfaceIdentifierFileName>%(Filename)_i.c</InterfaceIdentifierFileName>
+      <ProxyFileName>%(Filename)_p.c</ProxyFileName>
+    </Midl>
+    <Link>
+      <AdditionalDependencies>wldap32.lib;winmm.lib;ws2_32.lib;crypt32.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;comdlg32.lib;advapi32.lib</AdditionalDependencies>
+      <AdditionalLibraryDirectories>%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalOptions>%(AdditionalOptions) /machine:x64</AdditionalOptions>
+      <GenerateDebugInformation>false</GenerateDebugInformation>
+      <IgnoreSpecificDefaultLibraries>%(IgnoreSpecificDefaultLibraries)</IgnoreSpecificDefaultLibraries>
+      <ImportLibrary>C:/Users/Jarno/Documents/GitHub/RideWeather/targets/vs2019/cpr/lib/MinSizeRel/libcurl_imp.lib</ImportLibrary>
+      <ProgramDataBaseFile>C:/Users/Jarno/Documents/GitHub/RideWeather/targets/vs2019/cpr/lib/MinSizeRel/libcurl.pdb</ProgramDataBaseFile>
+      <SubSystem>Console</SubSystem>
+    </Link>
+    <ProjectReference>
+      <LinkLibraryDependencies>false</LinkLibraryDependencies>
+    </ProjectReference>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">
+    <ClCompile>
+      <AdditionalIncludeDirectories>C:\Users\Jarno\Documents\GitHub\RideWeather\targets\vs2019\cpr\opt\curl\include\curl;C:\Users\Jarno\Documents\GitHub\RideWeather\cpr\opt\curl\include;C:\Users\Jarno\Documents\GitHub\RideWeather\targets\vs2019\cpr\opt\curl\lib\..\include;C:\Users\Jarno\Documents\GitHub\RideWeather\cpr\opt\curl\lib\..;C:\Users\Jarno\Documents\GitHub\RideWeather\cpr\opt\curl\lib\..\include;C:\Users\Jarno\Documents\GitHub\RideWeather\targets\vs2019\cpr\opt\curl\lib\..;C:\Users\Jarno\Documents\GitHub\RideWeather\cpr\opt\curl\lib;C:\Users\Jarno\Documents\GitHub\RideWeather\targets\vs2019\cpr\opt\curl\lib;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AssemblerListingLocation>RelWithDebInfo/</AssemblerListingLocation>
+      <CompileAs>CompileAsC</CompileAs>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+      <DisableSpecificWarnings>4127</DisableSpecificWarnings>
+      <ExceptionHandling>
+      </ExceptionHandling>
+      <InlineFunctionExpansion>OnlyExplicitInline</InlineFunctionExpansion>
+      <Optimization>MaxSpeed</Optimization>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
+      <UseFullPaths>false</UseFullPaths>
+      <WarningLevel>Level4</WarningLevel>
+      <PreprocessorDefinitions>WIN32;_WINDOWS;NDEBUG;BUILDING_LIBCURL;CURL_HIDDEN_SYMBOLS;USE_SYSTEM_GTEST;_WIN32_WINNT=0x0600;HAVE_CONFIG_H;_CRT_SECURE_NO_DEPRECATE;_CRT_NONSTDC_NO_DEPRECATE;_USRDLL;CMAKE_INTDIR="RelWithDebInfo";libcurl_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <ObjectFileName>$(IntDir)</ObjectFileName>
+    </ClCompile>
+    <ResourceCompile>
+      <PreprocessorDefinitions>WIN32;_WINDOWS;NDEBUG;BUILDING_LIBCURL;CURL_HIDDEN_SYMBOLS;USE_SYSTEM_GTEST;_WIN32_WINNT=0x0600;HAVE_CONFIG_H;_CRT_SECURE_NO_DEPRECATE;_CRT_NONSTDC_NO_DEPRECATE;_USRDLL;CMAKE_INTDIR=\"RelWithDebInfo\";libcurl_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>C:\Users\Jarno\Documents\GitHub\RideWeather\targets\vs2019\cpr\opt\curl\include\curl;C:\Users\Jarno\Documents\GitHub\RideWeather\cpr\opt\curl\include;C:\Users\Jarno\Documents\GitHub\RideWeather\targets\vs2019\cpr\opt\curl\lib\..\include;C:\Users\Jarno\Documents\GitHub\RideWeather\cpr\opt\curl\lib\..;C:\Users\Jarno\Documents\GitHub\RideWeather\cpr\opt\curl\lib\..\include;C:\Users\Jarno\Documents\GitHub\RideWeather\targets\vs2019\cpr\opt\curl\lib\..;C:\Users\Jarno\Documents\GitHub\RideWeather\cpr\opt\curl\lib;C:\Users\Jarno\Documents\GitHub\RideWeather\targets\vs2019\cpr\opt\curl\lib;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ResourceCompile>
+    <Midl>
+      <AdditionalIncludeDirectories>C:\Users\Jarno\Documents\GitHub\RideWeather\targets\vs2019\cpr\opt\curl\include\curl;C:\Users\Jarno\Documents\GitHub\RideWeather\cpr\opt\curl\include;C:\Users\Jarno\Documents\GitHub\RideWeather\targets\vs2019\cpr\opt\curl\lib\..\include;C:\Users\Jarno\Documents\GitHub\RideWeather\cpr\opt\curl\lib\..;C:\Users\Jarno\Documents\GitHub\RideWeather\cpr\opt\curl\lib\..\include;C:\Users\Jarno\Documents\GitHub\RideWeather\targets\vs2019\cpr\opt\curl\lib\..;C:\Users\Jarno\Documents\GitHub\RideWeather\cpr\opt\curl\lib;C:\Users\Jarno\Documents\GitHub\RideWeather\targets\vs2019\cpr\opt\curl\lib;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <OutputDirectory>$(ProjectDir)/$(IntDir)</OutputDirectory>
+      <HeaderFileName>%(Filename).h</HeaderFileName>
+      <TypeLibraryName>%(Filename).tlb</TypeLibraryName>
+      <InterfaceIdentifierFileName>%(Filename)_i.c</InterfaceIdentifierFileName>
+      <ProxyFileName>%(Filename)_p.c</ProxyFileName>
+    </Midl>
+    <Link>
+      <AdditionalDependencies>wldap32.lib;winmm.lib;ws2_32.lib;crypt32.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;comdlg32.lib;advapi32.lib</AdditionalDependencies>
+      <AdditionalLibraryDirectories>%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalOptions>%(AdditionalOptions) /machine:x64</AdditionalOptions>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <IgnoreSpecificDefaultLibraries>%(IgnoreSpecificDefaultLibraries)</IgnoreSpecificDefaultLibraries>
+      <ImportLibrary>C:/Users/Jarno/Documents/GitHub/RideWeather/targets/vs2019/cpr/lib/RelWithDebInfo/libcurl_imp.lib</ImportLibrary>
+      <ProgramDataBaseFile>C:/Users/Jarno/Documents/GitHub/RideWeather/targets/vs2019/cpr/lib/RelWithDebInfo/libcurl.pdb</ProgramDataBaseFile>
+      <SubSystem>Console</SubSystem>
+    </Link>
+    <ProjectReference>
+      <LinkLibraryDependencies>false</LinkLibraryDependencies>
+    </ProjectReference>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <CustomBuild Include="C:\Users\Jarno\Documents\GitHub\RideWeather\cpr\opt\curl\lib\CMakeLists.txt">
+      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Building Custom Rule C:/Users/Jarno/Documents/GitHub/RideWeather/cpr/opt/curl/lib/CMakeLists.txt</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">setlocal
+"C:\Program Files\CMake\bin\cmake.exe" -SC:/Users/Jarno/Documents/GitHub/RideWeather/cpr -BC:/Users/Jarno/Documents/GitHub/RideWeather/targets/vs2019/cpr --check-stamp-file C:/Users/Jarno/Documents/GitHub/RideWeather/targets/vs2019/cpr/opt/curl/lib/CMakeFiles/generate.stamp
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">C:/Users/Jarno/Documents/GitHub/RideWeather/cpr/opt/curl/lib/CMakeLists.txt;C:\Users\Jarno\Documents\GitHub\RideWeather\cpr\opt\curl\lib\CMakeLists.txt;C:\Users\Jarno\Documents\GitHub\RideWeather\cpr\opt\curl\lib\curl_config.h.cmake;C:\Users\Jarno\Documents\GitHub\RideWeather\targets\vs2019\cpr\opt\curl\lib\Makefile.inc.cmake;C:\Users\Jarno\Documents\GitHub\RideWeather\cpr\opt\curl\lib\CMakeLists.txt;%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">C:\Users\Jarno\Documents\GitHub\RideWeather\targets\vs2019\cpr\opt\curl\lib\CMakeFiles\generate.stamp</Outputs>
+      <LinkObjects Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</LinkObjects>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Building Custom Rule C:/Users/Jarno/Documents/GitHub/RideWeather/cpr/opt/curl/lib/CMakeLists.txt</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|x64'">setlocal
+"C:\Program Files\CMake\bin\cmake.exe" -SC:/Users/Jarno/Documents/GitHub/RideWeather/cpr -BC:/Users/Jarno/Documents/GitHub/RideWeather/targets/vs2019/cpr --check-stamp-file C:/Users/Jarno/Documents/GitHub/RideWeather/targets/vs2019/cpr/opt/curl/lib/CMakeFiles/generate.stamp
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">C:/Users/Jarno/Documents/GitHub/RideWeather/cpr/opt/curl/lib/CMakeLists.txt;C:\Users\Jarno\Documents\GitHub\RideWeather\cpr\opt\curl\lib\CMakeLists.txt;C:\Users\Jarno\Documents\GitHub\RideWeather\cpr\opt\curl\lib\curl_config.h.cmake;C:\Users\Jarno\Documents\GitHub\RideWeather\targets\vs2019\cpr\opt\curl\lib\Makefile.inc.cmake;C:\Users\Jarno\Documents\GitHub\RideWeather\cpr\opt\curl\lib\CMakeLists.txt;%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">C:\Users\Jarno\Documents\GitHub\RideWeather\targets\vs2019\cpr\opt\curl\lib\CMakeFiles\generate.stamp</Outputs>
+      <LinkObjects Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</LinkObjects>
+      <Message Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">Building Custom Rule C:/Users/Jarno/Documents/GitHub/RideWeather/cpr/opt/curl/lib/CMakeLists.txt</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">setlocal
+"C:\Program Files\CMake\bin\cmake.exe" -SC:/Users/Jarno/Documents/GitHub/RideWeather/cpr -BC:/Users/Jarno/Documents/GitHub/RideWeather/targets/vs2019/cpr --check-stamp-file C:/Users/Jarno/Documents/GitHub/RideWeather/targets/vs2019/cpr/opt/curl/lib/CMakeFiles/generate.stamp
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">C:/Users/Jarno/Documents/GitHub/RideWeather/cpr/opt/curl/lib/CMakeLists.txt;C:\Users\Jarno\Documents\GitHub\RideWeather\cpr\opt\curl\lib\CMakeLists.txt;C:\Users\Jarno\Documents\GitHub\RideWeather\cpr\opt\curl\lib\curl_config.h.cmake;C:\Users\Jarno\Documents\GitHub\RideWeather\targets\vs2019\cpr\opt\curl\lib\Makefile.inc.cmake;C:\Users\Jarno\Documents\GitHub\RideWeather\cpr\opt\curl\lib\CMakeLists.txt;%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">C:\Users\Jarno\Documents\GitHub\RideWeather\targets\vs2019\cpr\opt\curl\lib\CMakeFiles\generate.stamp</Outputs>
+      <LinkObjects Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">false</LinkObjects>
+      <Message Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">Building Custom Rule C:/Users/Jarno/Documents/GitHub/RideWeather/cpr/opt/curl/lib/CMakeLists.txt</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">setlocal
+"C:\Program Files\CMake\bin\cmake.exe" -SC:/Users/Jarno/Documents/GitHub/RideWeather/cpr -BC:/Users/Jarno/Documents/GitHub/RideWeather/targets/vs2019/cpr --check-stamp-file C:/Users/Jarno/Documents/GitHub/RideWeather/targets/vs2019/cpr/opt/curl/lib/CMakeFiles/generate.stamp
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">C:/Users/Jarno/Documents/GitHub/RideWeather/cpr/opt/curl/lib/CMakeLists.txt;C:\Users\Jarno\Documents\GitHub\RideWeather\cpr\opt\curl\lib\CMakeLists.txt;C:\Users\Jarno\Documents\GitHub\RideWeather\cpr\opt\curl\lib\curl_config.h.cmake;C:\Users\Jarno\Documents\GitHub\RideWeather\targets\vs2019\cpr\opt\curl\lib\Makefile.inc.cmake;C:\Users\Jarno\Documents\GitHub\RideWeather\cpr\opt\curl\lib\CMakeLists.txt;%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">C:\Users\Jarno\Documents\GitHub\RideWeather\targets\vs2019\cpr\opt\curl\lib\CMakeFiles\generate.stamp</Outputs>
+      <LinkObjects Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">false</LinkObjects>
+    </CustomBuild>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="C:\Users\Jarno\Documents\GitHub\RideWeather\cpr\opt\curl\lib\arpa_telnet.h" />
+    <ClInclude Include="C:\Users\Jarno\Documents\GitHub\RideWeather\cpr\opt\curl\lib\netrc.h" />
+    <ClInclude Include="C:\Users\Jarno\Documents\GitHub\RideWeather\cpr\opt\curl\lib\file.h" />
+    <ClInclude Include="C:\Users\Jarno\Documents\GitHub\RideWeather\cpr\opt\curl\lib\timeval.h" />
+    <ClInclude Include="C:\Users\Jarno\Documents\GitHub\RideWeather\cpr\opt\curl\lib\hostip.h" />
+    <ClInclude Include="C:\Users\Jarno\Documents\GitHub\RideWeather\cpr\opt\curl\lib\progress.h" />
+    <ClInclude Include="C:\Users\Jarno\Documents\GitHub\RideWeather\cpr\opt\curl\lib\formdata.h" />
+    <ClInclude Include="C:\Users\Jarno\Documents\GitHub\RideWeather\cpr\opt\curl\lib\cookie.h" />
+    <ClInclude Include="C:\Users\Jarno\Documents\GitHub\RideWeather\cpr\opt\curl\lib\http.h" />
+    <ClInclude Include="C:\Users\Jarno\Documents\GitHub\RideWeather\cpr\opt\curl\lib\sendf.h" />
+    <ClInclude Include="C:\Users\Jarno\Documents\GitHub\RideWeather\cpr\opt\curl\lib\ftp.h" />
+    <ClInclude Include="C:\Users\Jarno\Documents\GitHub\RideWeather\cpr\opt\curl\lib\url.h" />
+    <ClInclude Include="C:\Users\Jarno\Documents\GitHub\RideWeather\cpr\opt\curl\lib\dict.h" />
+    <ClInclude Include="C:\Users\Jarno\Documents\GitHub\RideWeather\cpr\opt\curl\lib\if2ip.h" />
+    <ClInclude Include="C:\Users\Jarno\Documents\GitHub\RideWeather\cpr\opt\curl\lib\speedcheck.h" />
+    <ClInclude Include="C:\Users\Jarno\Documents\GitHub\RideWeather\cpr\opt\curl\lib\urldata.h" />
+    <ClInclude Include="C:\Users\Jarno\Documents\GitHub\RideWeather\cpr\opt\curl\lib\curl_ldap.h" />
+    <ClInclude Include="C:\Users\Jarno\Documents\GitHub\RideWeather\cpr\opt\curl\lib\escape.h" />
+    <ClInclude Include="C:\Users\Jarno\Documents\GitHub\RideWeather\cpr\opt\curl\lib\telnet.h" />
+    <ClInclude Include="C:\Users\Jarno\Documents\GitHub\RideWeather\cpr\opt\curl\lib\getinfo.h" />
+    <ClInclude Include="C:\Users\Jarno\Documents\GitHub\RideWeather\cpr\opt\curl\lib\strcase.h" />
+    <ClInclude Include="C:\Users\Jarno\Documents\GitHub\RideWeather\cpr\opt\curl\lib\curl_sec.h" />
+    <ClInclude Include="C:\Users\Jarno\Documents\GitHub\RideWeather\cpr\opt\curl\lib\memdebug.h" />
+    <ClInclude Include="C:\Users\Jarno\Documents\GitHub\RideWeather\cpr\opt\curl\lib\http_chunks.h" />
+    <ClInclude Include="C:\Users\Jarno\Documents\GitHub\RideWeather\cpr\opt\curl\lib\curl_fnmatch.h" />
+    <ClInclude Include="C:\Users\Jarno\Documents\GitHub\RideWeather\cpr\opt\curl\lib\wildcard.h" />
+    <ClInclude Include="C:\Users\Jarno\Documents\GitHub\RideWeather\cpr\opt\curl\lib\fileinfo.h" />
+    <ClInclude Include="C:\Users\Jarno\Documents\GitHub\RideWeather\cpr\opt\curl\lib\ftplistparser.h" />
+    <ClInclude Include="C:\Users\Jarno\Documents\GitHub\RideWeather\cpr\opt\curl\lib\strtok.h" />
+    <ClInclude Include="C:\Users\Jarno\Documents\GitHub\RideWeather\cpr\opt\curl\lib\connect.h" />
+    <ClInclude Include="C:\Users\Jarno\Documents\GitHub\RideWeather\cpr\opt\curl\lib\llist.h" />
+    <ClInclude Include="C:\Users\Jarno\Documents\GitHub\RideWeather\cpr\opt\curl\lib\hash.h" />
+    <ClInclude Include="C:\Users\Jarno\Documents\GitHub\RideWeather\cpr\opt\curl\lib\content_encoding.h" />
+    <ClInclude Include="C:\Users\Jarno\Documents\GitHub\RideWeather\cpr\opt\curl\lib\share.h" />
+    <ClInclude Include="C:\Users\Jarno\Documents\GitHub\RideWeather\cpr\opt\curl\lib\curl_md4.h" />
+    <ClInclude Include="C:\Users\Jarno\Documents\GitHub\RideWeather\cpr\opt\curl\lib\curl_md5.h" />
+    <ClInclude Include="C:\Users\Jarno\Documents\GitHub\RideWeather\cpr\opt\curl\lib\http_digest.h" />
+    <ClInclude Include="C:\Users\Jarno\Documents\GitHub\RideWeather\cpr\opt\curl\lib\http_negotiate.h" />
+    <ClInclude Include="C:\Users\Jarno\Documents\GitHub\RideWeather\cpr\opt\curl\lib\inet_pton.h" />
+    <ClInclude Include="C:\Users\Jarno\Documents\GitHub\RideWeather\cpr\opt\curl\lib\amigaos.h" />
+    <ClInclude Include="C:\Users\Jarno\Documents\GitHub\RideWeather\cpr\opt\curl\lib\strtoofft.h" />
+    <ClInclude Include="C:\Users\Jarno\Documents\GitHub\RideWeather\cpr\opt\curl\lib\strerror.h" />
+    <ClInclude Include="C:\Users\Jarno\Documents\GitHub\RideWeather\cpr\opt\curl\lib\inet_ntop.h" />
+    <ClInclude Include="C:\Users\Jarno\Documents\GitHub\RideWeather\cpr\opt\curl\lib\curlx.h" />
+    <ClInclude Include="C:\Users\Jarno\Documents\GitHub\RideWeather\cpr\opt\curl\lib\curl_memory.h" />
+    <ClInclude Include="C:\Users\Jarno\Documents\GitHub\RideWeather\cpr\opt\curl\lib\curl_setup.h" />
+    <ClInclude Include="C:\Users\Jarno\Documents\GitHub\RideWeather\cpr\opt\curl\lib\transfer.h" />
+    <ClInclude Include="C:\Users\Jarno\Documents\GitHub\RideWeather\cpr\opt\curl\lib\select.h" />
+    <ClInclude Include="C:\Users\Jarno\Documents\GitHub\RideWeather\cpr\opt\curl\lib\easyif.h" />
+    <ClInclude Include="C:\Users\Jarno\Documents\GitHub\RideWeather\cpr\opt\curl\lib\multiif.h" />
+    <ClInclude Include="C:\Users\Jarno\Documents\GitHub\RideWeather\cpr\opt\curl\lib\parsedate.h" />
+    <ClInclude Include="C:\Users\Jarno\Documents\GitHub\RideWeather\cpr\opt\curl\lib\tftp.h" />
+    <ClInclude Include="C:\Users\Jarno\Documents\GitHub\RideWeather\cpr\opt\curl\lib\sockaddr.h" />
+    <ClInclude Include="C:\Users\Jarno\Documents\GitHub\RideWeather\cpr\opt\curl\lib\splay.h" />
+    <ClInclude Include="C:\Users\Jarno\Documents\GitHub\RideWeather\cpr\opt\curl\lib\strdup.h" />
+    <ClInclude Include="C:\Users\Jarno\Documents\GitHub\RideWeather\cpr\opt\curl\lib\socks.h" />
+    <ClInclude Include="C:\Users\Jarno\Documents\GitHub\RideWeather\cpr\opt\curl\lib\ssh.h" />
+    <ClInclude Include="C:\Users\Jarno\Documents\GitHub\RideWeather\cpr\opt\curl\lib\curl_base64.h" />
+    <ClInclude Include="C:\Users\Jarno\Documents\GitHub\RideWeather\cpr\opt\curl\lib\curl_addrinfo.h" />
+    <ClInclude Include="C:\Users\Jarno\Documents\GitHub\RideWeather\cpr\opt\curl\lib\curl_sspi.h" />
+    <ClInclude Include="C:\Users\Jarno\Documents\GitHub\RideWeather\cpr\opt\curl\lib\slist.h" />
+    <ClInclude Include="C:\Users\Jarno\Documents\GitHub\RideWeather\cpr\opt\curl\lib\nonblock.h" />
+    <ClInclude Include="C:\Users\Jarno\Documents\GitHub\RideWeather\cpr\opt\curl\lib\curl_memrchr.h" />
+    <ClInclude Include="C:\Users\Jarno\Documents\GitHub\RideWeather\cpr\opt\curl\lib\imap.h" />
+    <ClInclude Include="C:\Users\Jarno\Documents\GitHub\RideWeather\cpr\opt\curl\lib\pop3.h" />
+    <ClInclude Include="C:\Users\Jarno\Documents\GitHub\RideWeather\cpr\opt\curl\lib\smtp.h" />
+    <ClInclude Include="C:\Users\Jarno\Documents\GitHub\RideWeather\cpr\opt\curl\lib\pingpong.h" />
+    <ClInclude Include="C:\Users\Jarno\Documents\GitHub\RideWeather\cpr\opt\curl\lib\rtsp.h" />
+    <ClInclude Include="C:\Users\Jarno\Documents\GitHub\RideWeather\cpr\opt\curl\lib\curl_threads.h" />
+    <ClInclude Include="C:\Users\Jarno\Documents\GitHub\RideWeather\cpr\opt\curl\lib\warnless.h" />
+    <ClInclude Include="C:\Users\Jarno\Documents\GitHub\RideWeather\cpr\opt\curl\lib\curl_hmac.h" />
+    <ClInclude Include="C:\Users\Jarno\Documents\GitHub\RideWeather\cpr\opt\curl\lib\curl_rtmp.h" />
+    <ClInclude Include="C:\Users\Jarno\Documents\GitHub\RideWeather\cpr\opt\curl\lib\curl_gethostname.h" />
+    <ClInclude Include="C:\Users\Jarno\Documents\GitHub\RideWeather\cpr\opt\curl\lib\gopher.h" />
+    <ClInclude Include="C:\Users\Jarno\Documents\GitHub\RideWeather\cpr\opt\curl\lib\http_proxy.h" />
+    <ClInclude Include="C:\Users\Jarno\Documents\GitHub\RideWeather\cpr\opt\curl\lib\non-ascii.h" />
+    <ClInclude Include="C:\Users\Jarno\Documents\GitHub\RideWeather\cpr\opt\curl\lib\asyn.h" />
+    <ClInclude Include="C:\Users\Jarno\Documents\GitHub\RideWeather\cpr\opt\curl\lib\http_ntlm.h" />
+    <ClInclude Include="C:\Users\Jarno\Documents\GitHub\RideWeather\cpr\opt\curl\lib\curl_gssapi.h" />
+    <ClInclude Include="C:\Users\Jarno\Documents\GitHub\RideWeather\cpr\opt\curl\lib\curl_ntlm_wb.h" />
+    <ClInclude Include="C:\Users\Jarno\Documents\GitHub\RideWeather\cpr\opt\curl\lib\curl_ntlm_core.h" />
+    <ClInclude Include="C:\Users\Jarno\Documents\GitHub\RideWeather\cpr\opt\curl\lib\curl_sasl.h" />
+    <ClInclude Include="C:\Users\Jarno\Documents\GitHub\RideWeather\cpr\opt\curl\lib\curl_multibyte.h" />
+    <ClInclude Include="C:\Users\Jarno\Documents\GitHub\RideWeather\cpr\opt\curl\lib\hostcheck.h" />
+    <ClInclude Include="C:\Users\Jarno\Documents\GitHub\RideWeather\cpr\opt\curl\lib\conncache.h" />
+    <ClInclude Include="C:\Users\Jarno\Documents\GitHub\RideWeather\cpr\opt\curl\lib\curl_setup_once.h" />
+    <ClInclude Include="C:\Users\Jarno\Documents\GitHub\RideWeather\cpr\opt\curl\lib\multihandle.h" />
+    <ClInclude Include="C:\Users\Jarno\Documents\GitHub\RideWeather\cpr\opt\curl\lib\setup-vms.h" />
+    <ClInclude Include="C:\Users\Jarno\Documents\GitHub\RideWeather\cpr\opt\curl\lib\pipeline.h" />
+    <ClInclude Include="C:\Users\Jarno\Documents\GitHub\RideWeather\cpr\opt\curl\lib\dotdot.h" />
+    <ClInclude Include="C:\Users\Jarno\Documents\GitHub\RideWeather\cpr\opt\curl\lib\x509asn1.h" />
+    <ClInclude Include="C:\Users\Jarno\Documents\GitHub\RideWeather\cpr\opt\curl\lib\http2.h" />
+    <ClInclude Include="C:\Users\Jarno\Documents\GitHub\RideWeather\cpr\opt\curl\lib\sigpipe.h" />
+    <ClInclude Include="C:\Users\Jarno\Documents\GitHub\RideWeather\cpr\opt\curl\lib\smb.h" />
+    <ClInclude Include="C:\Users\Jarno\Documents\GitHub\RideWeather\cpr\opt\curl\lib\curl_endian.h" />
+    <ClInclude Include="C:\Users\Jarno\Documents\GitHub\RideWeather\cpr\opt\curl\lib\curl_des.h" />
+    <ClInclude Include="C:\Users\Jarno\Documents\GitHub\RideWeather\cpr\opt\curl\lib\curl_printf.h" />
+    <ClInclude Include="C:\Users\Jarno\Documents\GitHub\RideWeather\cpr\opt\curl\lib\system_win32.h" />
+    <ClInclude Include="C:\Users\Jarno\Documents\GitHub\RideWeather\cpr\opt\curl\lib\rand.h" />
+    <ClInclude Include="C:\Users\Jarno\Documents\GitHub\RideWeather\cpr\opt\curl\lib\mime.h" />
+    <ClInclude Include="C:\Users\Jarno\Documents\GitHub\RideWeather\cpr\opt\curl\lib\vauth\vauth.h" />
+    <ClInclude Include="C:\Users\Jarno\Documents\GitHub\RideWeather\cpr\opt\curl\lib\vauth\digest.h" />
+    <ClInclude Include="C:\Users\Jarno\Documents\GitHub\RideWeather\cpr\opt\curl\lib\vauth\ntlm.h" />
+    <ClInclude Include="C:\Users\Jarno\Documents\GitHub\RideWeather\cpr\opt\curl\lib\vtls\openssl.h" />
+    <ClInclude Include="C:\Users\Jarno\Documents\GitHub\RideWeather\cpr\opt\curl\lib\vtls\vtls.h" />
+    <ClInclude Include="C:\Users\Jarno\Documents\GitHub\RideWeather\cpr\opt\curl\lib\vtls\gtls.h" />
+    <ClInclude Include="C:\Users\Jarno\Documents\GitHub\RideWeather\cpr\opt\curl\lib\vtls\nssg.h" />
+    <ClInclude Include="C:\Users\Jarno\Documents\GitHub\RideWeather\cpr\opt\curl\lib\vtls\polarssl.h" />
+    <ClInclude Include="C:\Users\Jarno\Documents\GitHub\RideWeather\cpr\opt\curl\lib\vtls\polarssl_threadlock.h" />
+    <ClInclude Include="C:\Users\Jarno\Documents\GitHub\RideWeather\cpr\opt\curl\lib\vtls\axtls.h" />
+    <ClInclude Include="C:\Users\Jarno\Documents\GitHub\RideWeather\cpr\opt\curl\lib\vtls\cyassl.h" />
+    <ClInclude Include="C:\Users\Jarno\Documents\GitHub\RideWeather\cpr\opt\curl\lib\vtls\schannel.h" />
+    <ClInclude Include="C:\Users\Jarno\Documents\GitHub\RideWeather\cpr\opt\curl\lib\vtls\darwinssl.h" />
+    <ClInclude Include="C:\Users\Jarno\Documents\GitHub\RideWeather\cpr\opt\curl\lib\vtls\gskit.h" />
+    <ClInclude Include="C:\Users\Jarno\Documents\GitHub\RideWeather\cpr\opt\curl\lib\vtls\mbedtls.h" />
+    <ClInclude Include="C:\Users\Jarno\Documents\GitHub\RideWeather\targets\vs2019\cpr\opt\curl\lib\curl_config.h" />
+    <ClCompile Include="C:\Users\Jarno\Documents\GitHub\RideWeather\cpr\opt\curl\lib\file.c" />
+    <ClCompile Include="C:\Users\Jarno\Documents\GitHub\RideWeather\cpr\opt\curl\lib\timeval.c" />
+    <ClCompile Include="C:\Users\Jarno\Documents\GitHub\RideWeather\cpr\opt\curl\lib\base64.c" />
+    <ClCompile Include="C:\Users\Jarno\Documents\GitHub\RideWeather\cpr\opt\curl\lib\hostip.c" />
+    <ClCompile Include="C:\Users\Jarno\Documents\GitHub\RideWeather\cpr\opt\curl\lib\progress.c" />
+    <ClCompile Include="C:\Users\Jarno\Documents\GitHub\RideWeather\cpr\opt\curl\lib\formdata.c" />
+    <ClCompile Include="C:\Users\Jarno\Documents\GitHub\RideWeather\cpr\opt\curl\lib\cookie.c" />
+    <ClCompile Include="C:\Users\Jarno\Documents\GitHub\RideWeather\cpr\opt\curl\lib\http.c" />
+    <ClCompile Include="C:\Users\Jarno\Documents\GitHub\RideWeather\cpr\opt\curl\lib\sendf.c" />
+    <ClCompile Include="C:\Users\Jarno\Documents\GitHub\RideWeather\cpr\opt\curl\lib\ftp.c" />
+    <ClCompile Include="C:\Users\Jarno\Documents\GitHub\RideWeather\cpr\opt\curl\lib\url.c" />
+    <ClCompile Include="C:\Users\Jarno\Documents\GitHub\RideWeather\cpr\opt\curl\lib\dict.c" />
+    <ClCompile Include="C:\Users\Jarno\Documents\GitHub\RideWeather\cpr\opt\curl\lib\if2ip.c" />
+    <ClCompile Include="C:\Users\Jarno\Documents\GitHub\RideWeather\cpr\opt\curl\lib\speedcheck.c" />
+    <ClCompile Include="C:\Users\Jarno\Documents\GitHub\RideWeather\cpr\opt\curl\lib\ldap.c" />
+    <ClCompile Include="C:\Users\Jarno\Documents\GitHub\RideWeather\cpr\opt\curl\lib\version.c" />
+    <ClCompile Include="C:\Users\Jarno\Documents\GitHub\RideWeather\cpr\opt\curl\lib\getenv.c" />
+    <ClCompile Include="C:\Users\Jarno\Documents\GitHub\RideWeather\cpr\opt\curl\lib\escape.c" />
+    <ClCompile Include="C:\Users\Jarno\Documents\GitHub\RideWeather\cpr\opt\curl\lib\mprintf.c" />
+    <ClCompile Include="C:\Users\Jarno\Documents\GitHub\RideWeather\cpr\opt\curl\lib\telnet.c" />
+    <ClCompile Include="C:\Users\Jarno\Documents\GitHub\RideWeather\cpr\opt\curl\lib\netrc.c" />
+    <ClCompile Include="C:\Users\Jarno\Documents\GitHub\RideWeather\cpr\opt\curl\lib\getinfo.c" />
+    <ClCompile Include="C:\Users\Jarno\Documents\GitHub\RideWeather\cpr\opt\curl\lib\transfer.c" />
+    <ClCompile Include="C:\Users\Jarno\Documents\GitHub\RideWeather\cpr\opt\curl\lib\strcase.c" />
+    <ClCompile Include="C:\Users\Jarno\Documents\GitHub\RideWeather\cpr\opt\curl\lib\easy.c" />
+    <ClCompile Include="C:\Users\Jarno\Documents\GitHub\RideWeather\cpr\opt\curl\lib\security.c" />
+    <ClCompile Include="C:\Users\Jarno\Documents\GitHub\RideWeather\cpr\opt\curl\lib\curl_fnmatch.c" />
+    <ClCompile Include="C:\Users\Jarno\Documents\GitHub\RideWeather\cpr\opt\curl\lib\fileinfo.c" />
+    <ClCompile Include="C:\Users\Jarno\Documents\GitHub\RideWeather\cpr\opt\curl\lib\ftplistparser.c" />
+    <ClCompile Include="C:\Users\Jarno\Documents\GitHub\RideWeather\cpr\opt\curl\lib\wildcard.c" />
+    <ClCompile Include="C:\Users\Jarno\Documents\GitHub\RideWeather\cpr\opt\curl\lib\krb5.c" />
+    <ClCompile Include="C:\Users\Jarno\Documents\GitHub\RideWeather\cpr\opt\curl\lib\memdebug.c" />
+    <ClCompile Include="C:\Users\Jarno\Documents\GitHub\RideWeather\cpr\opt\curl\lib\http_chunks.c" />
+    <ClCompile Include="C:\Users\Jarno\Documents\GitHub\RideWeather\cpr\opt\curl\lib\strtok.c" />
+    <ClCompile Include="C:\Users\Jarno\Documents\GitHub\RideWeather\cpr\opt\curl\lib\connect.c" />
+    <ClCompile Include="C:\Users\Jarno\Documents\GitHub\RideWeather\cpr\opt\curl\lib\llist.c" />
+    <ClCompile Include="C:\Users\Jarno\Documents\GitHub\RideWeather\cpr\opt\curl\lib\hash.c" />
+    <ClCompile Include="C:\Users\Jarno\Documents\GitHub\RideWeather\cpr\opt\curl\lib\multi.c" />
+    <ClCompile Include="C:\Users\Jarno\Documents\GitHub\RideWeather\cpr\opt\curl\lib\content_encoding.c" />
+    <ClCompile Include="C:\Users\Jarno\Documents\GitHub\RideWeather\cpr\opt\curl\lib\share.c" />
+    <ClCompile Include="C:\Users\Jarno\Documents\GitHub\RideWeather\cpr\opt\curl\lib\http_digest.c" />
+    <ClCompile Include="C:\Users\Jarno\Documents\GitHub\RideWeather\cpr\opt\curl\lib\md4.c" />
+    <ClCompile Include="C:\Users\Jarno\Documents\GitHub\RideWeather\cpr\opt\curl\lib\md5.c" />
+    <ClCompile Include="C:\Users\Jarno\Documents\GitHub\RideWeather\cpr\opt\curl\lib\http_negotiate.c" />
+    <ClCompile Include="C:\Users\Jarno\Documents\GitHub\RideWeather\cpr\opt\curl\lib\inet_pton.c" />
+    <ClCompile Include="C:\Users\Jarno\Documents\GitHub\RideWeather\cpr\opt\curl\lib\strtoofft.c" />
+    <ClCompile Include="C:\Users\Jarno\Documents\GitHub\RideWeather\cpr\opt\curl\lib\strerror.c" />
+    <ClCompile Include="C:\Users\Jarno\Documents\GitHub\RideWeather\cpr\opt\curl\lib\amigaos.c" />
+    <ClCompile Include="C:\Users\Jarno\Documents\GitHub\RideWeather\cpr\opt\curl\lib\hostasyn.c" />
+    <ClCompile Include="C:\Users\Jarno\Documents\GitHub\RideWeather\cpr\opt\curl\lib\hostip4.c" />
+    <ClCompile Include="C:\Users\Jarno\Documents\GitHub\RideWeather\cpr\opt\curl\lib\hostip6.c" />
+    <ClCompile Include="C:\Users\Jarno\Documents\GitHub\RideWeather\cpr\opt\curl\lib\hostsyn.c" />
+    <ClCompile Include="C:\Users\Jarno\Documents\GitHub\RideWeather\cpr\opt\curl\lib\inet_ntop.c" />
+    <ClCompile Include="C:\Users\Jarno\Documents\GitHub\RideWeather\cpr\opt\curl\lib\parsedate.c" />
+    <ClCompile Include="C:\Users\Jarno\Documents\GitHub\RideWeather\cpr\opt\curl\lib\select.c" />
+    <ClCompile Include="C:\Users\Jarno\Documents\GitHub\RideWeather\cpr\opt\curl\lib\tftp.c" />
+    <ClCompile Include="C:\Users\Jarno\Documents\GitHub\RideWeather\cpr\opt\curl\lib\splay.c" />
+    <ClCompile Include="C:\Users\Jarno\Documents\GitHub\RideWeather\cpr\opt\curl\lib\strdup.c" />
+    <ClCompile Include="C:\Users\Jarno\Documents\GitHub\RideWeather\cpr\opt\curl\lib\socks.c" />
+    <ClCompile Include="C:\Users\Jarno\Documents\GitHub\RideWeather\cpr\opt\curl\lib\ssh.c" />
+    <ClCompile Include="C:\Users\Jarno\Documents\GitHub\RideWeather\cpr\opt\curl\lib\curl_addrinfo.c" />
+    <ClCompile Include="C:\Users\Jarno\Documents\GitHub\RideWeather\cpr\opt\curl\lib\socks_gssapi.c" />
+    <ClCompile Include="C:\Users\Jarno\Documents\GitHub\RideWeather\cpr\opt\curl\lib\socks_sspi.c" />
+    <ClCompile Include="C:\Users\Jarno\Documents\GitHub\RideWeather\cpr\opt\curl\lib\curl_sspi.c" />
+    <ClCompile Include="C:\Users\Jarno\Documents\GitHub\RideWeather\cpr\opt\curl\lib\slist.c" />
+    <ClCompile Include="C:\Users\Jarno\Documents\GitHub\RideWeather\cpr\opt\curl\lib\nonblock.c" />
+    <ClCompile Include="C:\Users\Jarno\Documents\GitHub\RideWeather\cpr\opt\curl\lib\curl_memrchr.c" />
+    <ClCompile Include="C:\Users\Jarno\Documents\GitHub\RideWeather\cpr\opt\curl\lib\imap.c" />
+    <ClCompile Include="C:\Users\Jarno\Documents\GitHub\RideWeather\cpr\opt\curl\lib\pop3.c" />
+    <ClCompile Include="C:\Users\Jarno\Documents\GitHub\RideWeather\cpr\opt\curl\lib\smtp.c" />
+    <ClCompile Include="C:\Users\Jarno\Documents\GitHub\RideWeather\cpr\opt\curl\lib\pingpong.c" />
+    <ClCompile Include="C:\Users\Jarno\Documents\GitHub\RideWeather\cpr\opt\curl\lib\rtsp.c" />
+    <ClCompile Include="C:\Users\Jarno\Documents\GitHub\RideWeather\cpr\opt\curl\lib\curl_threads.c" />
+    <ClCompile Include="C:\Users\Jarno\Documents\GitHub\RideWeather\cpr\opt\curl\lib\warnless.c" />
+    <ClCompile Include="C:\Users\Jarno\Documents\GitHub\RideWeather\cpr\opt\curl\lib\hmac.c" />
+    <ClCompile Include="C:\Users\Jarno\Documents\GitHub\RideWeather\cpr\opt\curl\lib\curl_rtmp.c" />
+    <ClCompile Include="C:\Users\Jarno\Documents\GitHub\RideWeather\cpr\opt\curl\lib\openldap.c" />
+    <ClCompile Include="C:\Users\Jarno\Documents\GitHub\RideWeather\cpr\opt\curl\lib\curl_gethostname.c" />
+    <ClCompile Include="C:\Users\Jarno\Documents\GitHub\RideWeather\cpr\opt\curl\lib\gopher.c" />
+    <ClCompile Include="C:\Users\Jarno\Documents\GitHub\RideWeather\cpr\opt\curl\lib\idn_win32.c" />
+    <ClCompile Include="C:\Users\Jarno\Documents\GitHub\RideWeather\cpr\opt\curl\lib\http_proxy.c" />
+    <ClCompile Include="C:\Users\Jarno\Documents\GitHub\RideWeather\cpr\opt\curl\lib\non-ascii.c" />
+    <ClCompile Include="C:\Users\Jarno\Documents\GitHub\RideWeather\cpr\opt\curl\lib\asyn-ares.c" />
+    <ClCompile Include="C:\Users\Jarno\Documents\GitHub\RideWeather\cpr\opt\curl\lib\asyn-thread.c" />
+    <ClCompile Include="C:\Users\Jarno\Documents\GitHub\RideWeather\cpr\opt\curl\lib\curl_gssapi.c" />
+    <ClCompile Include="C:\Users\Jarno\Documents\GitHub\RideWeather\cpr\opt\curl\lib\http_ntlm.c" />
+    <ClCompile Include="C:\Users\Jarno\Documents\GitHub\RideWeather\cpr\opt\curl\lib\curl_ntlm_wb.c" />
+    <ClCompile Include="C:\Users\Jarno\Documents\GitHub\RideWeather\cpr\opt\curl\lib\curl_ntlm_core.c" />
+    <ClCompile Include="C:\Users\Jarno\Documents\GitHub\RideWeather\cpr\opt\curl\lib\curl_sasl.c" />
+    <ClCompile Include="C:\Users\Jarno\Documents\GitHub\RideWeather\cpr\opt\curl\lib\rand.c" />
+    <ClCompile Include="C:\Users\Jarno\Documents\GitHub\RideWeather\cpr\opt\curl\lib\curl_multibyte.c" />
+    <ClCompile Include="C:\Users\Jarno\Documents\GitHub\RideWeather\cpr\opt\curl\lib\hostcheck.c" />
+    <ClCompile Include="C:\Users\Jarno\Documents\GitHub\RideWeather\cpr\opt\curl\lib\conncache.c" />
+    <ClCompile Include="C:\Users\Jarno\Documents\GitHub\RideWeather\cpr\opt\curl\lib\pipeline.c" />
+    <ClCompile Include="C:\Users\Jarno\Documents\GitHub\RideWeather\cpr\opt\curl\lib\dotdot.c" />
+    <ClCompile Include="C:\Users\Jarno\Documents\GitHub\RideWeather\cpr\opt\curl\lib\x509asn1.c" />
+    <ClCompile Include="C:\Users\Jarno\Documents\GitHub\RideWeather\cpr\opt\curl\lib\http2.c" />
+    <ClCompile Include="C:\Users\Jarno\Documents\GitHub\RideWeather\cpr\opt\curl\lib\smb.c" />
+    <ClCompile Include="C:\Users\Jarno\Documents\GitHub\RideWeather\cpr\opt\curl\lib\curl_endian.c" />
+    <ClCompile Include="C:\Users\Jarno\Documents\GitHub\RideWeather\cpr\opt\curl\lib\curl_des.c" />
+    <ClCompile Include="C:\Users\Jarno\Documents\GitHub\RideWeather\cpr\opt\curl\lib\system_win32.c" />
+    <ClCompile Include="C:\Users\Jarno\Documents\GitHub\RideWeather\cpr\opt\curl\lib\mime.c" />
+    <ClCompile Include="C:\Users\Jarno\Documents\GitHub\RideWeather\cpr\opt\curl\lib\vauth\vauth.c" />
+    <ClCompile Include="C:\Users\Jarno\Documents\GitHub\RideWeather\cpr\opt\curl\lib\vauth\cleartext.c" />
+    <ClCompile Include="C:\Users\Jarno\Documents\GitHub\RideWeather\cpr\opt\curl\lib\vauth\cram.c" />
+    <ClCompile Include="C:\Users\Jarno\Documents\GitHub\RideWeather\cpr\opt\curl\lib\vauth\digest.c" />
+    <ClCompile Include="C:\Users\Jarno\Documents\GitHub\RideWeather\cpr\opt\curl\lib\vauth\digest_sspi.c" />
+    <ClCompile Include="C:\Users\Jarno\Documents\GitHub\RideWeather\cpr\opt\curl\lib\vauth\krb5_gssapi.c" />
+    <ClCompile Include="C:\Users\Jarno\Documents\GitHub\RideWeather\cpr\opt\curl\lib\vauth\krb5_sspi.c" />
+    <ClCompile Include="C:\Users\Jarno\Documents\GitHub\RideWeather\cpr\opt\curl\lib\vauth\ntlm.c" />
+    <ClCompile Include="C:\Users\Jarno\Documents\GitHub\RideWeather\cpr\opt\curl\lib\vauth\ntlm_sspi.c" />
+    <ClCompile Include="C:\Users\Jarno\Documents\GitHub\RideWeather\cpr\opt\curl\lib\vauth\oauth2.c" />
+    <ClCompile Include="C:\Users\Jarno\Documents\GitHub\RideWeather\cpr\opt\curl\lib\vauth\spnego_gssapi.c" />
+    <ClCompile Include="C:\Users\Jarno\Documents\GitHub\RideWeather\cpr\opt\curl\lib\vauth\spnego_sspi.c" />
+    <ClCompile Include="C:\Users\Jarno\Documents\GitHub\RideWeather\cpr\opt\curl\lib\vtls\openssl.c" />
+    <ClCompile Include="C:\Users\Jarno\Documents\GitHub\RideWeather\cpr\opt\curl\lib\vtls\gtls.c" />
+    <ClCompile Include="C:\Users\Jarno\Documents\GitHub\RideWeather\cpr\opt\curl\lib\vtls\vtls.c" />
+    <ClCompile Include="C:\Users\Jarno\Documents\GitHub\RideWeather\cpr\opt\curl\lib\vtls\nss.c" />
+    <ClCompile Include="C:\Users\Jarno\Documents\GitHub\RideWeather\cpr\opt\curl\lib\vtls\polarssl.c" />
+    <ClCompile Include="C:\Users\Jarno\Documents\GitHub\RideWeather\cpr\opt\curl\lib\vtls\polarssl_threadlock.c" />
+    <ClCompile Include="C:\Users\Jarno\Documents\GitHub\RideWeather\cpr\opt\curl\lib\vtls\axtls.c" />
+    <ClCompile Include="C:\Users\Jarno\Documents\GitHub\RideWeather\cpr\opt\curl\lib\vtls\cyassl.c" />
+    <ClCompile Include="C:\Users\Jarno\Documents\GitHub\RideWeather\cpr\opt\curl\lib\vtls\schannel.c" />
+    <ClCompile Include="C:\Users\Jarno\Documents\GitHub\RideWeather\cpr\opt\curl\lib\vtls\darwinssl.c" />
+    <ClCompile Include="C:\Users\Jarno\Documents\GitHub\RideWeather\cpr\opt\curl\lib\vtls\gskit.c" />
+    <ClCompile Include="C:\Users\Jarno\Documents\GitHub\RideWeather\cpr\opt\curl\lib\vtls\mbedtls.c" />
+    <ResourceCompile Include="C:\Users\Jarno\Documents\GitHub\RideWeather\cpr\opt\curl\lib\libcurl.rc" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="C:\Users\Jarno\Documents\GitHub\RideWeather\targets\vs2019\cpr\ZERO_CHECK.vcxproj">
+      <Project>{D9F6B349-8048-3F80-B958-B165CA4FABDC}</Project>
+      <Name>ZERO_CHECK</Name>
+      <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>

@@ -1,0 +1,333 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="16.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <PreferredToolArchitecture>x64</PreferredToolArchitecture>
+  </PropertyGroup>
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|x64">
+      <Configuration>Debug</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|x64">
+      <Configuration>Release</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="MinSizeRel|x64">
+      <Configuration>MinSizeRel</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="RelWithDebInfo|x64">
+      <Configuration>RelWithDebInfo</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{453E501B-4593-33A3-B331-CFC77E46D16D}</ProjectGuid>
+    <WindowsTargetPlatformVersion>10.0.17763.0</WindowsTargetPlatformVersion>
+    <Keyword>Win32Proj</Keyword>
+    <Platform>x64</Platform>
+    <ProjectName>examples</ProjectName>
+    <VCProjectUpgraderObjectName>NoUpgrade</VCProjectUpgraderObjectName>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
+    <ConfigurationType>Utility</ConfigurationType>
+    <CharacterSet>MultiByte</CharacterSet>
+    <PlatformToolset>v142</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
+    <ConfigurationType>Utility</ConfigurationType>
+    <CharacterSet>MultiByte</CharacterSet>
+    <PlatformToolset>v142</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'" Label="Configuration">
+    <ConfigurationType>Utility</ConfigurationType>
+    <CharacterSet>MultiByte</CharacterSet>
+    <PlatformToolset>v142</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'" Label="Configuration">
+    <ConfigurationType>Utility</ConfigurationType>
+    <CharacterSet>MultiByte</CharacterSet>
+    <PlatformToolset>v142</PlatformToolset>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup>
+    <_ProjectFileVersion>10.0.20506.1</_ProjectFileVersion>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(Platform)\$(Configuration)\$(ProjectName)\</IntDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(Platform)\$(Configuration)\$(ProjectName)\</IntDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">$(Platform)\$(Configuration)\$(ProjectName)\</IntDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">$(Platform)\$(Configuration)\$(ProjectName)\</IntDir>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <Midl>
+      <AdditionalIncludeDirectories>C:\Users\Jarno\Documents\GitHub\RideWeather\rapidjson\include;C:\Users\Jarno\Documents\GitHub\RideWeather\rapidjson\example\..\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <OutputDirectory>$(ProjectDir)/$(IntDir)</OutputDirectory>
+      <HeaderFileName>%(Filename).h</HeaderFileName>
+      <TypeLibraryName>%(Filename).tlb</TypeLibraryName>
+      <InterfaceIdentifierFileName>%(Filename)_i.c</InterfaceIdentifierFileName>
+      <ProxyFileName>%(Filename)_p.c</ProxyFileName>
+    </Midl>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <Midl>
+      <AdditionalIncludeDirectories>C:\Users\Jarno\Documents\GitHub\RideWeather\rapidjson\include;C:\Users\Jarno\Documents\GitHub\RideWeather\rapidjson\example\..\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <OutputDirectory>$(ProjectDir)/$(IntDir)</OutputDirectory>
+      <HeaderFileName>%(Filename).h</HeaderFileName>
+      <TypeLibraryName>%(Filename).tlb</TypeLibraryName>
+      <InterfaceIdentifierFileName>%(Filename)_i.c</InterfaceIdentifierFileName>
+      <ProxyFileName>%(Filename)_p.c</ProxyFileName>
+    </Midl>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">
+    <Midl>
+      <AdditionalIncludeDirectories>C:\Users\Jarno\Documents\GitHub\RideWeather\rapidjson\include;C:\Users\Jarno\Documents\GitHub\RideWeather\rapidjson\example\..\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <OutputDirectory>$(ProjectDir)/$(IntDir)</OutputDirectory>
+      <HeaderFileName>%(Filename).h</HeaderFileName>
+      <TypeLibraryName>%(Filename).tlb</TypeLibraryName>
+      <InterfaceIdentifierFileName>%(Filename)_i.c</InterfaceIdentifierFileName>
+      <ProxyFileName>%(Filename)_p.c</ProxyFileName>
+    </Midl>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">
+    <Midl>
+      <AdditionalIncludeDirectories>C:\Users\Jarno\Documents\GitHub\RideWeather\rapidjson\include;C:\Users\Jarno\Documents\GitHub\RideWeather\rapidjson\example\..\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <OutputDirectory>$(ProjectDir)/$(IntDir)</OutputDirectory>
+      <HeaderFileName>%(Filename).h</HeaderFileName>
+      <TypeLibraryName>%(Filename).tlb</TypeLibraryName>
+      <InterfaceIdentifierFileName>%(Filename)_i.c</InterfaceIdentifierFileName>
+      <ProxyFileName>%(Filename)_p.c</ProxyFileName>
+    </Midl>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <CustomBuild Include="C:\Users\Jarno\Documents\GitHub\RideWeather\targets\vs2019\rapidjson\CMakeFiles\5a7aea5f5b68ca497be41f06e8d1bfb2\examples.rule">
+      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|x64'"></Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">setlocal
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">C:/Users/Jarno/Documents/GitHub/RideWeather/targets/vs2019/rapidjson/CMakeFiles/5a7aea5f5b68ca497be41f06e8d1bfb2/examples.rule;C:\Users\Jarno\Documents\GitHub\RideWeather\targets\vs2019\rapidjson\bin\Debug\capitalize.exe;C:\Users\Jarno\Documents\GitHub\RideWeather\targets\vs2019\rapidjson\bin\Debug\condense.exe;C:\Users\Jarno\Documents\GitHub\RideWeather\targets\vs2019\rapidjson\bin\Debug\filterkey.exe;C:\Users\Jarno\Documents\GitHub\RideWeather\targets\vs2019\rapidjson\bin\Debug\filterkeydom.exe;C:\Users\Jarno\Documents\GitHub\RideWeather\targets\vs2019\rapidjson\bin\Debug\jsonx.exe;C:\Users\Jarno\Documents\GitHub\RideWeather\targets\vs2019\rapidjson\bin\Debug\lookaheadparser.exe;C:\Users\Jarno\Documents\GitHub\RideWeather\targets\vs2019\rapidjson\bin\Debug\messagereader.exe;C:\Users\Jarno\Documents\GitHub\RideWeather\targets\vs2019\rapidjson\bin\Debug\parsebyparts.exe;C:\Users\Jarno\Documents\GitHub\RideWeather\targets\vs2019\rapidjson\bin\Debug\pretty.exe;C:\Users\Jarno\Documents\GitHub\RideWeather\targets\vs2019\rapidjson\bin\Debug\prettyauto.exe;C:\Users\Jarno\Documents\GitHub\RideWeather\targets\vs2019\rapidjson\bin\Debug\schemavalidator.exe;C:\Users\Jarno\Documents\GitHub\RideWeather\targets\vs2019\rapidjson\bin\Debug\serialize.exe;C:\Users\Jarno\Documents\GitHub\RideWeather\targets\vs2019\rapidjson\bin\Debug\simpledom.exe;C:\Users\Jarno\Documents\GitHub\RideWeather\targets\vs2019\rapidjson\bin\Debug\simplereader.exe;C:\Users\Jarno\Documents\GitHub\RideWeather\targets\vs2019\rapidjson\bin\Debug\simplepullreader.exe;C:\Users\Jarno\Documents\GitHub\RideWeather\targets\vs2019\rapidjson\bin\Debug\simplewriter.exe;C:\Users\Jarno\Documents\GitHub\RideWeather\targets\vs2019\rapidjson\bin\Debug\sortkeys.exe;C:\Users\Jarno\Documents\GitHub\RideWeather\targets\vs2019\rapidjson\bin\Debug\tutorial.exe;%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">C:\Users\Jarno\Documents\GitHub\RideWeather\targets\vs2019\rapidjson\example\CMakeFiles\examples</Outputs>
+      <LinkObjects Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</LinkObjects>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Release|x64'"></Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|x64'">setlocal
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">C:/Users/Jarno/Documents/GitHub/RideWeather/targets/vs2019/rapidjson/CMakeFiles/5a7aea5f5b68ca497be41f06e8d1bfb2/examples.rule;C:\Users\Jarno\Documents\GitHub\RideWeather\targets\vs2019\rapidjson\bin\Release\capitalize.exe;C:\Users\Jarno\Documents\GitHub\RideWeather\targets\vs2019\rapidjson\bin\Release\condense.exe;C:\Users\Jarno\Documents\GitHub\RideWeather\targets\vs2019\rapidjson\bin\Release\filterkey.exe;C:\Users\Jarno\Documents\GitHub\RideWeather\targets\vs2019\rapidjson\bin\Release\filterkeydom.exe;C:\Users\Jarno\Documents\GitHub\RideWeather\targets\vs2019\rapidjson\bin\Release\jsonx.exe;C:\Users\Jarno\Documents\GitHub\RideWeather\targets\vs2019\rapidjson\bin\Release\lookaheadparser.exe;C:\Users\Jarno\Documents\GitHub\RideWeather\targets\vs2019\rapidjson\bin\Release\messagereader.exe;C:\Users\Jarno\Documents\GitHub\RideWeather\targets\vs2019\rapidjson\bin\Release\parsebyparts.exe;C:\Users\Jarno\Documents\GitHub\RideWeather\targets\vs2019\rapidjson\bin\Release\pretty.exe;C:\Users\Jarno\Documents\GitHub\RideWeather\targets\vs2019\rapidjson\bin\Release\prettyauto.exe;C:\Users\Jarno\Documents\GitHub\RideWeather\targets\vs2019\rapidjson\bin\Release\schemavalidator.exe;C:\Users\Jarno\Documents\GitHub\RideWeather\targets\vs2019\rapidjson\bin\Release\serialize.exe;C:\Users\Jarno\Documents\GitHub\RideWeather\targets\vs2019\rapidjson\bin\Release\simpledom.exe;C:\Users\Jarno\Documents\GitHub\RideWeather\targets\vs2019\rapidjson\bin\Release\simplereader.exe;C:\Users\Jarno\Documents\GitHub\RideWeather\targets\vs2019\rapidjson\bin\Release\simplepullreader.exe;C:\Users\Jarno\Documents\GitHub\RideWeather\targets\vs2019\rapidjson\bin\Release\simplewriter.exe;C:\Users\Jarno\Documents\GitHub\RideWeather\targets\vs2019\rapidjson\bin\Release\sortkeys.exe;C:\Users\Jarno\Documents\GitHub\RideWeather\targets\vs2019\rapidjson\bin\Release\tutorial.exe;%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">C:\Users\Jarno\Documents\GitHub\RideWeather\targets\vs2019\rapidjson\example\CMakeFiles\examples</Outputs>
+      <LinkObjects Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</LinkObjects>
+      <Message Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'"></Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">setlocal
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">C:/Users/Jarno/Documents/GitHub/RideWeather/targets/vs2019/rapidjson/CMakeFiles/5a7aea5f5b68ca497be41f06e8d1bfb2/examples.rule;C:\Users\Jarno\Documents\GitHub\RideWeather\targets\vs2019\rapidjson\bin\MinSizeRel\capitalize.exe;C:\Users\Jarno\Documents\GitHub\RideWeather\targets\vs2019\rapidjson\bin\MinSizeRel\condense.exe;C:\Users\Jarno\Documents\GitHub\RideWeather\targets\vs2019\rapidjson\bin\MinSizeRel\filterkey.exe;C:\Users\Jarno\Documents\GitHub\RideWeather\targets\vs2019\rapidjson\bin\MinSizeRel\filterkeydom.exe;C:\Users\Jarno\Documents\GitHub\RideWeather\targets\vs2019\rapidjson\bin\MinSizeRel\jsonx.exe;C:\Users\Jarno\Documents\GitHub\RideWeather\targets\vs2019\rapidjson\bin\MinSizeRel\lookaheadparser.exe;C:\Users\Jarno\Documents\GitHub\RideWeather\targets\vs2019\rapidjson\bin\MinSizeRel\messagereader.exe;C:\Users\Jarno\Documents\GitHub\RideWeather\targets\vs2019\rapidjson\bin\MinSizeRel\parsebyparts.exe;C:\Users\Jarno\Documents\GitHub\RideWeather\targets\vs2019\rapidjson\bin\MinSizeRel\pretty.exe;C:\Users\Jarno\Documents\GitHub\RideWeather\targets\vs2019\rapidjson\bin\MinSizeRel\prettyauto.exe;C:\Users\Jarno\Documents\GitHub\RideWeather\targets\vs2019\rapidjson\bin\MinSizeRel\schemavalidator.exe;C:\Users\Jarno\Documents\GitHub\RideWeather\targets\vs2019\rapidjson\bin\MinSizeRel\serialize.exe;C:\Users\Jarno\Documents\GitHub\RideWeather\targets\vs2019\rapidjson\bin\MinSizeRel\simpledom.exe;C:\Users\Jarno\Documents\GitHub\RideWeather\targets\vs2019\rapidjson\bin\MinSizeRel\simplereader.exe;C:\Users\Jarno\Documents\GitHub\RideWeather\targets\vs2019\rapidjson\bin\MinSizeRel\simplepullreader.exe;C:\Users\Jarno\Documents\GitHub\RideWeather\targets\vs2019\rapidjson\bin\MinSizeRel\simplewriter.exe;C:\Users\Jarno\Documents\GitHub\RideWeather\targets\vs2019\rapidjson\bin\MinSizeRel\sortkeys.exe;C:\Users\Jarno\Documents\GitHub\RideWeather\targets\vs2019\rapidjson\bin\MinSizeRel\tutorial.exe;%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">C:\Users\Jarno\Documents\GitHub\RideWeather\targets\vs2019\rapidjson\example\CMakeFiles\examples</Outputs>
+      <LinkObjects Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">false</LinkObjects>
+      <Message Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'"></Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">setlocal
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">C:/Users/Jarno/Documents/GitHub/RideWeather/targets/vs2019/rapidjson/CMakeFiles/5a7aea5f5b68ca497be41f06e8d1bfb2/examples.rule;C:\Users\Jarno\Documents\GitHub\RideWeather\targets\vs2019\rapidjson\bin\RelWithDebInfo\capitalize.exe;C:\Users\Jarno\Documents\GitHub\RideWeather\targets\vs2019\rapidjson\bin\RelWithDebInfo\condense.exe;C:\Users\Jarno\Documents\GitHub\RideWeather\targets\vs2019\rapidjson\bin\RelWithDebInfo\filterkey.exe;C:\Users\Jarno\Documents\GitHub\RideWeather\targets\vs2019\rapidjson\bin\RelWithDebInfo\filterkeydom.exe;C:\Users\Jarno\Documents\GitHub\RideWeather\targets\vs2019\rapidjson\bin\RelWithDebInfo\jsonx.exe;C:\Users\Jarno\Documents\GitHub\RideWeather\targets\vs2019\rapidjson\bin\RelWithDebInfo\lookaheadparser.exe;C:\Users\Jarno\Documents\GitHub\RideWeather\targets\vs2019\rapidjson\bin\RelWithDebInfo\messagereader.exe;C:\Users\Jarno\Documents\GitHub\RideWeather\targets\vs2019\rapidjson\bin\RelWithDebInfo\parsebyparts.exe;C:\Users\Jarno\Documents\GitHub\RideWeather\targets\vs2019\rapidjson\bin\RelWithDebInfo\pretty.exe;C:\Users\Jarno\Documents\GitHub\RideWeather\targets\vs2019\rapidjson\bin\RelWithDebInfo\prettyauto.exe;C:\Users\Jarno\Documents\GitHub\RideWeather\targets\vs2019\rapidjson\bin\RelWithDebInfo\schemavalidator.exe;C:\Users\Jarno\Documents\GitHub\RideWeather\targets\vs2019\rapidjson\bin\RelWithDebInfo\serialize.exe;C:\Users\Jarno\Documents\GitHub\RideWeather\targets\vs2019\rapidjson\bin\RelWithDebInfo\simpledom.exe;C:\Users\Jarno\Documents\GitHub\RideWeather\targets\vs2019\rapidjson\bin\RelWithDebInfo\simplereader.exe;C:\Users\Jarno\Documents\GitHub\RideWeather\targets\vs2019\rapidjson\bin\RelWithDebInfo\simplepullreader.exe;C:\Users\Jarno\Documents\GitHub\RideWeather\targets\vs2019\rapidjson\bin\RelWithDebInfo\simplewriter.exe;C:\Users\Jarno\Documents\GitHub\RideWeather\targets\vs2019\rapidjson\bin\RelWithDebInfo\sortkeys.exe;C:\Users\Jarno\Documents\GitHub\RideWeather\targets\vs2019\rapidjson\bin\RelWithDebInfo\tutorial.exe;%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">C:\Users\Jarno\Documents\GitHub\RideWeather\targets\vs2019\rapidjson\example\CMakeFiles\examples</Outputs>
+      <LinkObjects Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">false</LinkObjects>
+    </CustomBuild>
+  </ItemGroup>
+  <ItemGroup>
+    <CustomBuild Include="C:\Users\Jarno\Documents\GitHub\RideWeather\rapidjson\example\CMakeLists.txt">
+      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Building Custom Rule C:/Users/Jarno/Documents/GitHub/RideWeather/rapidjson/example/CMakeLists.txt</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">setlocal
+"C:\Program Files\CMake\bin\cmake.exe" -SC:/Users/Jarno/Documents/GitHub/RideWeather/rapidjson -BC:/Users/Jarno/Documents/GitHub/RideWeather/targets/vs2019/rapidjson --check-stamp-file C:/Users/Jarno/Documents/GitHub/RideWeather/targets/vs2019/rapidjson/example/CMakeFiles/generate.stamp
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">C:/Users/Jarno/Documents/GitHub/RideWeather/rapidjson/example/CMakeLists.txt;C:\Users\Jarno\Documents\GitHub\RideWeather\rapidjson\example\CMakeLists.txt;C:\Users\Jarno\Documents\GitHub\RideWeather\rapidjson\example\CMakeLists.txt;%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">C:\Users\Jarno\Documents\GitHub\RideWeather\targets\vs2019\rapidjson\example\CMakeFiles\generate.stamp</Outputs>
+      <LinkObjects Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</LinkObjects>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Building Custom Rule C:/Users/Jarno/Documents/GitHub/RideWeather/rapidjson/example/CMakeLists.txt</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|x64'">setlocal
+"C:\Program Files\CMake\bin\cmake.exe" -SC:/Users/Jarno/Documents/GitHub/RideWeather/rapidjson -BC:/Users/Jarno/Documents/GitHub/RideWeather/targets/vs2019/rapidjson --check-stamp-file C:/Users/Jarno/Documents/GitHub/RideWeather/targets/vs2019/rapidjson/example/CMakeFiles/generate.stamp
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">C:/Users/Jarno/Documents/GitHub/RideWeather/rapidjson/example/CMakeLists.txt;C:\Users\Jarno\Documents\GitHub\RideWeather\rapidjson\example\CMakeLists.txt;C:\Users\Jarno\Documents\GitHub\RideWeather\rapidjson\example\CMakeLists.txt;%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">C:\Users\Jarno\Documents\GitHub\RideWeather\targets\vs2019\rapidjson\example\CMakeFiles\generate.stamp</Outputs>
+      <LinkObjects Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</LinkObjects>
+      <Message Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">Building Custom Rule C:/Users/Jarno/Documents/GitHub/RideWeather/rapidjson/example/CMakeLists.txt</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">setlocal
+"C:\Program Files\CMake\bin\cmake.exe" -SC:/Users/Jarno/Documents/GitHub/RideWeather/rapidjson -BC:/Users/Jarno/Documents/GitHub/RideWeather/targets/vs2019/rapidjson --check-stamp-file C:/Users/Jarno/Documents/GitHub/RideWeather/targets/vs2019/rapidjson/example/CMakeFiles/generate.stamp
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">C:/Users/Jarno/Documents/GitHub/RideWeather/rapidjson/example/CMakeLists.txt;C:\Users\Jarno\Documents\GitHub\RideWeather\rapidjson\example\CMakeLists.txt;C:\Users\Jarno\Documents\GitHub\RideWeather\rapidjson\example\CMakeLists.txt;%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">C:\Users\Jarno\Documents\GitHub\RideWeather\targets\vs2019\rapidjson\example\CMakeFiles\generate.stamp</Outputs>
+      <LinkObjects Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">false</LinkObjects>
+      <Message Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">Building Custom Rule C:/Users/Jarno/Documents/GitHub/RideWeather/rapidjson/example/CMakeLists.txt</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">setlocal
+"C:\Program Files\CMake\bin\cmake.exe" -SC:/Users/Jarno/Documents/GitHub/RideWeather/rapidjson -BC:/Users/Jarno/Documents/GitHub/RideWeather/targets/vs2019/rapidjson --check-stamp-file C:/Users/Jarno/Documents/GitHub/RideWeather/targets/vs2019/rapidjson/example/CMakeFiles/generate.stamp
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">C:/Users/Jarno/Documents/GitHub/RideWeather/rapidjson/example/CMakeLists.txt;C:\Users\Jarno\Documents\GitHub\RideWeather\rapidjson\example\CMakeLists.txt;C:\Users\Jarno\Documents\GitHub\RideWeather\rapidjson\example\CMakeLists.txt;%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">C:\Users\Jarno\Documents\GitHub\RideWeather\targets\vs2019\rapidjson\example\CMakeFiles\generate.stamp</Outputs>
+      <LinkObjects Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">false</LinkObjects>
+    </CustomBuild>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="C:\Users\Jarno\Documents\GitHub\RideWeather\targets\vs2019\rapidjson\example\CMakeFiles\examples" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="C:\Users\Jarno\Documents\GitHub\RideWeather\targets\vs2019\rapidjson\ZERO_CHECK.vcxproj">
+      <Project>{C1B93FA8-5B10-331A-B837-0BBEE7D7D51C}</Project>
+      <Name>ZERO_CHECK</Name>
+      <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </ProjectReference>
+    <ProjectReference Include="C:\Users\Jarno\Documents\GitHub\RideWeather\targets\vs2019\rapidjson\example\capitalize.vcxproj">
+      <Project>{9B689EB1-CB80-34AD-845A-794332CC1C53}</Project>
+      <Name>capitalize</Name>
+      <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </ProjectReference>
+    <ProjectReference Include="C:\Users\Jarno\Documents\GitHub\RideWeather\targets\vs2019\rapidjson\example\condense.vcxproj">
+      <Project>{DFA45ED1-FEC0-331F-A379-EFBDB7024C63}</Project>
+      <Name>condense</Name>
+      <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </ProjectReference>
+    <ProjectReference Include="C:\Users\Jarno\Documents\GitHub\RideWeather\targets\vs2019\rapidjson\example\filterkey.vcxproj">
+      <Project>{9092690F-6B01-30B7-B0C3-CA46E869EC75}</Project>
+      <Name>filterkey</Name>
+      <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </ProjectReference>
+    <ProjectReference Include="C:\Users\Jarno\Documents\GitHub\RideWeather\targets\vs2019\rapidjson\example\filterkeydom.vcxproj">
+      <Project>{6DA57E9F-B382-39BA-BC53-4426256584F2}</Project>
+      <Name>filterkeydom</Name>
+      <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </ProjectReference>
+    <ProjectReference Include="C:\Users\Jarno\Documents\GitHub\RideWeather\targets\vs2019\rapidjson\example\jsonx.vcxproj">
+      <Project>{E1084A9A-FF5E-3ECC-BAAF-412E9D018EB7}</Project>
+      <Name>jsonx</Name>
+      <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </ProjectReference>
+    <ProjectReference Include="C:\Users\Jarno\Documents\GitHub\RideWeather\targets\vs2019\rapidjson\example\lookaheadparser.vcxproj">
+      <Project>{61612A51-32F0-38CB-81AE-D4DA35C111BC}</Project>
+      <Name>lookaheadparser</Name>
+      <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </ProjectReference>
+    <ProjectReference Include="C:\Users\Jarno\Documents\GitHub\RideWeather\targets\vs2019\rapidjson\example\messagereader.vcxproj">
+      <Project>{5C2853EA-F89F-380A-B0E5-1BA9EA61B4C2}</Project>
+      <Name>messagereader</Name>
+      <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </ProjectReference>
+    <ProjectReference Include="C:\Users\Jarno\Documents\GitHub\RideWeather\targets\vs2019\rapidjson\example\parsebyparts.vcxproj">
+      <Project>{02F70266-5C81-379C-973D-C20088CE786E}</Project>
+      <Name>parsebyparts</Name>
+      <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </ProjectReference>
+    <ProjectReference Include="C:\Users\Jarno\Documents\GitHub\RideWeather\targets\vs2019\rapidjson\example\pretty.vcxproj">
+      <Project>{E00D2BD5-701A-35D4-838D-5EFF415939E9}</Project>
+      <Name>pretty</Name>
+      <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </ProjectReference>
+    <ProjectReference Include="C:\Users\Jarno\Documents\GitHub\RideWeather\targets\vs2019\rapidjson\example\prettyauto.vcxproj">
+      <Project>{B8020F19-E0CF-3935-A3A8-3745B4C18B75}</Project>
+      <Name>prettyauto</Name>
+      <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </ProjectReference>
+    <ProjectReference Include="C:\Users\Jarno\Documents\GitHub\RideWeather\targets\vs2019\rapidjson\example\schemavalidator.vcxproj">
+      <Project>{1E79B870-D406-3112-8FD3-85A9C6E084DB}</Project>
+      <Name>schemavalidator</Name>
+      <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </ProjectReference>
+    <ProjectReference Include="C:\Users\Jarno\Documents\GitHub\RideWeather\targets\vs2019\rapidjson\example\serialize.vcxproj">
+      <Project>{E9F57CB9-9F7C-31BC-A977-4128330B6553}</Project>
+      <Name>serialize</Name>
+      <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </ProjectReference>
+    <ProjectReference Include="C:\Users\Jarno\Documents\GitHub\RideWeather\targets\vs2019\rapidjson\example\simpledom.vcxproj">
+      <Project>{2AC1DE30-6572-3819-B0F8-357824A5A90B}</Project>
+      <Name>simpledom</Name>
+      <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </ProjectReference>
+    <ProjectReference Include="C:\Users\Jarno\Documents\GitHub\RideWeather\targets\vs2019\rapidjson\example\simplepullreader.vcxproj">
+      <Project>{1FAE61DB-6847-39B1-A598-15318F4CC16C}</Project>
+      <Name>simplepullreader</Name>
+      <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </ProjectReference>
+    <ProjectReference Include="C:\Users\Jarno\Documents\GitHub\RideWeather\targets\vs2019\rapidjson\example\simplereader.vcxproj">
+      <Project>{56DB5D8A-EE16-3273-B8E6-D2EECAC5F56D}</Project>
+      <Name>simplereader</Name>
+      <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </ProjectReference>
+    <ProjectReference Include="C:\Users\Jarno\Documents\GitHub\RideWeather\targets\vs2019\rapidjson\example\simplewriter.vcxproj">
+      <Project>{C59C5A1F-4EFB-3DA6-B3DA-E16F3FB127FE}</Project>
+      <Name>simplewriter</Name>
+      <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </ProjectReference>
+    <ProjectReference Include="C:\Users\Jarno\Documents\GitHub\RideWeather\targets\vs2019\rapidjson\example\sortkeys.vcxproj">
+      <Project>{90EA5D7E-75D6-391F-9097-7C8D32C339CF}</Project>
+      <Name>sortkeys</Name>
+      <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </ProjectReference>
+    <ProjectReference Include="C:\Users\Jarno\Documents\GitHub\RideWeather\targets\vs2019\rapidjson\example\tutorial.vcxproj">
+      <Project>{77F98AF3-64A3-3FDC-BEB3-569DC546DFB5}</Project>
+      <Name>tutorial</Name>
+      <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>

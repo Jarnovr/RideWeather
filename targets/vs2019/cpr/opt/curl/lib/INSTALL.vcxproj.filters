@@ -1,0 +1,13 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="16.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <CustomBuild Include="C:\Users\Jarno\Documents\GitHub\RideWeather\targets\vs2019\cpr\CMakeFiles\b4b41a68d74730d9efd5c59e776573ba\INSTALL_force.rule">
+      <Filter>CMake Rules</Filter>
+    </CustomBuild>
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="CMake Rules">
+      <UniqueIdentifier>{C574900E-2F85-34EA-9779-4C7FDB416A49}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+</Project>
