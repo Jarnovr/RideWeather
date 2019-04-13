@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1000</width>
-    <height>800</height>
+    <width>930</width>
+    <height>791</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -23,7 +23,7 @@
    <locale language="English" country="Netherlands"/>
   </property>
   <widget class="QWidget" name="centralwidget">
-   <layout class="QVBoxLayout" name="verticalLayout_2">
+   <layout class="QHBoxLayout" name="horizontalLayout">
     <property name="sizeConstraint">
      <enum>QLayout::SetMinimumSize</enum>
     </property>
@@ -48,7 +48,7 @@
        <enum>QTabWidget::Rounded</enum>
       </property>
       <property name="currentIndex">
-       <number>0</number>
+       <number>2</number>
       </property>
       <widget class="QWidget" name="tabActivities">
        <property name="accessibleName">
@@ -210,7 +210,13 @@
         </property>
        </widget>
       </widget>
-      <widget class="QWidget" name="SimplePlots">
+      <widget class="QWidget" name="tabSimplePlots">
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+         <horstretch>1</horstretch>
+         <verstretch>1</verstretch>
+        </sizepolicy>
+       </property>
        <property name="accessibleName">
         <string>Simple plotting</string>
        </property>
@@ -222,348 +228,13 @@
        </attribute>
        <layout class="QVBoxLayout" name="verticalLayout">
         <item>
-         <widget class="QGroupBox" name="filterBox">
-          <property name="sizePolicy">
-           <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
-            <horstretch>1</horstretch>
-            <verstretch>0</verstretch>
-           </sizepolicy>
-          </property>
-          <property name="minimumSize">
-           <size>
-            <width>0</width>
-            <height>200</height>
-           </size>
-          </property>
-          <property name="title">
-           <string>Plot Setup</string>
-          </property>
-          <layout class="QGridLayout" name="gridLayout_2">
-           <item row="1" column="2">
-            <widget class="QLabel" name="label_4">
-             <property name="sizePolicy">
-              <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-               <horstretch>0</horstretch>
-               <verstretch>0</verstretch>
-              </sizepolicy>
-             </property>
-             <property name="text">
-              <string>Y-axes:</string>
-             </property>
-            </widget>
-           </item>
-           <item row="2" column="1">
-            <widget class="QDateTimeEdit" name="dte_FromDate">
-             <property name="date">
-              <date>
-               <year>2010</year>
-               <month>1</month>
-               <day>1</day>
-              </date>
-             </property>
-             <property name="minimumDateTime">
-              <datetime>
-               <hour>0</hour>
-               <minute>0</minute>
-               <second>0</second>
-               <year>2000</year>
-               <month>1</month>
-               <day>1</day>
-              </datetime>
-             </property>
-             <property name="calendarPopup">
-              <bool>true</bool>
-             </property>
-             <property name="timeSpec">
-              <enum>Qt::LocalTime</enum>
-             </property>
-            </widget>
-           </item>
-           <item row="2" column="0">
-            <widget class="QLabel" name="label_5">
-             <property name="sizePolicy">
-              <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-               <horstretch>0</horstretch>
-               <verstretch>0</verstretch>
-              </sizepolicy>
-             </property>
-             <property name="text">
-              <string>Date Range:</string>
-             </property>
-            </widget>
-           </item>
-           <item row="0" column="2">
-            <widget class="QLabel" name="label_7">
-             <property name="sizePolicy">
-              <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-               <horstretch>0</horstretch>
-               <verstretch>0</verstretch>
-              </sizepolicy>
-             </property>
-             <property name="text">
-              <string>Activity Type:</string>
-             </property>
-            </widget>
-           </item>
-           <item row="3" column="0">
-            <widget class="QLabel" name="label_8">
-             <property name="sizePolicy">
-              <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-               <horstretch>0</horstretch>
-               <verstretch>0</verstretch>
-              </sizepolicy>
-             </property>
-             <property name="text">
-              <string>Filter 1:</string>
-             </property>
-            </widget>
-           </item>
-           <item row="0" column="1">
-            <widget class="QComboBox" name="cb_PlotType">
-             <property name="maxVisibleItems">
-              <number>20</number>
-             </property>
-             <item>
-              <property name="text">
-               <string>Scatter Plot</string>
-              </property>
-             </item>
-             <item>
-              <property name="text">
-               <string>Line Plot</string>
-              </property>
-             </item>
-             <item>
-              <property name="text">
-               <string>Spline Plot</string>
-              </property>
-             </item>
-             <item>
-              <property name="text">
-               <string>Bar Chart</string>
-              </property>
-             </item>
-             <item>
-              <property name="text">
-               <string>Box Plot</string>
-              </property>
-             </item>
-            </widget>
-           </item>
-           <item row="1" column="0">
-            <widget class="QLabel" name="label_3">
-             <property name="sizePolicy">
-              <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
-               <horstretch>0</horstretch>
-               <verstretch>0</verstretch>
-              </sizepolicy>
-             </property>
-             <property name="text">
-              <string>X-axes:</string>
-             </property>
-            </widget>
-           </item>
-           <item row="1" column="1">
-            <widget class="QComboBox" name="cb_xAxes"/>
-           </item>
-           <item row="2" column="2">
-            <widget class="QLabel" name="label_6">
-             <property name="text">
-              <string>to:</string>
-             </property>
-            </widget>
-           </item>
-           <item row="0" column="3">
-            <widget class="QComboBox" name="cb_activityType">
-             <item>
-              <property name="text">
-               <string>Run</string>
-              </property>
-             </item>
-             <item>
-              <property name="text">
-               <string>Ride</string>
-              </property>
-             </item>
-             <item>
-              <property name="text">
-               <string>Hike</string>
-              </property>
-             </item>
-             <item>
-              <property name="text">
-               <string>Yoga</string>
-              </property>
-             </item>
-             <item>
-              <property name="text">
-               <string>All</string>
-              </property>
-             </item>
-            </widget>
-           </item>
-           <item row="6" column="0">
-            <widget class="QLabel" name="label_9">
-             <property name="sizePolicy">
-              <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-               <horstretch>0</horstretch>
-               <verstretch>0</verstretch>
-              </sizepolicy>
-             </property>
-             <property name="text">
-              <string>Filter 2:</string>
-             </property>
-            </widget>
-           </item>
-           <item row="1" column="3">
-            <widget class="QComboBox" name="cb_yAxes"/>
-           </item>
-           <item row="3" column="1">
-            <widget class="QComboBox" name="cb_filter1Prop"/>
-           </item>
-           <item row="2" column="3">
-            <widget class="QDateTimeEdit" name="dte_ToDate">
-             <property name="date">
-              <date>
-               <year>2010</year>
-               <month>1</month>
-               <day>1</day>
-              </date>
-             </property>
-             <property name="minimumDateTime">
-              <datetime>
-               <hour>0</hour>
-               <minute>0</minute>
-               <second>0</second>
-               <year>2000</year>
-               <month>1</month>
-               <day>1</day>
-              </datetime>
-             </property>
-             <property name="calendarPopup">
-              <bool>true</bool>
-             </property>
-             <property name="timeSpec">
-              <enum>Qt::LocalTime</enum>
-             </property>
-            </widget>
-           </item>
-           <item row="0" column="0">
-            <widget class="QLabel" name="label_2">
-             <property name="sizePolicy">
-              <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-               <horstretch>0</horstretch>
-               <verstretch>0</verstretch>
-              </sizepolicy>
-             </property>
-             <property name="text">
-              <string>Plot type:</string>
-             </property>
-            </widget>
-           </item>
-           <item row="3" column="2">
-            <widget class="QComboBox" name="cb_filter1Op">
-             <item>
-              <property name="text">
-               <string>=</string>
-              </property>
-             </item>
-             <item>
-              <property name="text">
-               <string>&lt;=</string>
-              </property>
-             </item>
-             <item>
-              <property name="text">
-               <string>&gt;=</string>
-              </property>
-             </item>
-             <item>
-              <property name="text">
-               <string>!=</string>
-              </property>
-             </item>
-            </widget>
-           </item>
-           <item row="3" column="3">
-            <widget class="QDoubleSpinBox" name="sb_filter1Val">
-             <property name="maximum">
-              <double>999999.989999999990687</double>
-             </property>
-             <property name="stepType">
-              <enum>QAbstractSpinBox::AdaptiveDecimalStepType</enum>
-             </property>
-            </widget>
-           </item>
-           <item row="6" column="1">
-            <widget class="QComboBox" name="cb_filter2Prop"/>
-           </item>
-           <item row="6" column="2">
-            <widget class="QComboBox" name="cb_filter2Op">
-             <item>
-              <property name="text">
-               <string>=</string>
-              </property>
-             </item>
-             <item>
-              <property name="text">
-               <string>&lt;=</string>
-              </property>
-             </item>
-             <item>
-              <property name="text">
-               <string>&gt;=</string>
-              </property>
-             </item>
-             <item>
-              <property name="text">
-               <string>!=</string>
-              </property>
-             </item>
-            </widget>
-           </item>
-           <item row="6" column="3">
-            <widget class="QDoubleSpinBox" name="sb_filter2Val">
-             <property name="maximum">
-              <double>999999.989999999990687</double>
-             </property>
-             <property name="stepType">
-              <enum>QAbstractSpinBox::AdaptiveDecimalStepType</enum>
-             </property>
-            </widget>
-           </item>
-          </layout>
-         </widget>
-        </item>
-        <item>
-         <widget class="QGroupBox" name="PlotBox">
+         <widget class="SimplePlotWidget" name="plotWidget" native="true">
           <property name="sizePolicy">
            <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
             <horstretch>1</horstretch>
             <verstretch>1</verstretch>
            </sizepolicy>
           </property>
-          <property name="title">
-           <string>Plot</string>
-          </property>
-          <property name="alignment">
-           <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
-          </property>
-          <layout class="QVBoxLayout" name="verticalLayout_3">
-           <item>
-            <widget class="QChartView" name="graphicsView">
-             <property name="sizePolicy">
-              <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
-               <horstretch>1</horstretch>
-               <verstretch>1</verstretch>
-              </sizepolicy>
-             </property>
-             <property name="viewportUpdateMode">
-              <enum>QGraphicsView::BoundingRectViewportUpdate</enum>
-             </property>
-            </widget>
-           </item>
-          </layout>
          </widget>
         </item>
        </layout>
@@ -577,7 +248,7 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>1004</width>
+     <width>930</width>
      <height>26</height>
     </rect>
    </property>
@@ -638,9 +309,10 @@
  </widget>
  <customwidgets>
   <customwidget>
-   <class>QChartView</class>
-   <extends>QGraphicsView</extends>
-   <header location="global">QtCharts</header>
+   <class>SimplePlotWidget</class>
+   <extends>QWidget</extends>
+   <header location="global">simpleplotwidget.h</header>
+   <container>1</container>
   </customwidget>
  </customwidgets>
  <tabstops>
@@ -650,19 +322,6 @@
   <tabstop>btn_DownloadDetail</tabstop>
   <tabstop>tableView_Activities</tabstop>
   <tabstop>listView</tabstop>
-  <tabstop>cb_PlotType</tabstop>
-  <tabstop>cb_activityType</tabstop>
-  <tabstop>cb_xAxes</tabstop>
-  <tabstop>cb_yAxes</tabstop>
-  <tabstop>dte_FromDate</tabstop>
-  <tabstop>dte_ToDate</tabstop>
-  <tabstop>cb_filter1Prop</tabstop>
-  <tabstop>cb_filter1Op</tabstop>
-  <tabstop>sb_filter1Val</tabstop>
-  <tabstop>cb_filter2Prop</tabstop>
-  <tabstop>cb_filter2Op</tabstop>
-  <tabstop>sb_filter2Val</tabstop>
-  <tabstop>graphicsView</tabstop>
  </tabstops>
  <resources/>
  <connections/>
