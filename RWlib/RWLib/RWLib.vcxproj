@@ -11,6 +11,7 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\include\enum.h" />
     <ClInclude Include="..\include\StravaApi.h" />
     <ClInclude Include="..\include\StravaType.h" />
     <ClInclude Include="..\include\WeatherAccess.h" />

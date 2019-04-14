@@ -283,7 +283,7 @@ namespace RideWeather
 	}
 
 	string StravaApi_t::CreateManualActivity(const string& name, const ActivityType_t type,
-		const TimeS_t& start_date_local, ptrdiff_t elapsed_time, const string& description,
+		const Times_t& start_date_local, ptrdiff_t elapsed_time, const string& description,
 		const double distance, const bool private_act, const bool trainer, const bool commute)
 	{
 		//Rate Limiting

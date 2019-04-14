@@ -18,7 +18,7 @@ using namespace std;
 namespace RideWeather
 {
 
-	void Strava_t::ParseJson(const string & json)
+	void Strava_t::ParseJson(const string& json)
 	{
 		//First create rapidjson object
 		document->Parse<ParseFlag::kParseFullPrecisionFlag | ParseFlag::kParseCommentsFlag | ParseFlag::kParseNanAndInfFlag>(json);
@@ -377,8 +377,10 @@ namespace RideWeather
 	}
 
 
-	ActivityType_t ActivityType(const string & str)
+	ActivityType_t ActivityType(const string& str)
 	{
+		if (!str.compare("All"))
+			return ActivityType_t::All;
 		if (!str.compare("Ride"))
 			return ActivityType_t::Ride;
 		if (!str.compare("Run"))
@@ -503,12 +505,14 @@ namespace RideWeather
 			return "Workout";
 		case ActivityType_t::Yoga:
 			return "Yoga";
+		case ActivityType_t::All:
+			return "All";
 		default:
 			return "Other";
 		}
 	}
 
-	Point_t::Point_t(const rapidjson::Value & dom) :Point_t()
+	Point_t::Point_t(const rapidjson::Value& dom) :Point_t()
 	{
 
 		if (dom.IsNull() || !dom.IsArray() || dom.GetArray().Size() != 2)
@@ -612,7 +616,7 @@ namespace RideWeather
 
 	}
 
-	Bike_t::Bike_t(rapidjson::Value & DOM) : Gear_t(DOM)
+	Bike_t::Bike_t(rapidjson::Value& DOM) : Gear_t(DOM)
 	{
 		//DebugPrintDom();
 		//Note the Gear_t constructor swaps in the dom->
@@ -623,7 +627,7 @@ namespace RideWeather
 		delete dom; dom = nullptr; delete document; document = nullptr;
 	}
 
-	Polyline_t::Polyline_t(const string & str)
+	Polyline_t::Polyline_t(const string& str)
 	{
 		PolyString.assign(str);
 		//decode using code from https://github.com/paulobarcelos/ofxGooglePolyline/blob/master/src/ofxGooglePolyline.h
@@ -1032,7 +1036,7 @@ namespace RideWeather
 			try {
 				StreamType_t streamtype = GetStreamType(v);
 				Data_t datatype = DataTypeFromStreamType(streamtype);
-				Stream_t *stream = nullptr;
+				Stream_t* stream = nullptr;
 				switch (datatype)
 				{
 				case RideWeather::Data_t::kInt:
@@ -1051,7 +1055,7 @@ namespace RideWeather
 					throw StravaException_t(string("Stream_t::PasreStreamArray").append(", stream has invalid dataType\n"));
 					break;
 				}
-				activity.streams.insert_or_assign(streamtype,stream);
+				activity.streams.insert_or_assign(streamtype, stream);
 			}
 			catch (StravaException_t & ex)
 			{
@@ -1069,11 +1073,11 @@ namespace RideWeather
 		ParseString(series_type, "series_type");
 		string tmp;
 		ParseString(tmp, "resolution");
-		if (type.compare("low")==0)
+		if (type.compare("low") == 0)
 			resolution = Resolution_t::low;
-		else if (type.compare("medium")==0)
+		else if (type.compare("medium") == 0)
 			resolution = Resolution_t::medium;
-		else if (type.compare("high")==0)
+		else if (type.compare("high") == 0)
 			resolution = Resolution_t::high;
 		else
 			resolution = Resolution_t::def;

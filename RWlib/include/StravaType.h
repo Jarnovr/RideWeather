@@ -17,13 +17,14 @@
 #include "rapidjson/document.h"
 #include "rapidjson/stringbuffer.h"
 #include "rapidjson/writer.h"
+
+#include "enum.h"
 using std::string;
 
 namespace RideWeather
 {
-	typedef boost::posix_time::ptime TimeS_t;
-
-
+	typedef boost::posix_time::ptime Times_t;
+	
 	class StravaException_t : public std::exception
 	{
 	public:
@@ -71,7 +72,7 @@ namespace RideWeather
 				dest.assign("");
 		}
 
-		void ParseTimeS(TimeS_t& dest, string var)
+		void ParseTimeS(Times_t& dest, string var)
 		{
 			if (!dom->HasMember(var))
 				throw StravaException_t(type_str.append(" missing ").append(var).append("\n"));
@@ -241,8 +242,8 @@ namespace RideWeather
 		Connection_t friend_;//summary
 		Connection_t follower;//summary
 		bool premium;//summary
-		TimeS_t created_at;//summary
-		TimeS_t updated_at;//summary
+		Times_t created_at;//summary
+		Times_t updated_at;//summary
 		ptrdiff_t follower_count;//detailed only
 		ptrdiff_t friend_count;//detailed only
 		ptrdiff_t mutual_friend_count;//deiled only
@@ -256,7 +257,7 @@ namespace RideWeather
 		std::list<Shoe_t> shoes;//detailed only
 		std::map<ptrdiff_t,Activity_t> activities;
 		std::vector<ptrdiff_t> activity_ids;
-		TimeS_t last_activity;
+		Times_t last_activity;
 		Athlete_t() :id(0), resource_state(0), sex('\0'),
 			friend_(Connection_t::null), follower(Connection_t::null), premium(false),
 			follower_count(0), friend_count(0),
@@ -457,13 +458,12 @@ namespace RideWeather
 		}
 	}
 
-	enum class ActivityType_t {
-		Ride, Run, Swim, Hike, Walk, AlpineSki,
+	BETTER_ENUM(ActivityType_t, char,
+		All, Ride, Run, Swim, Hike, Walk, AlpineSki,
 		BackcountrySki, Canoeing, Crossfit, EBikeRide, Elliptical, IceSkate,
 		InlineSkate, Kayaking, Kitesurf, NordicSki, RockClimbing, RollerSki,
 		Rowing, Snowboard, Snowshoe, StairStepper, StandUpPaddling, Surfing,
-		VirtualRide, WeightTraining, Windsurf, Workout, Yoga, other
-	};
+		VirtualRide, WeightTraining, Windsurf, Workout, Yoga, other);
 
 	ActivityType_t ActivityType(const string& str);
 	string ActivityType(const ActivityType_t type);
@@ -486,8 +486,8 @@ namespace RideWeather
 		double elev_low;
 		ActivityType_t type;
 		string typeS;
-		TimeS_t start_date;
-		TimeS_t start_date_local;
+		Times_t start_date;
+		Times_t start_date_local;
 		string timezone_act;
 		Point_t start_latlng;
 		Point_t end_latlng;
@@ -716,7 +716,7 @@ namespace RideWeather
 		enum class RunningRace_t { road = 0, trail = 1, track = 2, xc = 3 };
 		RunningRace_t running_race_type;
 		double distance;
-		TimeS_t start_date_local;
+		Times_t start_date_local;
 		string city;
 		string state;
 		string country;
@@ -752,8 +752,8 @@ namespace RideWeather
 		string country;//summary
 		bool private_segment;
 		bool starred;
-		TimeS_t created_at;
-		TimeS_t updated_at;
+		Times_t created_at;
+		Times_t updated_at;
 		double total_elevation_gain;
 		std::shared_ptr<Map_t> map;
 		ptrdiff_t effort_count;
@@ -768,7 +768,7 @@ namespace RideWeather
 			type_str.assign("Segment_t");
 		};
 		Segment_t(const string& json) : Segment_t() { ParseJson(json); ParseDom(); };
-		Segment_t(rapidjson::Value & DOM) { dom->CopyFrom(DOM, document->GetAllocator());  ParseDom(); };
+		Segment_t(rapidjson::Value & DOM) : Segment_t() { dom->CopyFrom(DOM, document->GetAllocator());  ParseDom(); };
 	protected:
 		void ParseDom();
 	};
@@ -782,8 +782,8 @@ namespace RideWeather
 		ptrdiff_t athlete;
 		ptrdiff_t elapsed_time;
 		ptrdiff_t moving_time;
-		TimeS_t start_date;
-		TimeS_t start_date_local;
+		Times_t start_date;
+		Times_t start_date_local;
 		double distance;
 		ptrdiff_t start_index;
 		ptrdiff_t end_index;
@@ -819,8 +819,8 @@ namespace RideWeather
 		ptrdiff_t pr_rank;
 		ptrdiff_t elapsed_time;
 		ptrdiff_t moving_time;
-		TimeS_t start_date;
-		TimeS_t start_date_local;
+		Times_t start_date;
+		Times_t start_date_local;
 		ptrdiff_t distance;
 		std::list<Achievement_t> achievements;
 		Effort_t() : id(0), resource_state(0), segment(0), activity(0), athlete(0),
@@ -866,8 +866,8 @@ namespace RideWeather
 		string caption;
 		string type;
 		ptrdiff_t source;
-		TimeS_t uploaded_at;
-		TimeS_t created_at;
+		Times_t uploaded_at;
+		Times_t created_at;
 		Point_t location;
 		Photo_t() : id(0), activity_id(0), resource_state(0), source(0) { type_str.assign("Photo_t"); };
 		Photo_t(const string& json) : Photo_t() { ParseJson(json); ParseDom(); };
@@ -891,8 +891,8 @@ namespace RideWeather
 		string name;
 		ptrdiff_t resource_state;
 		ptrdiff_t split;
-		TimeS_t start_date;
-		TimeS_t start_date_local;
+		Times_t start_date;
+		Times_t start_date_local;
 		ptrdiff_t start_index;
 		double total_elevation_gain;
 		Lap_t() : activity(0), athlete(0), average_cadence(0.0), average_speed(0.0),

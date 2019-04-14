@@ -32,7 +32,7 @@ namespace RideWeather
 
 		//Activity page
 		std::string CreateManualActivity(const string& name, const ActivityType_t type,
-			const TimeS_t& start_date_local, ptrdiff_t elapsed_time, const string& description = "",
+			const Times_t& start_date_local, ptrdiff_t elapsed_time, const string& description = "",
 			const double distance = -1.0, const bool private_act = false,
 			const bool trainer = false, const bool commute = false);
 		std::string GetActivity(const ptrdiff_t id);

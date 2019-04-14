@@ -205,3 +205,4 @@ CTestTestfile.cmake
 # Notepad++ backup
 *.bak
 GeneratedFiles
+/RWgui/RWgui/RWGui_logfile.txt

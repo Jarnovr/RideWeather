@@ -107,6 +107,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\include\ActivityModel.h" />
+    <ClInclude Include="..\include\Common.h" />
     <ClInclude Include="..\include\Config.h" />
     <CustomBuild Include="..\include\SimplePlotWidget.h">
       <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(QTDIR)\bin\moc.exe;%(FullPath)</AdditionalInputs>

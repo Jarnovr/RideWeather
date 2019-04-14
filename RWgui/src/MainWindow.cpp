@@ -15,7 +15,7 @@
 RideWeather::Configuration* Config;
 
 MainWindow::MainWindow(QWidget* parent) :
-	QMainWindow(parent), ui(new Ui::MainWindow), _stravaApiController(nullptr), _activityModel(nullptr)
+	QMainWindow(parent), ui(new Ui::MainWindow), _stravaApiController(nullptr), _activityModel(nullptr), StravaApi(nullptr)
 {
 	QCoreApplication::setOrganizationDomain("roosmalen.org");
 	QCoreApplication::setOrganizationName("JarnoSoft");
@@ -68,6 +68,7 @@ void MainWindow::on_btn_Load_Token_clicked()
 	StravaApi = new RideWeather::StravaApi_t(RideWeather::AccessToken_t(token), Config->cacheFolder);
 	_stravaApiController = new RideWeather::StravaApiController_t(StravaApi);
 	connect(_stravaApiController->Worker(), &RideWeather::StravaApiWorker::AthleteReady, this, &MainWindow::on_AthleteReady);
+	connect(_stravaApiController->Worker(), &RideWeather::StravaApiWorker::AthleteReady, ui->plotWidget, &SimplePlotWidget::on_AthleteReady);
 	connect(this, &MainWindow::GetAthleteSignal, _stravaApiController->Worker(), &RideWeather::StravaApiWorker::GetAthlete);
 	connect(_stravaApiController->Worker(), &RideWeather::StravaApiWorker::SignalProgress, this, &MainWindow::on_SetProgress);
 	ui->statusbar->showMessage("Loading athlete...", 300);
@@ -88,6 +89,7 @@ void MainWindow::on_btn_GetList_clicked()
 	ui->btn_GetList->setEnabled(false);
 
 	connect(_stravaApiController->Worker(), &RideWeather::StravaApiWorker::ListReady, this, &MainWindow::on_ListReady);
+	connect(_stravaApiController->Worker(), &RideWeather::StravaApiWorker::ListReady, ui->plotWidget, &SimplePlotWidget::on_ListReady);
 	connect(this, &MainWindow::GetListSignal, _stravaApiController->Worker(), &RideWeather::StravaApiWorker::GetList);
 	ui->statusbar->showMessage("Getting athlete activities...", 1200);
 	emit GetListSignal(athlete);

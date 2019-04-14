@@ -1,5 +1,5 @@
 #include "ACtivityModel.h"
-
+#include "Common.h"
 
 #include <QDateTime>
 namespace RideWeather
@@ -36,7 +36,7 @@ namespace RideWeather
 			case 0: return QVariant(QString::fromStdString(_athlete->activities.at(_athlete->activity_ids[index.row()]).name));
 			case 1: {
 				auto startdate = _athlete->activities.at(_athlete->activity_ids[index.row()]).start_date;
-				return QVariant(QDateTime::fromSecsSinceEpoch(boost::posix_time::to_time_t(startdate), Qt::UTC));
+				return QVariant(ToQDateTime(startdate));
 			}
 			case 2: return QVariant(_athlete->activities.at(_athlete->activity_ids[index.row()]).distance/1000.0);
 			case 3: return QVariant(_athlete->activities.at(_athlete->activity_ids[index.row()]).elapsed_time/60.0);

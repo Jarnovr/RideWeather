@@ -13,8 +13,6 @@ namespace RideWeather
 	{
 		Q_OBJECT
 	private:
-		StravaApiWorker() {};
-		StravaApiWorker(const StravaApiWorker&) {};
 		StravaApiWorker(StravaApi_t *stravaApi) : _stravaApi(stravaApi) { };
 		static StravaApiWorker* _instance;
 	public:
