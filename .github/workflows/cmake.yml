@@ -29,7 +29,7 @@ jobs:
         # Version of Qt to install
         version: 6.4.1 # optional, default is 5.15.2
         # Host platform
-        modules: Widgets,Charts# optional
+        modules: Widgets Charts
 
     - name : install rapid json
       run: sudo apt-get install -y rapidjson-devel
