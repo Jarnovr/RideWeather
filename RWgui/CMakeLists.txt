@@ -22,11 +22,7 @@ ENDIF()
 find_package(Boost REQUIRED filesystem date_time)
 
 # Find the QtWidgets library
-find_package(Qt5Widgets)
-
-find_library(RWLIB_DEBUG RWlib-d PATHS ${LIBRARY_OUTPUT_PATH}/Debug)
-find_library(RWLIB_RELEASE RWlib PATHS ${LIBRARY_OUTPUT_PATH}/Release)
-
+find_package(Qt6 REQUIRED COMPONENTS Widgets)
 
 file(GLOB CPP_FILES src/*.cpp)
 file(GLOB H_FILES src/*.h)
@@ -35,7 +31,7 @@ include_directories(${PROJECT_SOURCE_DIR}/include ${Boost_INCLUDE_DIRS} ${RWlib_
 link_directories(${Boost_LIBRARY_DIR})
 
 add_executable(RideWeather ${HI_FILES} ${H_FILES} ${CPP_FILES})
-target_link_libraries(RideWeather ${CPR_LIBRARIES} debug ${RWLIB_DEBUG} optimized ${RWLIB_RELEASE} Qt5::Widgets debug  ${Boost_DATE_TIME_LIBRARY_DEBUG} debug ${Boost_FILESYSTEM_LIBRARY_DEBUG} debug ${Boost_SYSTEM_LIBRARY_DEBUG} optimized ${Boost_DATE_TIME_LIBRARY_RELEASE} optimized ${Boost_FILESYSTEM_LIBRARY_RELEASE} optimized ${Boost_SYSTEM_LIBRARY_RELEASE})
+target_link_libraries(RideWeather ${CPR_LIBRARIES} ${RWLIB}  Qt6::Widgets  ${Boost_DATE_TIME_LIBRARY} ${Boost_FILESYSTEM_LIBRARY} ${Boost_SYSTEM_LIBRARY})
 
 
 get_property(dirs DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR} PROPERTY INCLUDE_DIRECTORIES)

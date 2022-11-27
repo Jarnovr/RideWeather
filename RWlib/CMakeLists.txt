@@ -16,7 +16,7 @@ set(RAPIDJSON_BUILD_DOC OFF)
 set(RAPIDJSON_BUILD_EXAMPLES OFF)
 set(RAPIDJSON_BUILD_TESTS OFF)
 set(RAPIDJSON_HAS_STDSTRING ON)
-include_directories(${RapidJSON_SOURCE_DIR}/include)
+#include_directories(${RapidJSON_SOURCE_DIR}/include)
 ENDIF()
 find_package(Boost REQUIRED filesystem date_time )
 
@@ -24,7 +24,7 @@ include_directories(${PROJECT_SOURCE_DIR}/include ${Boost_INCLUDE_DIRS} ${CPR_IN
 link_directories(${Boost_LIBRARY_DIR} )
 
 add_library(RWlib ${HI_FILES} ${H_FILES} ${CPP_FILES})
-target_link_libraries(RWlib ${CPR_LIBRARIES}  debug  ${Boost_DATE_TIME_LIBRARY_DEBUG} debug ${Boost_FILESYSTEM_LIBRARY_DEBUG} optimized ${Boost_DATE_TIME_LIBRARY_RELEASE} optimized ${Boost_FILESYSTEM_LIBRARY_RELEASE} )
+target_link_libraries(RWlib ${CPR_LIBRARIES} ${Boost_DATE_TIME_LIBRARY} ${Boost_FILESYSTEM_LIBRARY})
 
 add_executable(RWlib_Test test/ReadJson.cpp test/main.cpp test/ReadJson.h)
 target_link_libraries(RWlib_Test RWlib)
