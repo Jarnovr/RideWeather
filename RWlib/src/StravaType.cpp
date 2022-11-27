@@ -685,7 +685,7 @@ namespace RideWeather
 	AccessToken_t::AccessToken_t(const boost::filesystem::path & filename) :AccessToken_t()
 	{
 		//open file
-		boost::filesystem::ifstream file(filename, std::ios::binary | std::ios::ate);
+		std::ifstream file(filename, std::ios::binary | std::ios::ate);
 		// get filesize
 		size_t fs = file.tellg();
 		file.seekg(0, std::ios::beg);

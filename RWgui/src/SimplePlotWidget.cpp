@@ -1,5 +1,6 @@
 #include "SimplePlotWidget.h"
 #include "ui_SimplePlotWidget.h"
+#include <QScatterSeries>
 
 #include "Common.h"
 

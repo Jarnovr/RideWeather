@@ -4,12 +4,12 @@
 #include <QDateTime>
 namespace RideWeather
 {
-
+	using namespace std::string_literals;
 
 	int ActivityModel::rowCount(const QModelIndex & parent) const
 	{
 		if (parent.isValid())
-			throw std::exception("rowCount asked for non-root parent. Not Allowed.");
+			throw std::runtime_error("rowCount asked for non-root parent. Not Allowed."s);
 
 		return (int) _athlete->activities.size();
 	}
@@ -17,7 +17,7 @@ namespace RideWeather
 	int ActivityModel::columnCount(const QModelIndex & parent) const
 	{
 		if (parent.isValid())
-			throw std::exception("columnCount asked for non-root parent. Not Allowed.");
+			throw std::runtime_error("columnCount asked for non-root parent. Not Allowed."s);
 
 		return 7;//number of data fields exposed.
 	}

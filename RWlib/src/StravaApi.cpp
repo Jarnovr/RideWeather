@@ -7,21 +7,21 @@
 #include "cpr/cpr.h"
 #include "rapidjson/reader.h"
 #include "rapidjson/error/en.h"
-
+using namespace std::string_literals;
 
 namespace RideWeather
 {
 	const static cpr::Timeout timeout{ 10000 };
 
-	void StravaApi_t::ProcessResponse(cpr::Header & hdr)
+	void StravaApi_t::ProcessResponse(cpr::Header& hdr)
 	{
 		try
 		{
 			auto hdrlimit = hdr.find("X-RateLimit-Limit");
 			auto hdrusage = hdr.find("X-RateLimit-Usage");
 			last_usage = boost::posix_time::microsec_clock::universal_time();
-			if (hdrlimit == hdr.end()) throw new std::exception("Null pointer exception");
-			if (hdrusage == hdr.end()) throw new std::exception("Null pointer exception");
+			if (hdrlimit == hdr.end()) throw new std::runtime_error("Null pointer exception"s);
+			if (hdrusage == hdr.end()) throw new std::runtime_error("Null pointer exception"s);
 
 			string lim = hdrlimit->second;
 			size_t idx;
@@ -72,7 +72,7 @@ namespace RideWeather
 
 	}
 
-	bool StravaApi_t::GetCached(const std::string & key, std::string & out)
+	bool StravaApi_t::GetCached(const std::string& key, std::string& out)
 	{
 		boost::filesystem::path fn = cacheFolder;
 		fn.append(key);
@@ -80,7 +80,7 @@ namespace RideWeather
 			return false;
 
 		//open file
-		boost::filesystem::ifstream file(fn, std::ios::binary | std::ios::ate);
+		std::ifstream file(fn, std::ios::binary | std::ios::ate);
 		// get filesize
 		size_t fs = file.tellg();
 		file.seekg(0, std::ios::beg);
@@ -92,7 +92,7 @@ namespace RideWeather
 		return true;
 	}
 
-	void StravaApi_t::WriteCache(const std::string & key, const std::string & json)
+	void StravaApi_t::WriteCache(const std::string& key, const std::string& json)
 	{
 		boost::filesystem::path fn = cacheFolder;
 		fn.append(key);
@@ -102,7 +102,7 @@ namespace RideWeather
 			boost::filesystem::create_directories(fn.parent_path());//create folder
 		}
 		//open file
-		boost::filesystem::ofstream file(fn, std::ios::binary);
+		std::ofstream file(fn, std::ios::binary);
 		file << json;
 		file.close();
 	}
@@ -160,7 +160,7 @@ namespace RideWeather
 		return r.text;
 	}
 
-	string StravaApi_t::PutAthlete(const string & city, const string & state, const string & country, const char sex, const double & weight)
+	string StravaApi_t::PutAthlete(const string& city, const string& state, const string& country, const char sex, const double& weight)
 	{
 		//Rate Limiting
 		WaitIfNeeded();
@@ -171,15 +171,15 @@ namespace RideWeather
 		cpr::Header header{ { "Authorization", auth } };
 		cpr::Payload payload({});
 		if (city.compare(""))
-			payload.AddPair({ "city",city });
+			payload.Add({ "city",city });
 		if (state.compare(""))
-			payload.AddPair({ "state",state });
+			payload.Add({ "state",state });
 		if (country.compare(""))
-			payload.AddPair({ "country",country });
+			payload.Add({ "country",country });
 		if (sex == 'M' || sex == 'F')
-			payload.AddPair({ "sex",sex });
+			payload.Add({ "sex", std::to_string(sex) });
 		if (weight > 0)
-			payload.AddPair({ "weight",std::to_string(weight) });
+			payload.Add({ "weight",std::to_string(weight) });
 
 		cpr::Response r = cpr::Put(url, header, payload, timeout);
 		if (r.error.code != cpr::ErrorCode::OK)
@@ -247,9 +247,9 @@ namespace RideWeather
 		//Rate Limiting
 		WaitIfNeeded();
 
-		cpr::Url url{ "https://www.strava.com/api/v3/athletes/" };
-		url.append(std::to_string(at.athlete->id));
-		url.append("/stats");
+		cpr::Url url{ "https://www.strava.com/api/v3/athletes/"s };
+		url += std::to_string(at.athlete->id);
+		url += "/stats"s;
 		string auth("Bearer ");
 		auth.append(at.access_token, 40);
 		cpr::Header header{ { "Authorization", auth } };
@@ -296,15 +296,15 @@ namespace RideWeather
 			{"elapsed_time",std::to_string(elapsed_time)}, {"type", ActivityType(type)} });
 
 		if (description.compare(""))
-			payload.AddPair({ "description",description });
+			payload.Add({ "description",description });
 		if (distance > 0)
-			payload.AddPair({ "distance",std::to_string(distance) });
+			payload.Add({ "distance",std::to_string(distance) });
 		if (private_act)
-			payload.AddPair({ "private","1" });
+			payload.Add({ "private","1" });
 		if (trainer)
-			payload.AddPair({ "trainer","1" });
+			payload.Add({ "trainer","1" });
 		if (commute)
-			payload.AddPair({ "commmute","1" });
+			payload.Add({ "commmute","1" });
 
 		cpr::Response r = cpr::Post(url, header, payload, timeout);
 		if (r.error.code != cpr::ErrorCode::OK)
@@ -337,7 +337,7 @@ namespace RideWeather
 		WaitIfNeeded();
 
 		cpr::Url url{ "https://www.strava.com/api/v3/activities/" };
-		url.append(std::to_string(id));
+		url += (std::to_string(id));
 		string auth("Bearer ");
 		auth.append(at.access_token, 40);
 		cpr::Header header{ { "Authorization", auth } };
@@ -378,13 +378,12 @@ namespace RideWeather
 		cpr::Parameters payload({ { "per_page",std::to_string(per_page) } });
 
 		if (before > 0)
-			payload.AddParameter({ "before",std::to_string(before) });
+			payload.Add({ "before",std::to_string(before) });
 		if (after > 0)
-			payload.AddParameter({ "after",std::to_string(after) });
+			payload.Add({ "after",std::to_string(after) });
 		if (page > 0)
-			payload.AddParameter({ "page",std::to_string(page) });
+			payload.Add({ "page",std::to_string(page) });
 		std::cout << "Accessing: " << url << std::endl;
-		std::cout << "	Payload: " << payload.content << std::endl;
 
 		cpr::Response r = cpr::Get(url, header, payload, timeout);
 		if (r.error.code != cpr::ErrorCode::OK)
@@ -415,15 +414,15 @@ namespace RideWeather
 		WaitIfNeeded();
 
 		cpr::Url url{ "https://www.strava.com/api/v3/activities/" };
-		url.append(std::to_string(id));
-		url.append("/streams/");
-		url.append(types);
+		url += (std::to_string(id));
+		url += ("/streams/");
+		url += (types);
 		string auth("Bearer ");
 		auth.append(at.access_token, 40);
 		cpr::Header header{ { "Authorization", auth } };
 		cpr::Parameters payload;
 		if (resolution.compare("all") != 0)
-			payload.AddParameter({"resolution",resolution});
+			payload.Add({ "resolution",resolution });
 
 		cpr::Response r = cpr::Get(url, header, timeout);
 		if (r.error.code != cpr::ErrorCode::OK)
@@ -447,14 +446,14 @@ namespace RideWeather
 		return r.text;
 	}
 
-	void StravaApi_t::LoadAthleteActivitiesList(Athlete_t & athlete, progress_t progress)
+	void StravaApi_t::LoadAthleteActivitiesList(Athlete_t& athlete, progress_t progress)
 	{
 		boost::filesystem::path fn = cacheFolder;
 		fn.append(string("/athletes/").append(std::to_string(athlete.id)).append("/activities.idx"));
 		if (!(boost::filesystem::exists(fn) && boost::filesystem::is_regular_file(fn)))
 			return;
 		//open file
-		boost::filesystem::ifstream file(fn, std::ios::binary);
+		std::ifstream file(fn, std::ios::binary);
 		std::string line;
 		std::getline(file, line);
 		std::istringstream(line) >> athlete.last_activity;
@@ -471,12 +470,12 @@ namespace RideWeather
 			{
 				athlete.activities.insert(std::pair<ptrdiff_t, Activity_t>(act_id, Activity_t(GetActivity(act_id))));
 			}
-			catch (StravaException_t & ex)
+			catch (StravaException_t& ex)
 			{
 				std::cerr << "StravaApi_t::LoadAthleteActivities: Error getting and inserting activity into athlete" << std::endl;
 				std::cerr << ex.what() << std::endl;
 			}
-			if (progress != nullptr && ((i%progress_freq) == 0))
+			if (progress != nullptr && ((i % progress_freq) == 0))
 			{
 				progress(static_cast<int>(i * 100 / number_activities));
 			}
@@ -486,7 +485,7 @@ namespace RideWeather
 
 	}
 
-	void StravaApi_t::SaveAthleteActivitiesList(Athlete_t & athlete)
+	void StravaApi_t::SaveAthleteActivitiesList(Athlete_t& athlete)
 	{
 		boost::filesystem::path fn = cacheFolder;
 		fn.append(string("/athletes/").append(std::to_string(athlete.id)).append("/activities.idx"));
@@ -496,7 +495,7 @@ namespace RideWeather
 			boost::filesystem::create_directories(fn.parent_path());//create folder
 		}
 		//open file
-		boost::filesystem::ofstream file(fn, std::ios::binary);
+		std::ofstream file(fn, std::ios::binary);
 		//write date of last_activity to disk
 		file << athlete.last_activity << std::endl;
 		//write number of activities
@@ -509,7 +508,7 @@ namespace RideWeather
 
 	}
 
-	void StravaApi_t::RefreshAthleteActivities(Athlete_t & athlete, progress_t progress, bool dowload_all)
+	void StravaApi_t::RefreshAthleteActivities(Athlete_t& athlete, progress_t progress, bool dowload_all)
 	{
 		//Set start point;
 		boost::posix_time::ptime after;
@@ -551,7 +550,7 @@ namespace RideWeather
 					if (athlete.activities.at(tmp_activity.id).start_date > athlete.last_activity)
 						athlete.last_activity = athlete.activities.at(tmp_activity.id).start_date;
 				}
-				catch (StravaException_t & ex)
+				catch (StravaException_t& ex)
 				{
 					std::cerr << "StravaApi_t::RefreshAthleteActivities: Error getting and inserting activity into athlete" << std::endl;
 					std::cerr << ex.what() << std::endl;
@@ -570,7 +569,7 @@ namespace RideWeather
 		SaveAthleteActivitiesList(athlete);
 	}
 
-	void StravaApi_t::GetAthleteActivityStreams(Athlete_t & athlete, progress_t progress, bool download_all)
+	void StravaApi_t::GetAthleteActivityStreams(Athlete_t& athlete, progress_t progress, bool download_all)
 	{
 		size_t i = 0; size_t total = athlete.activities.size();
 		for (auto& v : athlete.activities)
@@ -580,7 +579,7 @@ namespace RideWeather
 			if (activity.manual)
 				continue;
 
-			string streams = GetActivityStream(act_id,"time,latlng,altitude,distance,heartrate,cadence,moving");
+			string streams = GetActivityStream(act_id, "time,latlng,altitude,distance,heartrate,cadence,moving");
 			Stream_t::ParseStreamArray(streams, activity);
 			if (progress != nullptr)
 			{

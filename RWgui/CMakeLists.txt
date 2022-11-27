@@ -22,28 +22,29 @@ ENDIF()
 find_package(Boost REQUIRED filesystem date_time)
 
 # Find the QtWidgets library
-find_package(Qt6 REQUIRED COMPONENTS Widgets)
+set(QT_VERSION 6)
+find_package(Qt6 REQUIRED COMPONENTS Widgets Charts)
+qt_standard_project_setup()
 
 file(GLOB CPP_FILES src/*.cpp)
 file(GLOB H_FILES src/*.h)
 file(GLOB HI_FILES include/*.h)
-include_directories(${PROJECT_SOURCE_DIR}/include ${Boost_INCLUDE_DIRS} ${RWlib_INCLUDE_DIRS})
+include_directories(${PROJECT_SOURCE_DIR}/include ${Boost_INCLUDE_DIRS} ${RWlib_INCLUDE_DIRS} ${QT6_INCLUDE_DIRS})
 link_directories(${Boost_LIBRARY_DIR})
 
 add_executable(RideWeather ${HI_FILES} ${H_FILES} ${CPP_FILES})
-target_link_libraries(RideWeather ${CPR_LIBRARIES} ${RWLIB}  Qt6::Widgets  ${Boost_DATE_TIME_LIBRARY} ${Boost_FILESYSTEM_LIBRARY} ${Boost_SYSTEM_LIBRARY})
-
+target_link_libraries(RideWeather ${CPR_LIBRARIES} RWlib  Qt6::Widgets Qt6::Charts ${Boost_DATE_TIME_LIBRARY} ${Boost_FILESYSTEM_LIBRARY} ${Boost_SYSTEM_LIBRARY})
 
 get_property(dirs DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR} PROPERTY INCLUDE_DIRECTORIES)
 set(${PROJECT_NAME}_INCLUDE_DIRS ${dirs}
  CACHE INTERNAL "${PROJECT_NAME}: Include Directories" FORCE)
 
-  if (WIN32) 
+if (WIN32) 
   
-add_custom_command(TARGET RideWeather POST_BUILD        # Adds a post-build event to MyTest
-WORKING_DIRECTORY D:\\Qt\\5.11.1\\msvc2017_64\\bin
-    COMMAND windeployqt --debug ${CMAKE_EXECUTABLE_OUTPUT_PATH}\\Debug   )
-add_custom_command(TARGET RideWeather POST_BUILD        # Adds a post-build event to MyTest
-WORKING_DIRECTORY D:\\Qt\\5.11.1\\msvc2017_64\\bin
-    COMMAND windeployqt --release ${CMAKE_EXECUTABLE_OUTPUT_PATH}\\Release   )
-	endif()
+    add_custom_command(TARGET RideWeather POST_BUILD        # Adds a post-build event to MyTest
+    WORKING_DIRECTORY D:\\Qt\\5.11.1\\msvc2017_64\\bin
+        COMMAND windeployqt --debug ${CMAKE_EXECUTABLE_OUTPUT_PATH}\\Debug   )
+    add_custom_command(TARGET RideWeather POST_BUILD        # Adds a post-build event to MyTest
+    WORKING_DIRECTORY D:\\Qt\\5.11.1\\msvc2017_64\\bin
+        COMMAND windeployqt --release ${CMAKE_EXECUTABLE_OUTPUT_PATH}\\Release   )
+endif()

@@ -13,7 +13,7 @@ void ReadAthlete(const char *fn)
 {
 	try {
 		//open file
-		boost::filesystem::ifstream file(fn, std::ios::binary | std::ios::ate);
+		std::ifstream file(fn, std::ios::binary | std::ios::ate);
 		// get filesize
 		size_t fs = file.tellg();
 		file.seekg(0, std::ios::beg);
@@ -42,7 +42,7 @@ void ReadActivity(const char *fn)
 {
 	try {
 		//open file
-		boost::filesystem::ifstream file(fn, std::ios::binary | std::ios::ate);
+		std::ifstream file(fn, std::ios::binary | std::ios::ate);
 		// get filesize
 		size_t fs = file.tellg();
 		file.seekg(0, std::ios::beg);
@@ -66,7 +66,7 @@ AccessToken_t ReadToken(const string& fn)
 {
 	try {
 		//open file
-		boost::filesystem::ifstream file(fn, std::ios::binary | std::ios::ate);
+		std::ifstream file(fn, std::ios::binary | std::ios::ate);
 		// get filesize
 		size_t fs = file.tellg();
 		file.seekg(0, std::ios::beg);

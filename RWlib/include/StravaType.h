@@ -13,6 +13,7 @@
 #include <vector>
 #include "boost/date_time.hpp"
 #include "boost/filesystem.hpp"
+#define RAPIDJSON_HAS_STDSTRING 1
 
 #include "rapidjson/document.h"
 #include "rapidjson/stringbuffer.h"
@@ -25,10 +26,10 @@ namespace RideWeather
 {
 	typedef boost::posix_time::ptime Times_t;
 	
-	class StravaException_t : public std::exception
+	class StravaException_t : public std::runtime_error
 	{
 	public:
-		StravaException_t(const string str) : std::exception(str.c_str()) {};
+		StravaException_t(const string& str) : std::runtime_error(str) {};
 	};
 
 	class Strava_t {
@@ -206,7 +207,7 @@ namespace RideWeather
 		string token_type;
 		std::shared_ptr<Athlete_t> athlete;
 		AccessToken_t() : athlete(nullptr) { type_str.assign("AccessToken"); };
-		AccessToken_t(const AccessToken_t& at) { type_str.assign("AccessToken"); strncpy_s(access_token,41, at.access_token, 40); token_type = at.token_type; athlete = at.athlete; };
+		AccessToken_t(const AccessToken_t& at) { type_str.assign("AccessToken"); strncpy(access_token, at.access_token, 40); token_type = at.token_type; athlete = at.athlete; };
 		AccessToken_t(const string& json) :AccessToken_t() { ParseJson(json); ParseDom(); };
 		AccessToken_t(const boost::filesystem::path& filename);
 	public:

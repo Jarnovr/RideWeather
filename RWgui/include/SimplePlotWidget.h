@@ -31,7 +31,7 @@ public slots:
 private:
 	Ui::SimplePlotWidget *ui;
 	std::shared_ptr<RideWeather::Athlete_t> _athlete;
-	QtCharts::QChart * _chart;
+	QChart * _chart;
 	void RefreshChart();
 };
 

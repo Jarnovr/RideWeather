@@ -32,8 +32,8 @@ namespace RideWeather
 			if (!boost::filesystem::is_regular_file(path))
 				continue;
 			//open file
-
-			boost::filesystem::ifstream file(path);
+			
+			std::ifstream file(path.path());
 			//Read file
 			char buffer[128];
 			while (!file.eof())
@@ -165,7 +165,7 @@ namespace RideWeather
 			return false;
 
 		//open file
-		boost::filesystem::ifstream file(fn, std::ios::binary | std::ios::ate);
+		std::ifstream file(fn, std::ios::binary | std::ios::ate);
 		// get filesize
 		size_t fs = file.tellg();
 		file.seekg(0, std::ios::beg);
@@ -187,7 +187,7 @@ namespace RideWeather
 			boost::filesystem::create_directories(fn.parent_path());//create folder
 		}
 		//open file
-		boost::filesystem::ofstream file(fn, std::ios::binary);
+		std::ofstream file(fn, std::ios::binary);
 		file << stream;
 		file.close();
 	}
@@ -198,24 +198,23 @@ namespace RideWeather
 
 		cpr::Url url("http://projects.knmi.nl/klimatologie/uurgegevens/getdata_uur.cgi");
 		char startParameter[12];
-		sprintf_s<12>(startParameter, "%04u%02u%02u%02u", (int)startOfMonth.year(), startOfMonth.month().as_number(), startOfMonth.day().as_number(), 0);
+		sprintf(startParameter, "%04u%02u%02u%02u", (int)startOfMonth.year(), startOfMonth.month().as_number(), startOfMonth.day().as_number(), 0);
 		char endParameter[12];
-		sprintf_s<12>(startParameter, "%04u%02u%02u%02u", (int)startOfMonth.year(), startOfMonth.month().as_number(), startOfMonth.end_of_month().day().as_number(), 24);
+		sprintf(startParameter, "%04u%02u%02u%02u", (int)startOfMonth.year(), startOfMonth.month().as_number(), startOfMonth.end_of_month().day().as_number(), 24);
 		cpr::Payload payload({ { "start", std::string(startParameter) } });
-		payload.AddPair({ "end", std::string(endParameter) });
-		payload.AddPair({ "vars", "all" });
-		payload.AddPair({ "stns", "344" });
+		payload.Add({ "end", std::string(endParameter) });
+		payload.Add({ "vars", "all" });
+		payload.Add({ "stns", "344" });
 
 		std::cout << "Accessing: " << url << std::endl;
-		std::cout << "	Payload: " << payload.content << std::endl;
-
+		
 		cpr::Response r = cpr::Post(url, payload, timeout);
 		if (r.error.code != cpr::ErrorCode::OK)
 		{
 			std::cerr << "HTTP Error." << std::endl;
 			std::cerr << "Error_code: " << int(r.error.code) << std::endl;
 			std::cerr << "Error_message: " << r.error.message << std::endl;
-			throw std::exception("KnmiHourly::GetOnline: encountered HTTP error.");
+			throw std::runtime_error("KnmiHourly::GetOnline: encountered HTTP error.");
 		}
 
 		WriteCache(startOfMonth, r.text);
