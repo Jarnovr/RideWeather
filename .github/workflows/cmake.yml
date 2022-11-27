@@ -19,6 +19,20 @@ jobs:
 
     steps:
     - uses: actions/checkout@v3
+    
+    - name: Install Qt
+      # You may pin to the exact commit or the version.
+      # uses: jurplel/install-qt-action@43ec12788e42f375acfcb2cec059edfb9572fbaa
+      uses: jurplel/install-qt-action@v3.0.0
+      with:
+        # Directory to install Qt
+        # Version of Qt to install
+        version: 6.4.1 # optional, default is 5.15.2
+        # Host platform
+        modules: Widgets Charts
+
+    - name : install rapid json
+      run: sudo apt-get install -y rapidjson-devel
 
     - name: Configure CMake
       # Configure CMake in a 'build' subdirectory. `CMAKE_BUILD_TYPE` is only required if you are using a single-configuration generator such as make.
